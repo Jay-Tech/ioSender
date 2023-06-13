@@ -37,8 +37,11 @@
     <Localizable>False</Localizable>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="RP.Math">
+      <HintPath>..\..\Lib\RP.Math.dll</HintPath>
+    </Reference>
     <Reference Include="RP.Math.Vector3">
-      <HintPath>..\..\Vector-master\RP.Math.Vector3\bin\Release\RP.Math.Vector3.dll</HintPath>
+      <HintPath>..\..\Lib\RP.Math.Vector3.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -70,6 +73,9 @@
     </Compile>
     <Compile Include="ErrorsAndAlarms.xaml.cs">
       <DependentUpon>ErrorsAndAlarms.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FacingView.xaml.cs">
+      <DependentUpon>FacingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="FileActionControl.xaml.cs">
       <DependentUpon>FileActionControl.xaml</DependentUpon>
@@ -228,6 +234,7 @@
     </Compile>
     <Compile Include="UIUtils.cs" />
     <Compile Include="UIViewModel.cs" />
+    <Compile Include="ViewModel\FacingViewModel.cs" />
     <Compile Include="Widget.cs" />
     <Compile Include="MachinePositionFlyout.xaml.cs">
       <DependentUpon>MachinePositionFlyout.xaml</DependentUpon>
@@ -240,6 +247,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ErrorsAndAlarms.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FacingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -520,6 +531,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\StatusAnnotations_Warning_16xLG_color.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\closeWhite.png" />
+    <Resource Include="Resources\editWhite.png" />
+    <Resource Include="Resources\openWhite.png" />
+    <Resource Include="Resources\reloadWhite.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

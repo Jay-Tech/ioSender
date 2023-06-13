@@ -47,6 +47,9 @@ using System.Windows.Threading;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Threading;
+using System.Windows.Input;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 #if ADD_CAMERA
 using CNC.Controls.Camera;
 #endif
@@ -78,7 +81,7 @@ namespace GCode_Sender
                 Environment.Exit(res);
 
             BaseWindowTitle = Title;
-
+            ui.HeaderTitle.Text = BaseWindowTitle;
             CNC.Core.Grbl.GrblViewModel = (GrblViewModel)DataContext;
             GrblInfo.LatheModeEnabled = AppConfig.Settings.Lathe.IsEnabled;
 
@@ -87,6 +90,10 @@ namespace GCode_Sender
             new PipeServer(App.Current.Dispatcher);
             PipeServer.FileTransfer += Pipe_FileTransfer;
             AppConfig.Settings.Base.PropertyChanged += Base_PropertyChanged;
+            this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
+            HeaderIcon.Source =
+                BitmapFrame.Create(new Uri("pack://application:,,,/App.ico", UriKind.RelativeOrAbsolute));
+          //var theme =  Application.Current.Resources.Source = new Uri("pack://application:,,,/Themes/ThemeSelector.xaml", UriKind.RelativeOrAbsolute);
         }
 
         public string BaseWindowTitle { get; set; }
@@ -95,7 +102,7 @@ namespace GCode_Sender
         {
             set
             {
-                ui.Title = BaseWindowTitle + (string.IsNullOrEmpty(value) ? "" : " - " + value);
+               ui.HeaderTitle.Text = BaseWindowTitle + (string.IsNullOrEmpty(value) ? "" : " - " + value);
                 ui.menuCloseFile.IsEnabled = ui.menuSaveFile.IsEnabled = !(string.IsNullOrEmpty(value) || value.StartsWith("SDCard:"));
                 ui.menuTransform.IsEnabled = ui.menuCloseFile.IsEnabled && UIViewModel.TransformMenuItems.Count > 0;
             }
@@ -187,6 +194,8 @@ namespace GCode_Sender
             GCode.File.AddTransformer(typeof(ArcsToLines), (string)FindResource("MenuArcsToLines"), UIViewModel.TransformMenuItems);
             GCode.File.AddTransformer(typeof(GCodeCompress), (string)FindResource("MenuCompress"), UIViewModel.TransformMenuItems);
             GCode.File.AddTransformer(typeof(CNC.Controls.DragKnife.DragKnifeViewModel), (string)FindResource("MenuDragKnife"), UIViewModel.TransformMenuItems);
+            Properties.Settings.Default.ColorMode = AppConfig.Settings.Theme.ThemeSelection;
+
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -435,5 +444,146 @@ namespace GCode_Sender
 
             return view;
         }
+
+
+        //Theme code 
+       
+        private void themeBlack_Click(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.ColorMode = "Black";
+            AppConfig.Settings.Theme.ThemeSelection = "Black";
+            //var app = (App)Application.Current;
+            //app.ChangeTheme(new Uri("pack://application:,,,/BalckThemeStyle.xaml"));
+        }
+        private void themeDark_Click(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.ColorMode = "Dark";
+            AppConfig.Settings.Theme.ThemeSelection = "Dark";
+        }
+
+        private void themeLight_Click(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.ColorMode = "Light";
+            AppConfig.Settings.Theme.ThemeSelection = "Light";
+        }
+        private void themeWhite_Click(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.ColorMode = "White";
+            AppConfig.Settings.Theme.ThemeSelection = "White";
+        }
+        bool _resizeInProcess = false;
+        private void MinimizeWindow(object sender, RoutedEventArgs e)
+        {
+            App.Current.MainWindow.WindowState = WindowState.Minimized;
+        }
+
+        private void MaximizeClick(object sender, RoutedEventArgs e)
+        {
+            AdjustWindowSize();
+        }
+        
+        private void StackPanel_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                if (e.ClickCount == 2)
+                {
+                    AdjustWindowSize();
+                }
+                else
+                {
+                    App.Current.MainWindow.DragMove();
+                }
+            }
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Application.Current.MainWindow != null)
+                Application.Current.MainWindow.Close();
+        }
+        //todo REMOVE ME AFTER TESTING 
+
+        //private void Resize_Init(object sender, MouseButtonEventArgs e)
+        //{
+        //    Rectangle senderRect = sender as Rectangle;
+        //    if (senderRect != null)
+        //    {
+        //        _resizeInProcess = true;
+        //        senderRect.CaptureMouse();
+        //    }
+        //}
+
+        //private void Resize_End(object sender, MouseButtonEventArgs e)
+        //{
+        //    //if (e.LeftButton == MouseButtonState.Pressed) return;
+        //    Rectangle senderRect = sender as Rectangle;
+        //    if (senderRect != null)
+        //    {
+        //        _resizeInProcess = false; ;
+        //        senderRect.ReleaseMouseCapture();
+        //    }
+        //}
+        //private void Resizeing_Form(object sender, MouseEventArgs e)
+        //{
+        //    if (_resizeInProcess)
+        //    {
+        //        Rectangle senderRect = sender as Rectangle;
+        //        Window mainWindow = senderRect.Tag as Window;
+        //        if (senderRect != null)
+        //        {
+        //            double width = e.GetPosition(mainWindow).X;
+        //            double height = e.GetPosition(mainWindow).Y;
+        //            senderRect.CaptureMouse();
+        //            if (senderRect.Name.ToLower().Contains("right"))
+        //            {
+        //                width += 5;
+        //                if (width > 0)
+        //                    mainWindow.Width = width;
+        //            }
+        //            if (senderRect.Name.ToLower().Contains("left"))
+        //            {
+        //                width -= 5;
+        //                mainWindow.Left += width;
+        //                width = mainWindow.Width - width;
+        //                if (width > 0)
+        //                {
+        //                    mainWindow.Width = width;
+        //                }
+        //            }
+        //            if (senderRect.Name.ToLower().Contains("bottom"))
+        //            {
+        //                height += 5;
+        //                if (height > 0)
+        //                    mainWindow.Height = height;
+        //            }
+        //            if (senderRect.Name.ToLower().Contains("top"))
+        //            {
+        //                height -= 5;
+        //                mainWindow.Top += height;
+        //                height = mainWindow.Height - height;
+        //                if (height > 0)
+        //                {
+        //                    mainWindow.Height = height;
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
+        private void AdjustWindowSize()
+        {
+            if (App.Current.MainWindow.WindowState == WindowState.Maximized)
+            {
+                App.Current.MainWindow.WindowState = WindowState.Normal;
+                MaximizeButton.Content = "";
+            }
+            else if (App.Current.MainWindow.WindowState == WindowState.Normal)
+            {
+                App.Current.MainWindow.WindowState = WindowState.Maximized;
+                MaximizeButton.Content = "";
+            }
+        }
+
+
     }
 }

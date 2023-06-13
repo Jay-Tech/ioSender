@@ -14,6 +14,7 @@
         <system:String x:Uid="str_heightMapFailed" x:Key="ProbingFailed">Probing failed</system:String>
         <system:String x:Uid="str_heightMapCompleted" x:Key="ProbingCompleted">Probing completed: Z min: {0}, Z max: {1}.</system:String>
         <Controls:LogicalNotConverter x:Key="IsNotRunningConverter" />
+        <Style x:Key="Button" BasedOn="{StaticResource ButtonCustomStyle }" TargetType="Button"></Style>
     </UserControl.Resources>
         <Grid>
         <StackPanel Margin="5,5,0,0" Width="250" HorizontalAlignment="Left" VerticalAlignment="Top">
@@ -27,7 +28,7 @@
                         <Controls:NumericField Label="Y:" ColonAt="20" Value="{Binding Path=HeightMap.MinY, Mode=TwoWay}" Format="-###0.0##"/>
                         <Controls:NumericField x:Uid="lbl_height" Label="H:" ColonAt="25" Value="{Binding Path=HeightMap.Height, Mode=TwoWay}" Format="-###0.0##"/>
                     </StackPanel>
-                    <Button x:Uid="btn_fromLimits" Content="Set from program limits" IsEnabled="{Binding Path=Grbl.IsFileLoaded}" Margin="5,5,0,0" Padding="5,0" HorizontalAlignment="Left" VerticalAlignment="Top" Click="limits_Click"/>
+                    <Button x:Uid="btn_fromLimits" Style="{StaticResource Button}" Content="Set from program limits" IsEnabled="{Binding Path=Grbl.IsFileLoaded}" Margin="5,5,0,0" Padding="5,0" Width="140" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Click="limits_Click"/>
                 </StackPanel>
             </GroupBox>
             <GroupBox x:Uid="grp_gridSize" Header="Gridsize">
@@ -81,12 +82,12 @@
             <helix:PointsVisual3D Size="4" Color="Red" Points="{Binding Path=HeightMap.MapPoints}"/>
         </helix:HelixViewport3D>
         <StackPanel Margin="5,0,0,5" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="Auto" Width="Auto">
-            <Button x:Uid="btn_start" Content="Start" IsEnabled="{Binding Path=Grbl.IsJobRunning, Converter={StaticResource IsNotRunningConverter}}" Margin="2,0" Width="75" Click="start_Click"/>
-            <Button x:Uid="btn_probe" Content="_Probe" IsEnabled="{Binding Path=IsPaused}" Margin="2,0" Width="75" Click="probe_Click"/>
-            <Button x:Uid="btn_stop" Content="Stop" IsEnabled="{Binding Path=Grbl.IsJobRunning}" Margin="2,0" Width="75" Click="stop_Click"/>
-            <Button x:Uid="btn_load" Content="_Load" IsEnabled="{Binding Path=Grbl.IsJobRunning, Converter={StaticResource IsNotRunningConverter}}" Margin="2,0" Width="75" Click="load_Click"/>
-            <Button x:Uid="btn_save" Content="_Save" IsEnabled="{Binding Path=Grbl.IsJobRunning, Converter={StaticResource IsNotRunningConverter}}" Margin="2,0" Width="75" Click="save_Click"/>
-            <Button x:Uid="btn_apply" Content="_Apply" IsEnabled="{Binding Path=HeightMap.CanApply}" Margin="2,0" Width="75" Click="apply_Click"/>
+            <Button x:Uid="btn_start" Style="{StaticResource Button}" Content="Start" IsEnabled="{Binding Path=Grbl.IsJobRunning, Converter={StaticResource IsNotRunningConverter}}" Margin="2,0" Width="75" Click="start_Click"/>
+            <Button x:Uid="btn_probe" Style="{StaticResource Button}" Content="_Probe" IsEnabled="{Binding Path=IsPaused}" Margin="2,0" Width="75" Click="probe_Click"/>
+            <Button x:Uid="btn_stop" Style="{StaticResource Button}" Content="Stop" IsEnabled="{Binding Path=Grbl.IsJobRunning}" Margin="2,0" Width="75" Click="stop_Click"/>
+            <Button x:Uid="btn_load" Style="{StaticResource Button}" Content="_Load" IsEnabled="{Binding Path=Grbl.IsJobRunning, Converter={StaticResource IsNotRunningConverter}}" Margin="2,0" Width="75" Click="load_Click"/>
+            <Button x:Uid="btn_save" Style="{StaticResource Button}"  Content="_Save" IsEnabled="{Binding Path=Grbl.IsJobRunning, Converter={StaticResource IsNotRunningConverter}}" Margin="2,0" Width="75" Click="save_Click"/>
+            <Button x:Uid="btn_apply" Style="{StaticResource Button}" Content="_Apply" IsEnabled="{Binding Path=HeightMap.CanApply}" Margin="2,0" Width="75" Click="apply_Click"/>
         </StackPanel>
     </Grid>
 </UserControl>

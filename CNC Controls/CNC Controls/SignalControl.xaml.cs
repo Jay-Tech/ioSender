@@ -45,7 +45,7 @@ namespace CNC.Controls
 {
     public partial class SignalControl : UserControl
     {
-        static Brush LEDOn = Brushes.Red, LEDOff = Brushes.LightGray;
+        static Brush LEDOn = Brushes.Red, LEDOff = Brushes.Transparent;
 
         public SignalControl()
         {

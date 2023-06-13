@@ -19,12 +19,12 @@
                 <local:LogicalNotConverter />
             </local:LogicalOrConverter.FinalConverter>
         </local:LogicalOrConverter>
-        <Style x:Key="StatusButtonStyle" TargetType="Button">
+        <Style x:Key="StatusButtonStyle" BasedOn="{StaticResource ButtonCustomStyle}"  TargetType="Button">
             <Setter Property="Width" Value="66" />
             <Setter Property="Height" Value="36" />
             <Setter Property="Focusable" Value="False" />
         </Style>
-        <Style x:Key="ResetButtonStyle" TargetType="{x:Type Button}">
+        <Style x:Key="ResetButtonStyle" BasedOn="{StaticResource ButtonCustomStyle}" TargetType="{x:Type Button}">
             <Setter Property="Background" Value="LightBlue" />
             <Setter Property="Width" Value="66" />
             <Setter Property="Height" Value="36" />
@@ -32,7 +32,11 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
-                        <Border x:Name="Border" Background="{TemplateBinding Background}" BorderThickness="1" BorderBrush="#FF707070" >
+
+                        <Border x:Name="Border" Background="{TemplateBinding Background}"  BorderThickness="1,1,1,1" BorderBrush="#FF111111" CornerRadius="{Binding ElementName=button, Path=CornerRadius}" Padding="3">
+                            <Border.Effect>
+                                <BlurEffect Radius="2" KernelType="Gaussian"/>
+                            </Border.Effect>
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Border>
                         <ControlTemplate.Triggers>

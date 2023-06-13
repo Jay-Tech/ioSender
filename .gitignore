@@ -26,3 +26,15 @@ obj/
 # =========================
 # Operating System Files
 # =========================
+/iosebder/packages/*
+/ioSender/packages/HelixToolkit.Wpf.2.10.0/lib/net45
+/ioSender/packages/HelixToolkit.Wpf.2.10.0
+/ioSender/packages/WebSocketSharp.1.0.3-rc11
+/ioSender/packages/HelixToolkit.2.10.0
+/ioSender/packages/AForge.Video.DirectShow.2.2.5
+/ioSender/packages/AForge.Video.2.2.5
+/ioSender/packages/AForge.Imaging.2.2.5
+/ioSender/packages/AForge.Controls.2.2.5
+/ioSender/packages/AForge.Math.2.2.5
+/ioSender/packages/AForge.2.2.5
+/ioSender XL/packages

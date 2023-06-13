@@ -15,7 +15,7 @@
         <system:String x:Uid="str_pause" x:Key="JobPause">Pause</system:String>
         <system:String x:Uid="str_checking" x:Key="Checking">Checking...</system:String>
         <system:String x:Uid="str_transferComplete" x:Key="TransferComplete">Transfer complete</system:String>
-        <Style x:Key="JobButtonStyle" TargetType="Button">
+        <Style x:Key="JobButtonStyle" BasedOn="{StaticResource ButtonCustomStyle}" TargetType="Button">
             <Setter Property="MinWidth" Value="95" />
             <Setter Property="MaxWidth" Value="120" />
             <Setter Property="Padding" Value="5,0" />

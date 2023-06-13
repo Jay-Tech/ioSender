@@ -6,16 +6,17 @@
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         xmlns:cnccore="clr-namespace:CNC.Core;assembly=CNC.Core"
         xmlns:cnccontrols="clr-namespace:CNC.Controls;assembly=CNC.Controls.WPF"
-        xmlns:cncviewer="clr-namespace:CNC.Controls.Viewer;assembly=CNC.Controls.Viewer"
         xmlns:cnclathecontrols="clr-namespace:CNC.Controls.Lathe;assembly=CNC.Controls.Lathe"
         xmlns:cncprobingcontrols="clr-namespace:CNC.Controls.Probing;assembly=CNC.Controls.Probing"
         xmlns:local="clr-namespace:GCode_Sender"
         mc:Ignorable="d"
-        Title="Sender ({0})" Height="640" Width="925" MinHeight="700" MinWidth="1250"
+        Title="Sender ({0})" Height="640" Width="925" MinHeight="700" MinWidth="1250" 
+        WindowStyle="None" ResizeMode="CanResizeWithGrip" WindowState="Normal" 
         Loaded="Window_Load"
         SizeChanged="Window_SizeChanged"
         Closing="Window_Closing"
         Closed="Window_Closed" Icon="App.ico">
+
     <Window.Resources>
         <system:String x:Uid="str_mnuRotate" x:Key="MenuRotate">Rotate</system:String>
         <system:String x:Uid="str_mnuArcsToLines" x:Key="MenuArcsToLines">Arcs to lines</system:String>
@@ -25,11 +26,49 @@
         <system:String x:Uid="str_runTime" x:Key="RunTime">Run time: {0}</system:String>
         <cnccontrols:BlocksToStringConverter x:Key="BlocksToStringConverter" />
         <cnccontrols:LogicalNotConverter x:Key="BooleanConverter" />
+        <!--<Style x:Key="RectBorderStyle" TargetType="Rectangle">
+            <Setter Property="Focusable" Value="False" />
+            <Setter Property="Fill" Value="Transparent" />
+            <Setter Property="Tag" Value="{Binding RelativeSource={RelativeSource AncestorType=Window}}" />
+            <EventSetter Event="MouseLeftButtonDown" Handler="Resize_Init"/>
+            <EventSetter Event="MouseLeftButtonUp" Handler="Resize_End"/>
+            <EventSetter Event="MouseMove" Handler="Resizeing_Form"/> 
+        </Style>-->
     </Window.Resources>
     <Window.DataContext>
         <cnccore:GrblViewModel />
     </Window.DataContext>
-    <DockPanel IsEnabled="{Binding Path=IsMPGActive, Converter={StaticResource BooleanConverter}}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+
+   <WindowChrome.WindowChrome>
+        <WindowChrome 
+            CaptionHeight="10"
+            UseAeroCaptionButtons="True" CornerRadius="2"  />
+    </WindowChrome.WindowChrome>
+    <DockPanel IsEnabled="{Binding Path=IsMPGActive, Converter={StaticResource BooleanConverter}}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" >
+        <Grid DockPanel.Dock="Top">
+            <Grid MouseDown="StackPanel_MouseDown"  VerticalAlignment="Top" Margin="0"  Background="Transparent">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Image x:Name="HeaderIcon" Grid.Column="0" Width="20" Height="20" Margin="5, 4, 5, 4" HorizontalAlignment="Left" />
+                <TextBlock x:Name="HeaderTitle" Style="{StaticResource CustomTextBlock}" Grid.Column="1" Margin="5" TextAlignment="Left"  FontSize="13" HorizontalAlignment="Left" />
+                <StackPanel Grid.Column="2" VerticalAlignment="Top"  Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button x:Name="MinimizeButton" Style="{StaticResource MinimizeButtonStyle}" Click="MinimizeWindow" KeyboardNavigation.IsTabStop="False" />
+                    <Button x:Name="MaximizeButton" Style="{StaticResource MaximizeButtonStyle}" Click="MaximizeClick" KeyboardNavigation.IsTabStop="False" />
+                    <Button x:Name="CloseButton"  Style="{StaticResource CloseButtonStyle}" Click="CloseButton_Click" KeyboardNavigation.IsTabStop="False" />
+                </StackPanel>
+            </Grid>
+            <!--<Rectangle x:Name="topSizeGrip" Height="7" VerticalAlignment="Top" Cursor="SizeNS" Style="{StaticResource RectBorderStyle}" />
+            <Rectangle x:Name="leftSizeGrip" Width="7" HorizontalAlignment="Left" Cursor="SizeWE" Style="{StaticResource RectBorderStyle}" />
+            <Rectangle x:Name="rightSizeGrip" Width="7" HorizontalAlignment="Right" Cursor="SizeWE" Style="{StaticResource RectBorderStyle}" />
+            <Rectangle x:Name="bottomSizeGrip" Height="7" VerticalAlignment="Bottom" Cursor="SizeNS" Style="{StaticResource RectBorderStyle}" />
+            <Rectangle Name="topLeftSizeGrip" Width="7" Height="7" HorizontalAlignment="Left" VerticalAlignment="Top" Cursor="SizeNWSE" Style="{StaticResource RectBorderStyle}" />
+            <Rectangle Name="bottomRightSizeGrip" Width="7" Height="7" HorizontalAlignment="Right" VerticalAlignment="Bottom" Cursor="SizeNWSE" Style="{StaticResource RectBorderStyle}" />
+            <Rectangle Name="topRightSizeGrip" Width="7" Height="7" HorizontalAlignment="Right" VerticalAlignment="Top" Cursor="SizeNESW" Style="{StaticResource RectBorderStyle}" />
+            <Rectangle Name="bottomLeftSizeGrip" Width="7" Height="7" HorizontalAlignment="Left" VerticalAlignment="Bottom" Cursor="SizeNESW" Style="{StaticResource RectBorderStyle}" />-->
+        </Grid>
         <Menu IsEnabled="{Binding Path=IsJobRunning, Converter={StaticResource BooleanConverter}}" DockPanel.Dock="Top">
             <MenuItem x:Uid="mnu_file" x:Name="menuFile" Header="_File">
                 <MenuItem x:Uid="mnu_load" Header="_Load" Click="fileOpenMenuItem_Click"/>
@@ -49,6 +88,13 @@
                 <MenuItem x:Uid="mnu_videoTutorials" Header="_Video tutorials" Click="videoTutorials_Click"/>
                 <MenuItem x:Uid="mnu_errorsAndAlarms" Header="_Error and alarm codes" Click="errorAndAlarms_Click"/>
                 <MenuItem x:Uid="mnu_about" Header="_About" Click="aboutMenuItem_Click"/>
+                <MenuItem x:Uid="mnu_theme" Header="_Theme">
+                    <MenuItem  x:Uid="mnu_themeBlack" Header="Black" Click="themeBlack_Click"></MenuItem>
+                    <MenuItem  x:Uid="mnu_themeDark" Header="Dark" Click="themeDark_Click"></MenuItem>
+                    <MenuItem  x:Uid="mnu_themeLight" Header="Light" Click="themeLight_Click"></MenuItem>
+                    <MenuItem  x:Uid="mnu_themeWhite" Header="White" Click="themeWhite_Click"></MenuItem>
+
+                </MenuItem>
             </MenuItem>
         </Menu>
         <ToolBarTray DockPanel.Dock="Top" IsLocked="True">
@@ -111,14 +157,14 @@
             <cnccontrols:MachinePositionFlyout x:Name="mposFlyout" Visibility="Hidden" Canvas.Right="22"/>
             <cnccontrols:THCMonitorControl x:Name="thcControl" Visibility="Hidden" Canvas.Right="22"/>
         </Canvas>
-        <TabControl Background="#FFE5E5E5" DockPanel.Dock="Left" x:Name="tabMode" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Focusable="False" SelectionChanged="TabMode_SelectionChanged">
+        <TabControl Background="Transparent" DockPanel.Dock="Left" x:Name="tabMode" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Focusable="False" SelectionChanged="TabMode_SelectionChanged">
             <TabControl.Resources>
-                <Style TargetType="{x:Type TabItem}">
+                <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource customTabItem}">
                     <Setter Property="Height" Value="32" />
                     <Setter Property="MinWidth" Value="40" />
                 </Style>
             </TabControl.Resources>
-            <TabItem x:Uid="tab_grbl" x:Name="tabGrbl" Header="Grbl" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <TabItem x:Uid="tab_grbl"  x:Name="tabGrbl" Header="Grbl" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <local:JobView x:Name="Grbl"/>
             </TabItem>
             <!---
@@ -128,6 +174,9 @@
             -->
             <TabItem x:Uid="tab_probing" x:Name="tabProbing" Header="Probing">
                 <cncprobingcontrols:ProbingView x:Name="probingView"/>
+            </TabItem>
+            <TabItem x:Uid="tab_Facing" x:Name="tabFacing" Header="Facing">
+                <cnccontrols:FacingView x:Name="facingView"/>
             </TabItem>
             <TabItem x:Uid="tab_sdCard" x:Name="tabSDCard" Header="SD Card">
                 <cnccontrols:SDCardView x:Name="SDCardView" FileSelected="SDCardView_FileSelected"/>

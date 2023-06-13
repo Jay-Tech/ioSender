@@ -50,7 +50,7 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        <Style x:Key="ConfigButtonStyle" TargetType="Button">
+        <Style x:Key="ConfigButtonStyle" BasedOn="{StaticResource ButtonCustomStyle}" TargetType="Button">
             <Setter Property="MinWidth" Value="90" />
             <Setter Property="MaxWidth" Value="120" />
             <Setter Property="Padding" Value="5,0" />
@@ -62,15 +62,15 @@
             <TreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type cnccore:GrblSettingGroup}" ItemsSource="{Binding Settings}" >
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Name}" />
+                        <TextBlock  Style ="{StaticResource CustomTextBlock }" Text="{Binding Name}" />
                     </StackPanel>
                 </HierarchicalDataTemplate>
                 <DataTemplate DataType="{x:Type cnccore:GrblSettingDetails}" >
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Id}" Margin="0,0,5,0" />
-                        <TextBlock Text="{Binding Name, StringFormat=\{0\}:}" />
-                        <TextBlock Text="{Binding FormattedValue}" Margin="5,0"/>
-                        <TextBlock Text="{Binding Unit}" />
+                        <TextBlock  Style ="{StaticResource CustomTextBlock }" Text="{Binding Id}" Margin="0,0,5,0" />
+                        <TextBlock  Style ="{StaticResource CustomTextBlock }" Text="{Binding Name, StringFormat=\{0\}:}" />
+                        <TextBlock Style ="{StaticResource CustomTextBlock }" Text="{Binding FormattedValue}" Margin="5,0"/>
+                        <TextBlock Style ="{StaticResource CustomTextBlock }" Text="{Binding Unit}" />
                     </StackPanel>
                 </DataTemplate>
             </TreeView.Resources>

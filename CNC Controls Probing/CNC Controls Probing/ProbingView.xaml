@@ -91,13 +91,13 @@
                         <Controls:NumericField x:Uid="fld_depth" Label="Depth:" ToolTip="Z offset from current position where probing will take place" Value="{Binding Depth, Mode=TwoWay}" IsEnabled="{Binding XYOffsetEnable}" ColonAt="102" HorizontalAlignment="Left" Margin="0,2,0,0" VerticalAlignment="Top"/>
                     </StackPanel>
                 </GroupBox>
-                <GroupBox x:Uid="grp_prbeProperties" x:Name="probeProperties" Header="Probe XY offsets" Visibility="Collapsed" IsEnabled="{Binding Path=XYOffsetEnable}">
+                <GroupBox x:Uid="grp_prbeProperties" x:Name="probeProperties" Header="Probe XY offsets" Visibility="Visible" IsEnabled="{Binding Path=XYOffsetEnable}">
                     <StackPanel Orientation="Horizontal">
                         <Controls:NumericField x:Uid="fld_probeOffsetX" Label="X:" ToolTip="X offset from probe to controlled point" Value="{Binding Path=ProbeOffsetX, Mode=TwoWay}" ColonAt="20" HorizontalAlignment="Left" Margin="0,2,0,0" VerticalAlignment="Top"/>
                         <Controls:NumericField x:Uid="fld_probeOffsetY" Label="Y:" ToolTip="Y offset from probe to controlled point" Value="{Binding Path=ProbeOffsetY, Mode=TwoWay}" ColonAt="20" HorizontalAlignment="Left" Margin="0,2,0,0" VerticalAlignment="Top"/>
                     </StackPanel>
                 </GroupBox>
-                <Button x:Uid="btn_jog" x:Name="Jog" Content="Click to activate keyboard jogging" ToolTip="Ctrl+Shift to activate" Margin="0,5,0,6" Focusable="True" FocusVisualStyle="{x:Null}" GotFocus="Jog_FocusedChanged" LostFocus="Jog_FocusedChanged"/>
+                <Button x:Uid="btn_jog" Style="{StaticResource ButtonCustomStyle }" x:Name="Jog" Content="Click to activate keyboard jogging" ToolTip="Ctrl+Shift to activate" Margin="0,5,0,6" Focusable="True" FocusVisualStyle="{x:Null}" GotFocus="Jog_FocusedChanged" LostFocus="Jog_FocusedChanged"/>
                 <TextBlock Text="{Binding Path=Position, Mode=OneWay}" TextWrapping="NoWrap" Height="25" Width="235" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
             </StackPanel>
         </DockPanel>

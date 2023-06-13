@@ -102,6 +102,21 @@ namespace CNC.Controls
         public bool CheckProbeStatus { get { return _CheckProbeStatus; } set { _CheckProbeStatus = value; OnPropertyChanged(); } }
         public bool ValidateProbeConnected { get { return _ValidateProbeConnected; } set { _ValidateProbeConnected = value; OnPropertyChanged(); } }
     }
+    [Serializable]
+    public class ThemeConfig : ViewModelBase
+    {
+        private string _themeSelection;
+
+        public string ThemeSelection 
+        {
+            get
+            {
+                return _themeSelection; 
+
+            }
+            set { _themeSelection = value; OnPropertyChanged(); } }
+      
+    }
 
     [Serializable]
     public class CameraConfig : ViewModelBase
@@ -267,6 +282,7 @@ namespace CNC.Controls
         public CameraConfig Camera { get; set; } = new CameraConfig();
         public GCodeViewerConfig GCodeViewer { get; set; } = new GCodeViewerConfig();
         public ProbeConfig Probing { get; set; } = new ProbeConfig();
+        public ThemeConfig Theme { get; set; } = new ThemeConfig();
     }
 
     public class AppConfig
@@ -294,6 +310,7 @@ namespace CNC.Controls
         public GCodeViewerConfig GCodeViewer { get { return Base == null ? null : Base.GCodeViewer; } }
         public ProbeConfig Probing { get { return Base == null ? null : Base.Probing; } }
 
+        public ThemeConfig Theme { get { return Base == null ? null : Base.Theme; } }
         public bool Save(string filename)
         {
             bool ok = false;

@@ -4,16 +4,36 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CNC.Controls"
-             mc:Ignorable="d" 
-             d:DesignHeight="140" d:DesignWidth="250">
-    <Grid>
-        <GroupBox x:Uid="grp_feedrate" x:Name="grpFeedRate" Header="Feed rate" HorizontalAlignment="Left" VerticalAlignment="Top" Height="140" Width="250">
-            <Grid HorizontalAlignment="Right" Height="120" VerticalAlignment="Top" Width="240">
-                <local:NumericTextBox x:Name="cvFeedRate" Value="{Binding Path=FeedRate, Mode=OneWay}" Format="####0" Background="#FFF8F8F8" HorizontalAlignment="Left" Margin="10,5,0,0" IsReadOnly="True" Focusable="False" VerticalAlignment="Top" Width="50"/>
-                <Label x:Name="lblFeedRrate" Content="{Binding Path=FeedrateUnit, Mode=OneWay}" HorizontalAlignment="Left" Margin="60,5,0,0" VerticalAlignment="Top"/>
-                <local:OverrideControl x:Name="feedOverrideControl" Value="{Binding Path=FeedOverride, Mode=OneWay}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,20,3,0" CommandGenerated="override_CommandGenerated" EncoderMode="FeedRate"/>
-                <Label x:Uid="lbl_rapids" x:Name="lblRapids" Content="Rapids:" HorizontalAlignment="Left" Margin="5,65,0,2" Grid.Row="1" VerticalAlignment="Top" Grid.RowSpan="2" Height="26"/>
-                <local:OverrideControl x:Name="rapidsOverrideControl" Value="{Binding Path=RapidsOverride, Mode=OneWay}" MinusOnly="True" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,85,3,5" Grid.Row="2" CommandGenerated="override_CommandGenerated" EncoderMode="RapidRate"/>
+             xmlns:viewModel="clr-namespace:CNC.Core;assembly=CNC.Core"
+             mc:Ignorable="d" d:DesignWidth="250" Height="205.833">
+    <!--<UserControl.DataContext>
+        <viewModel:GrblViewModel/>
+    </UserControl.DataContext>
+    <UserControl.Resources>
+        <viewModel:GrblViewModel x:Key="Vm"></viewModel:GrblViewModel>
+    </UserControl.Resources>-->
+    <Grid Margin="0,0,0,3">
+        <GroupBox x:Uid="grp_feedRate" x:Name="grpFeedRate" Header="Feed rate" HorizontalAlignment="Left" Width="250" Margin="0,-1,0,0">
+            <Grid HorizontalAlignment="Right" Height="187" VerticalAlignment="Top" Width="240" Margin="-2,0,0,-7">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="96*"/>
+                    <ColumnDefinition Width="145*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="75"/>
+                    <RowDefinition Height="85"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
+                <local:NumericTextBox  x:Name="cvFeedRate" Value="{Binding Path=FeedRate, Mode=OneWay}" Format="####0" Background="#FFF8F8F8" HorizontalAlignment="Left" Margin="10,2,0,0" IsReadOnly="True" Focusable="False" VerticalAlignment="Top" Width="50" Height="18"/>
+                <Label  x:Name="lblFeedRrate" FontWeight="Bold" FontSize="12" Foreground="White" Content="{Binding Path=GrblViewModel.FeedrateUnit, Mode=OneWay}" HorizontalAlignment="Left" Margin="1,0,0,4" VerticalAlignment="Center" Height="15" Width="52"></Label>
+                </StackPanel>
+                <local:OverrideControl x:Name="feedOverrideControl" Value="{Binding Path=GrblViewModel.FeedOverride, Mode=OneWay}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,3,23,0" CommandGenerated="override_CommandGenerated" EncoderMode="FeedRate" Height="69" Grid.Row="1" Width="217" Grid.ColumnSpan="2"
+                                       Grid.Column="0" />
+                <Label x:Uid="lbl_rapids" x:Name="lblRapids" Content="Rapids:" HorizontalAlignment="Left" Margin="2,62,0,0" VerticalAlignment="Top" Height="26" Width="48" RenderTransformOrigin="-1.281,1.654" Grid.Row="1" Grid.RowSpan="2"
+                       Grid.Column="0" />
+                <local:OverrideControl x:Name="rapidsOverrideControl" Value="{Binding Path=GrblViewModel.RapidsOverride, Mode=OneWay}" MinusOnly="True" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,23,0" CommandGenerated="override_CommandGenerated" EncoderMode="RapidRate" Height="62" Grid.Row="2" Width="216" Grid.ColumnSpan="2"
+                                       Grid.Column="0" />
             </Grid>
         </GroupBox>
     </Grid>

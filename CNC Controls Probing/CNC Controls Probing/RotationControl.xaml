@@ -19,6 +19,7 @@
         <Controls:BoolToVisibleConverter x:Key="ToVisibleConverter" />
         <local:OriginToBooleanConverter x:Key="UseX0Y0Converter" />
         <local:EnumValueToVisibleConverter x:Key="ZProbeIsVisibleConverter" />
+        <Style x:Key="Button" BasedOn="{StaticResource ButtonCustomStyle }" TargetType="Button"></Style>
         <Style x:Key="ButtonStyleNoHighlighting" TargetType="Button" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -102,9 +103,9 @@
             </StackPanel>
         </StackPanel>
         <StackPanel Margin="5,0,0,5" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="Auto" Width="Auto">
-            <Button x:Uid="btn_start" Content="Start" IsEnabled="{Binding Path=Grbl.IsJobRunning, Converter={StaticResource IsNotRunningConverter}}" Margin="2,0" Width="75" Click="start_Click"/>
-            <Button x:Uid="btn_stop" Content="Stop" IsEnabled="{Binding Path=Grbl.IsJobRunning}" Margin="2,0" Width="75" Click="stop_Click"/>
-            <Button x:Uid="btn_apply" Content="_Apply" IsEnabled="{Binding Path=CanApplyTransform}" Margin="2,0" Width="75" Click="apply_Click"/>
+            <Button x:Uid="btn_start" Style="{StaticResource Button}" Content="Start" IsEnabled="{Binding Path=Grbl.IsJobRunning, Converter={StaticResource IsNotRunningConverter}}" Margin="2,0" Width="75" Click="start_Click"/>
+            <Button x:Uid="btn_stop"  Style="{StaticResource Button}"  Content="Stop" IsEnabled="{Binding Path=Grbl.IsJobRunning}" Margin="2,0" Width="75" Click="stop_Click"/>
+            <Button x:Uid="btn_apply" Style="{StaticResource Button}" Content="_Apply" IsEnabled="{Binding Path=CanApplyTransform}" Margin="2,0" Width="75" Click="apply_Click"/>
         </StackPanel>
     </Grid>
 </UserControl>

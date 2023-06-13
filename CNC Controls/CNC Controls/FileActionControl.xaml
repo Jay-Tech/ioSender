@@ -13,6 +13,9 @@
                 <Trigger Property="IsEnabled" Value="False">
                     <Setter Property="Opacity" Value="0.5"/>
                 </Trigger>
+                <Trigger Property="IsEnabled" Value="True">
+                    <Setter Property="Opacity" Value="1"/>
+                </Trigger>
             </Style.Triggers>
             <Setter Property="Height" Value="36"/>
             <Setter Property="Focusable" Value="False"/>
@@ -33,9 +36,9 @@
         </Style>
     </UserControl.Resources>
     <StackPanel IsEnabled="{Binding Path=IsJobRunning, Mode=OneWay, Converter={StaticResource BooleanConverter}}" Orientation="Horizontal" HorizontalAlignment="Left" Height="36" VerticalAlignment="Top">
-        <Button Content="Resources\open.png" ToolTip="Open file" Width="37" Style="{StaticResource ActionButtonStyle}" Click="btnOpen_Click"/>
-        <Button Content="Resources\reload.png" ToolTip="Reload file" Width="23" IsEnabled="{Binding Path=IsPhysicalFileLoaded}"  Style="{StaticResource ActionButtonStyle}" Click="btnReload_Click"/>
-        <Button Content="Resources\edit.png" ToolTip="Edit file" Width="31" IsEnabled="{Binding Path=IsPhysicalFileLoaded}" Style="{StaticResource ActionButtonStyle}" Click="btnEdit_Click"/>
+        <Button Content="Resources\open.png" ToolTip="Open file" Width="37" Style="{StaticResource ActionButtonStyle}" Click="btnOpen_Click" Background="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}" BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}"/>
+        <Button Content="Resources\reload.png" ToolTip="Reload file" Width="23" IsEnabled="{Binding Path=IsPhysicalFileLoaded}"  Style="{StaticResource ActionButtonStyle}" Click="btnReload_Click" BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}"/>
+        <Button Content="Resources\edit.png" ToolTip="Edit file" Width="31" IsEnabled="{Binding Path=IsPhysicalFileLoaded}" Style="{StaticResource ActionButtonStyle}" Click="btnEdit_Click" BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightLightBrushKey}}"/>
         <Button Content="Resources\close.png" ToolTip="Close file" Width="26" IsEnabled="{Binding Path=IsFileLoaded}"  Style="{StaticResource ActionButtonStyle}" Click="btnClose_Click"/>
     </StackPanel>
 </UserControl>

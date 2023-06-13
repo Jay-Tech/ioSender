@@ -6,6 +6,9 @@
              xmlns:local="clr-namespace:CNC.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="30" Width="230">
+    <UserControl.Resources>
+        <Style x:Key="Button" BasedOn="{StaticResource ButtonCustomStyle}" TargetType="Button"></Style>
+    </UserControl.Resources>
     <Grid Width="230">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="177*"/>
@@ -17,6 +20,6 @@
             Unit="{Binding Path=Unit, Mode=OneWay}"
             Label="{Binding Path=Label, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=OneWay}"
         />
-        <Button x:Uid="btn_set" x:Name="btnSet" Content="Set" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="5,0" Height="22" Margin="0,4" Click="btnSet_Click"/>
+        <Button x:Uid="btn_set" Style="{StaticResource Button}" Width="40" x:Name="btnSet" Content="Set" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="5,0" Height="22" Margin="0,4" Click="btnSet_Click"/>
     </Grid>
 </UserControl>

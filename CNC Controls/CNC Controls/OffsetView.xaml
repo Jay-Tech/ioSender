@@ -9,6 +9,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="515" d:DesignWidth="875">
     <UserControl.Resources>
+
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="SharedStyles.xaml"/>
@@ -19,8 +20,11 @@
             <system:String x:Uid="lbl_axis" x:Key="AxisLabel">{0} axis:</system:String>
             <local:LogicalNotConverter x:Key="IsNotPredefined" />
         </ResourceDictionary>
+
     </UserControl.Resources>
+
     <Grid>
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
@@ -186,9 +190,9 @@
                 IsEnabled="{Binding Path=CanEdit, RelativeSource={RelativeSource AncestorType=UserControl}}"
             />
             <StackPanel Orientation="Horizontal" Height="28" Margin="0,5">
-                <Button x:Uid="btn_currPos" x:Name="btnCurrPos" Content="Get current position" Padding="5,0" IsEnabled="{Binding Path=IsPredefined, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource IsNotPredefined}}" Margin="3,0" Click="btnCurrPos_Click"/>
-                <Button x:Uid="btn_clear" x:Name="btnClear" Content="Clear all" Padding="5,0" IsEnabled="{Binding Path=CanEdit, RelativeSource={RelativeSource AncestorType=UserControl}}" Click="btnClearAll_Click"/>
-                <Button x:Uid="btn_setAll" x:Name="btnSetAll" Content="Set all" Padding="5,0" Margin="3,0" Click="btnSetAll_Click"/>
+                <Button x:Uid="btn_currPos" Style="{StaticResource ButtonCustomStyle}" x:Name="btnCurrPos" Content="Get current position" Width="125"  Padding="5,0" IsEnabled="{Binding Path=IsPredefined, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource IsNotPredefined}}" Margin="3,0" Click="btnCurrPos_Click"/>
+                <Button x:Uid="btn_clear" Style="{StaticResource ButtonCustomStyle}" x:Name="btnClear" Content="Clear all" Width="85" Padding="5,0" IsEnabled="{Binding Path=CanEdit, RelativeSource={RelativeSource AncestorType=UserControl}}" Click="btnClearAll_Click"/>
+                <Button x:Uid="btn_setAll" Style="{StaticResource ButtonCustomStyle}" x:Name="btnSetAll" Content="Set all" Width="85" Padding="5,0" Margin="3,0" Click="btnSetAll_Click"/>
             </StackPanel>
         </StackPanel>
     </Grid>

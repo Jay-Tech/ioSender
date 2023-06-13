@@ -54,7 +54,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <cnccontrols:JogControl x:Name="jogControl" Grid.Row="0" Grid.ColumnSpan="2" Margin="5,0,0,0" MinWidth="510" Width="510"/>
-            <StackPanel Grid.Row="1" Margin="5,0,0,0" Width="250" VerticalAlignment="Stretch">
+            <StackPanel Grid.Row="1" Grid.Column="0" Margin="5,2,0,0" Width="250" VerticalAlignment="Stretch">
                 <cnccontrols:OutlineControl x:Name="outlineControl"/>
                 <cnccontrols:SpindleControl x:Name="spindleControl"/>
                 <cnccontrols:CoolantControl x:Name="coolantControl"/>
@@ -66,7 +66,7 @@
             </StackPanel>
         </Grid>
         <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,5,0,0">
-            <cnccontrols:JobControl x:Name="GCodeSender" Margin="0,5,0,0" DockPanel.Dock="Bottom"/>
+            <cnccontrols:JobControl x:Name="GCodeSender" Margin="0,5,0,0" DockPanel.Dock="Bottom" Padding="2"/>
             <TabControl x:Name="tabGCode" TabStripPlacement="Bottom" DockPanel.Dock="Top" >
                 <TabItem x:Uid="tab_program" Header="Program">
                     <cnccontrols:GCodeListControl/>

@@ -5,31 +5,32 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CNC.Controls"
              xmlns:gcode="clr-namespace:CNC.GCode;assembly=CNC.Core"
-             xmlns:casp="using:CNC.Controls.SpindleControl"
              mc:Ignorable="d"
-             x:Name="root"
-             d:DesignHeight="150" d:DesignWidth="250">
+             x:Name="root" d:DesignWidth="250" Height="176.5">
     <UserControl.Resources>
         <local:LogicalNotConverter x:Key="LogicalNotConverter" />
     </UserControl.Resources>
-    <Grid>
-        <GroupBox x:Uid="grp_spindle" x:Name="grpSpindle" Header="Spindle" HorizontalAlignment="Left" VerticalAlignment="Top" Height="150" Width="250">
-            <Grid HorizontalAlignment="Left" Height="145" VerticalAlignment="Top" Width="240">
+    <Grid Margin="0,2,0,2">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="167*"/>
+            <RowDefinition Height="5*"/>
+        </Grid.RowDefinitions>
+        <GroupBox x:Uid="grp_spindle" x:Name="grpSpindle" Header="Spindle" HorizontalAlignment="Left" VerticalAlignment="Top" Height="172" Width="250" Grid.RowSpan="2">
+            <Grid HorizontalAlignment="Left" Height="152" VerticalAlignment="Top" Width="240" Margin="0,0,-2,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="55"/>
-                    <RowDefinition Height="26"/>
-                    <RowDefinition Height="61*"/>
+                    <RowDefinition Height="100"/>
                 </Grid.RowDefinitions>
                 <StackPanel IsEnabled="{Binding Path=IsSpindleStateEnabled, RelativeSource={RelativeSource AncestorType=UserControl}}" Orientation="Vertical" Margin="10,5,0,0">
                     <RadioButton x:Uid="lbl_off" x:Name="rbSpindleOff" Content="Off" IsChecked="{Binding Path=SpindleState[(gcode:SpindleState)Off], Mode=TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Center" Height="16" Click="rbSpindle_Click"/>
                     <RadioButton x:Uid="lbl_cw" x:Name="rbSpindleCW" Content="CW" IsChecked="{Binding Path=SpindleState[(gcode:SpindleState)CW], Mode=TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Center" Height="16" Click="rbSpindle_Click"/>
                     <RadioButton x:Uid="lbl_ccw" x:Name="rbSpindleCCW" Content="CCW" IsChecked="{Binding Path=SpindleState[(gcode:SpindleState)CCW], Mode=TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Center" Height="16" Click="rbSpindle_Click"/>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="5,0" Height="26" Grid.Row="1">
-                    <Label x:Uid="lbl_rpm" x:Name="lblRPM" Content="RPM" HorizontalContentAlignment="Right" VerticalAlignment="Center" Height="24" Width="40"/>
-                    <local:NumericTextBox x:Name="cvRPM" Value="{Binding Path=RPM, Mode=TwoWay}" IsEnabled="{Binding Path=IsJobRunning, Converter={StaticResource LogicalNotConverter}}" Format="####0" HorizontalAlignment="Left" Margin="2,0,0,0" TextWrapping="NoWrap" VerticalAlignment="Center"/>
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="63,28,9,1" Height="26">
+                    <Label x:Uid="lbl_rpm" x:Name="lblRPM" Content="RPM" HorizontalContentAlignment="Right" VerticalAlignment="Center" Height="24" Width="40" Margin="0,1"/>
+                    <local:NumericTextBox x:Name="cvRPM" Value="{Binding RPM, Mode=TwoWay}" IsEnabled="{Binding IsJobRunning, Converter={StaticResource LogicalNotConverter}}" Format="####0" HorizontalAlignment="Left" Margin="2,4,0,4"  TextWrapping="NoWrap" VerticalAlignment="Center"/>
                 </StackPanel>
-                <local:OverrideControl x:Name="overrideControl" Value="{Binding Path=RPMOverride, Mode=OneWay}" Margin="0,0,3,17" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" EncoderMode="SpindleRPM"/>
+                <local:OverrideControl  x:Name="overrideControl" Value="{Binding Path=RPMOverride, Mode=OneWay}" Margin="0,0,0,8" VerticalAlignment="Bottom" HorizontalAlignment="Left" EncoderMode="SpindleRPM" Height="87" Width="240" Grid.Row="1"/>
             </Grid>
         </GroupBox>
     </Grid>

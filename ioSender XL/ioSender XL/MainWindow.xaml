@@ -13,9 +13,10 @@
         Title="Sender ({0})" Height="640" Width="925" MinHeight="700" MinWidth="1250" 
         WindowStyle="None" ResizeMode="CanResizeWithGrip" WindowState="Normal" 
         Loaded="Window_Load"
+        BorderThickness="5" 
         SizeChanged="Window_SizeChanged"
         Closing="Window_Closing"
-        Closed="Window_Closed" Icon="App.ico">
+        Closed="Window_Closed" Icon="App.ico" Style="{StaticResource WidowStyle}">
 
     <Window.Resources>
         <system:String x:Uid="str_mnuRotate" x:Key="MenuRotate">Rotate</system:String>
@@ -29,10 +30,13 @@
         <!--<Style x:Key="RectBorderStyle" TargetType="Rectangle">
             <Setter Property="Focusable" Value="False" />
             <Setter Property="Fill" Value="Transparent" />
+
             <Setter Property="Tag" Value="{Binding RelativeSource={RelativeSource AncestorType=Window}}" />
-            <EventSetter Event="MouseLeftButtonDown" Handler="Resize_Init"/>
+            --><!--<EventSetter Event="MouseLeftButtonDown" Handler="Resize_Init"/>
             <EventSetter Event="MouseLeftButtonUp" Handler="Resize_End"/>
-            <EventSetter Event="MouseMove" Handler="Resizeing_Form"/> 
+            <EventSetter Event="MouseMove" Handler="Resizeing_Form"/>--><!--
+            
+            
         </Style>-->
     </Window.Resources>
     <Window.DataContext>
@@ -42,7 +46,7 @@
    <WindowChrome.WindowChrome>
         <WindowChrome 
             CaptionHeight="10"
-            UseAeroCaptionButtons="True" CornerRadius="2"  />
+            UseAeroCaptionButtons="True" CornerRadius="1"/>
     </WindowChrome.WindowChrome>
     <DockPanel IsEnabled="{Binding Path=IsMPGActive, Converter={StaticResource BooleanConverter}}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" >
         <Grid DockPanel.Dock="Top">

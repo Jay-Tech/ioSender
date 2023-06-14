@@ -71,12 +71,6 @@ namespace CNC.Controls
             Canvas.SetTop(this.view, top);
             top += Width;
 
-            try
-            {
-                Style = Application.Current.FindResource("btnSidebar") as Style;
-            }
-            catch { }
-
             LayoutTransform = new RotateTransform(90d);
 
             Click += button_Click;

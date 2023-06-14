@@ -69,8 +69,9 @@
             <Rectangle Name="topRightSizeGrip" Width="7" Height="7" HorizontalAlignment="Right" VerticalAlignment="Top" Cursor="SizeNESW" Style="{StaticResource RectBorderStyle}" />
             <Rectangle Name="bottomLeftSizeGrip" Width="7" Height="7" HorizontalAlignment="Left" VerticalAlignment="Bottom" Cursor="SizeNESW" Style="{StaticResource RectBorderStyle}" />-->
         </Grid>
+       
         <Menu IsEnabled="{Binding Path=IsJobRunning, Converter={StaticResource BooleanConverter}}" DockPanel.Dock="Top">
-            <MenuItem x:Uid="mnu_file" x:Name="menuFile" Header="_File">
+            <MenuItem x:Uid="mnu_file" x:Name="menuFile" Header="_File" Style="{StaticResource MainMenuStyle}">
                 <MenuItem x:Uid="mnu_load" Header="_Load" Click="fileOpenMenuItem_Click"/>
                 <MenuItem x:Uid="mnu_save" x:Name="menuSaveFile" Header="_Save" IsEnabled="false" Click="fileSaveMenuItem_Click"/>
                 <MenuItem x:Uid="mnu_close" x:Name="menuCloseFile" Header="_Close" IsEnabled="false" Click="fileCloseMenuItem_Click"/>
@@ -78,10 +79,10 @@
                 <MenuItem x:Uid="mnu_openConsole" x:Name="menuOpenConsole" Header="_Open Console" Click="openConsoleMenuItem_Click"/>
                 <MenuItem x:Uid="mnu_exit" Header="_Exit" Click="exitMenuItem_Click"/>
             </MenuItem>
-            <MenuItem x:Uid="mnu_camera" x:Name="menuCamera" Header="_Camera">
+            <MenuItem x:Uid="mnu_camera" x:Name="menuCamera" Header="_Camera" Style="{StaticResource MainMenuStyle}">
                 <MenuItem x:Uid="mnu_open" Header="_Open" Click="CameraOpen_Click"/>
             </MenuItem>
-            <MenuItem x:Uid="mnu_help" x:Name="menuHelp" Header="_Help">
+            <MenuItem x:Uid="mnu_help" x:Name="menuHelp" Header="_Help" Style="{StaticResource MainMenuStyle}">
                 <MenuItem x:Uid="mnu_wiki" Header="_Wiki" Click="aboutWikiItem_Click"/>
                 <MenuItem x:Uid="mnu_usageTips" Header="Usage _tips" Click="tipsWikiItem_Click"/>
                 <MenuItem x:Uid="mnu_briefTour" Header="A _brief tour" Click="briefTour_Click"/>
@@ -93,7 +94,6 @@
                     <MenuItem  x:Uid="mnu_themeDark" Header="Dark" Click="themeDark_Click"></MenuItem>
                     <MenuItem  x:Uid="mnu_themeLight" Header="Light" Click="themeLight_Click"></MenuItem>
                     <MenuItem  x:Uid="mnu_themeWhite" Header="White" Click="themeWhite_Click"></MenuItem>
-
                 </MenuItem>
             </MenuItem>
         </Menu>

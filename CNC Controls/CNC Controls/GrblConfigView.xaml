@@ -66,7 +66,7 @@
                     </StackPanel>
                 </HierarchicalDataTemplate>
                 <DataTemplate DataType="{x:Type cnccore:GrblSettingDetails}" >
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal" Style="{StaticResource CustomStackPanel}">
                         <TextBlock  Style ="{StaticResource CustomTextBlock }" Text="{Binding Id}" Margin="0,0,5,0" />
                         <TextBlock  Style ="{StaticResource CustomTextBlock }" Text="{Binding Name, StringFormat=\{0\}:}" />
                         <TextBlock Style ="{StaticResource CustomTextBlock }" Text="{Binding FormattedValue}" Margin="5,0"/>

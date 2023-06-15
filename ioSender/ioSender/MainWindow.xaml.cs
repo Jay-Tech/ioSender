@@ -80,7 +80,7 @@ namespace GCode_Sender
                 Environment.Exit(res);
 
             BaseWindowTitle = Title;
-
+            ui.HeaderTitle.Text = BaseWindowTitle;
             CNC.Core.Grbl.GrblViewModel = (GrblViewModel)DataContext;
             GrblInfo.LatheModeEnabled = AppConfig.Settings.Lathe.IsEnabled;
 

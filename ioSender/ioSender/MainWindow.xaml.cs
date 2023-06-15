@@ -47,6 +47,8 @@ using System.Windows.Threading;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Threading;
+using System.Windows.Input;
+using System.Windows.Media.Imaging;
 #if ADD_CAMERA
 using CNC.Controls.Camera;
 #endif
@@ -87,6 +89,8 @@ namespace GCode_Sender
             new PipeServer(App.Current.Dispatcher);
             PipeServer.FileTransfer += Pipe_FileTransfer;
             AppConfig.Settings.Base.PropertyChanged += Base_PropertyChanged;
+            HeaderIcon.Source =
+                BitmapFrame.Create(new Uri("pack://application:,,,/App.ico", UriKind.RelativeOrAbsolute));
         }
 
         public string BaseWindowTitle { get; set; }
@@ -436,6 +440,69 @@ namespace GCode_Sender
             }
 
             return view;
+        }
+        private void themeBlack_Click(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.ColorMode = "Black";
+            AppConfig.Settings.Theme.ThemeSelection = "Black";
+        }
+        private void themeDark_Click(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.ColorMode = "Dark";
+            AppConfig.Settings.Theme.ThemeSelection = "Dark";
+        }
+
+        private void themeLight_Click(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.ColorMode = "Light";
+            AppConfig.Settings.Theme.ThemeSelection = "Light";
+        }
+        private void themeWhite_Click(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.ColorMode = "White";
+            AppConfig.Settings.Theme.ThemeSelection = "White";
+        }
+        private void MinimizeWindow(object sender, RoutedEventArgs e)
+        {
+            App.Current.MainWindow.WindowState = WindowState.Minimized;
+        }
+
+        private void MaximizeClick(object sender, RoutedEventArgs e)
+        {
+            AdjustWindowSize();
+        }
+
+        private void StackPanel_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                if (e.ClickCount == 2)
+                {
+                    AdjustWindowSize();
+                }
+                else
+                {
+                    App.Current.MainWindow.DragMove();
+                }
+            }
+        }
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Application.Current.MainWindow != null)
+                Application.Current.MainWindow.Close();
+        }
+        private void AdjustWindowSize()
+        {
+            if (App.Current.MainWindow.WindowState == WindowState.Maximized)
+            {
+                App.Current.MainWindow.WindowState = WindowState.Normal;
+                MaximizeButton.Content = "";
+            }
+            else if (App.Current.MainWindow.WindowState == WindowState.Normal)
+            {
+                App.Current.MainWindow.WindowState = WindowState.Maximized;
+                MaximizeButton.Content = "";
+            }
         }
     }
 }

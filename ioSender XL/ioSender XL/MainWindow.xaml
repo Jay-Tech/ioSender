@@ -16,7 +16,7 @@
         BorderThickness="5" 
         SizeChanged="Window_SizeChanged"
         Closing="Window_Closing"
-        Closed="Window_Closed" Icon="App.ico" Style="{StaticResource WidowStyle}">
+        Closed="Window_Closed"  Style="{StaticResource WidowStyle}">
 
     <Window.Resources>
         <system:String x:Uid="str_mnuRotate" x:Key="MenuRotate">Rotate</system:String>
@@ -27,17 +27,6 @@
         <system:String x:Uid="str_runTime" x:Key="RunTime">Run time: {0}</system:String>
         <cnccontrols:BlocksToStringConverter x:Key="BlocksToStringConverter" />
         <cnccontrols:LogicalNotConverter x:Key="BooleanConverter" />
-        <!--<Style x:Key="RectBorderStyle" TargetType="Rectangle">
-            <Setter Property="Focusable" Value="False" />
-            <Setter Property="Fill" Value="Transparent" />
-
-            <Setter Property="Tag" Value="{Binding RelativeSource={RelativeSource AncestorType=Window}}" />
-            --><!--<EventSetter Event="MouseLeftButtonDown" Handler="Resize_Init"/>
-            <EventSetter Event="MouseLeftButtonUp" Handler="Resize_End"/>
-            <EventSetter Event="MouseMove" Handler="Resizeing_Form"/>--><!--
-            
-            
-        </Style>-->
     </Window.Resources>
     <Window.DataContext>
         <cnccore:GrblViewModel />

@@ -14,8 +14,10 @@
         Title="Sender ({0})" Height="640" Width="925" MinHeight="700" MinWidth="1020"
         Loaded="Window_Load"
         SizeChanged="Window_SizeChanged"
+        BorderThickness="5" 
+        WindowState="Normal"
         Closing="Window_Closing"
-        Closed="Window_Closed" Icon="App.ico">
+        Closed="Window_Closed" Style="{StaticResource WidowStyle}">
     <Window.Resources>
         <system:String x:Uid="str_mnuRotate" x:Key="MenuRotate">Rotate</system:String>
         <system:String x:Uid="str_mnuArcsToLines" x:Key="MenuArcsToLines">Arcs to lines</system:String>
@@ -29,9 +31,30 @@
     <Window.DataContext>
         <cnccore:GrblViewModel />
     </Window.DataContext>
+    <WindowChrome.WindowChrome>
+        <WindowChrome 
+            CaptionHeight="10"
+            UseAeroCaptionButtons="True" CornerRadius="1"/>
+    </WindowChrome.WindowChrome>
     <DockPanel IsEnabled="{Binding Path=IsMPGActive, Converter={StaticResource BooleanConverter}}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+        <Grid DockPanel.Dock="Top">
+            <Grid MouseDown="StackPanel_MouseDown"  VerticalAlignment="Top" Margin="0"  Background="Transparent">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Image x:Name="HeaderIcon" Grid.Column="0" Width="20" Height="20" Margin="5, 4, 5, 4" HorizontalAlignment="Left" />
+                <TextBlock x:Name="HeaderTitle" Style="{StaticResource CustomTextBlock}" Grid.Column="1" Margin="5" TextAlignment="Left"  FontSize="13" HorizontalAlignment="Left" />
+                <StackPanel Grid.Column="2" VerticalAlignment="Top"  Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button x:Name="MinimizeButton" Style="{StaticResource MinimizeButtonStyle}" Click="MinimizeWindow" KeyboardNavigation.IsTabStop="False" />
+                    <Button x:Name="MaximizeButton" Style="{StaticResource MaximizeButtonStyle}" Click="MaximizeClick" KeyboardNavigation.IsTabStop="False" />
+                    <Button x:Name="CloseButton"  Style="{StaticResource CloseButtonStyle}" Click="CloseButton_Click" KeyboardNavigation.IsTabStop="False" />
+                </StackPanel>
+            </Grid>
+        </Grid>
         <Menu IsEnabled="{Binding Path=IsJobRunning, Converter={StaticResource BooleanConverter}}" DockPanel.Dock="Top">
-            <MenuItem x:Uid="mnu_file" x:Name="menuFile" Header="_File">
+            <MenuItem x:Uid="mnu_file" x:Name="menuFile" Header="_File" Style="{StaticResource MainMenuStyle}">
                 <MenuItem x:Uid="mnu_load" Header="_Load" Click="fileOpenMenuItem_Click"/>
                 <MenuItem x:Uid="mnu_save" x:Name="menuSaveFile" Header="_Save" IsEnabled="false" Click="fileSaveMenuItem_Click"/>
                 <MenuItem x:Uid="mnu_close" x:Name="menuCloseFile" Header="_Close" IsEnabled="false" Click="fileCloseMenuItem_Click"/>
@@ -39,16 +62,22 @@
                 <MenuItem x:Uid="mnu_openConsole" x:Name="menuOpenConsole" Header="_Open Console" Click="openConsoleMenuItem_Click"/>
                 <MenuItem x:Uid="mnu_exit" Header="_Exit" Click="exitMenuItem_Click"/>
             </MenuItem>
-            <MenuItem x:Uid="mnu_camera" x:Name="menuCamera" Header="_Camera">
+            <MenuItem x:Uid="mnu_camera" x:Name="menuCamera" Header="_Camera" Style="{StaticResource MainMenuStyle}">
                 <MenuItem x:Uid="mnu_open" Header="_Open" Click="CameraOpen_Click"/>
             </MenuItem>
-            <MenuItem x:Uid="mnu_help" x:Name="menuHelp" Header="_Help">
+            <MenuItem x:Uid="mnu_help" x:Name="menuHelp" Header="_Help" Style="{StaticResource MainMenuStyle}">
                 <MenuItem x:Uid="mnu_wiki" Header="_Wiki" Click="aboutWikiItem_Click"/>
                 <MenuItem x:Uid="mnu_usageTips" Header="Usage _tips" Click="tipsWikiItem_Click"/>
                 <MenuItem x:Uid="mnu_briefTour" Header="A _brief tour" Click="briefTour_Click"/>
                 <MenuItem x:Uid="mnu_videoTutorials" Header="_Video tutorials" Click="videoTutorials_Click"/>
                 <MenuItem x:Uid="mnu_errorsAndAlarms" Header="_Error and alarm codes" Click="errorAndAlarms_Click"/>
                 <MenuItem x:Uid="mnu_about" Header="_About" Click="aboutMenuItem_Click"/>
+                <MenuItem x:Uid="mnu_theme" Header="_Theme">
+                    <MenuItem  x:Uid="mnu_themeBlack" Header="Black" Click="themeBlack_Click"></MenuItem>
+                    <MenuItem  x:Uid="mnu_themeDark" Header="Dark" Click="themeDark_Click"></MenuItem>
+                    <MenuItem  x:Uid="mnu_themeLight" Header="Light" Click="themeLight_Click"></MenuItem>
+                    <MenuItem  x:Uid="mnu_themeWhite" Header="White" Click="themeWhite_Click"></MenuItem>
+                </MenuItem>
             </MenuItem>
         </Menu>
         <ToolBarTray DockPanel.Dock="Top" IsLocked="True">
@@ -98,7 +127,7 @@
             </StatusBarItem>
         </StatusBar>
         <Canvas DockPanel.Dock="Right" Width="22" VerticalAlignment="Stretch" HorizontalAlignment="Right" ClipToBounds="False" Panel.ZIndex="1" Margin="0,34,0,0">
-            <ItemsControl x:Name="xx" Width="22" VerticalAlignment="Stretch">
+            <ItemsControl x:Name="xx" Width="22" VerticalAlignment="Stretch" Style="{StaticResource CustomItemControl}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel IsEnabled="{Binding Path=IsJobRunning, Converter={StaticResource BooleanConverter}}" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Width="22"/>
@@ -112,9 +141,9 @@
             <cnccontrols:MachinePositionFlyout x:Name="mposFlyout" Visibility="Hidden" Canvas.Right="22"/>
             <cnccontrols:THCMonitorControl x:Name="thcControl" Visibility="Hidden" Canvas.Right="22"/>
         </Canvas>
-        <TabControl Background="#FFE5E5E5" DockPanel.Dock="Left" x:Name="tabMode" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Focusable="False" SelectionChanged="TabMode_SelectionChanged">
+        <TabControl Background="Transparent" DockPanel.Dock="Left" x:Name="tabMode" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Focusable="False" SelectionChanged="TabMode_SelectionChanged">
             <TabControl.Resources>
-                <Style TargetType="{x:Type TabItem}">
+                <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource customTabItem}"> 
                     <Setter Property="Height" Value="32" />
                     <Setter Property="MinWidth" Value="40" />
                 </Style>

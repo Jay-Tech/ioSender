@@ -1,0 +1,12 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <Color x:Key="DarkPrimaryBackGround">#363c49</Color>
+    <Brush x:Key="DarkPrimaryBrush">#363c49</Brush>
+    <Brush x:Key="DarkControlForeGround">#FF111111</Brush>
+    <Brush x:Key="DarkControlBackGround">White</Brush>
+    <Color x:Key="DarkPrimaryBorderBrush">White</Color>
+    <system:Double  x:Key="DarkOpacity">.55</system:Double>
+
+</ResourceDictionary>

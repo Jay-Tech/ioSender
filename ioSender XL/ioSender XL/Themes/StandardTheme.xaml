@@ -1,0 +1,17 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+   
+    <Brush x:Key="StandardPrimaryBorderBrush">DarkGray</Brush>
+    <Brush x:Key="StandardTabControl">#FFE5E5E5</Brush>
+    <Brush x:Key="StandardPrimaryBrush">#FFEFEFEF</Brush>
+    <Brush x:Key="StandardPrimary">LightGray</Brush>
+    <Brush x:Key="StandardControlForeGround">Black</Brush>
+    <Brush x:Key="StandardControlBackGround">White</Brush>
+   
+    <system:Double  x:Key="BlackOpacity">1</system:Double>
+    
+</ResourceDictionary>
+    
+    

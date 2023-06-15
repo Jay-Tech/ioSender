@@ -442,7 +442,12 @@ namespace GCode_Sender
 
 
         //Theme code 
-       
+        private void themeStandard_Click(object sender, RoutedEventArgs e)
+        {
+
+            Properties.Settings.Default.ColorMode = "Standard";
+            AppConfig.Settings.Theme.ThemeSelection = "Standard";
+        }
         private void themeBlack_Click(object sender, RoutedEventArgs e)
         {
             Properties.Settings.Default.ColorMode = "Black";
@@ -507,5 +512,7 @@ namespace GCode_Sender
                 MaximizeButton.Content = "";
             }
         }
+
+       
     }
 }

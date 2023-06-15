@@ -148,10 +148,10 @@
             </StatusBarItem>
         </StatusBar>
         <Canvas DockPanel.Dock="Right" Width="22" VerticalAlignment="Stretch" HorizontalAlignment="Right" ClipToBounds="False" Panel.ZIndex="1" Margin="0,34,0,0">
-            <ItemsControl x:Name="xx" Width="22" VerticalAlignment="Stretch">
+            <ItemsControl x:Name="xx" Width="22" VerticalAlignment="Stretch" Style ="{StaticResource CustomItemControl}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <StackPanel IsEnabled="{Binding Path=IsJobRunning, Converter={StaticResource BooleanConverter}}" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Width="22"/>
+                        <StackPanel  IsEnabled="{Binding Path=IsJobRunning, Converter={StaticResource BooleanConverter}}" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Width="22"/>
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
             </ItemsControl>

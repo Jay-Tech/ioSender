@@ -44,12 +44,8 @@ using CNC.Core;
 using CNC.Controls;
 using CNC.Converters;
 using System.Windows.Threading;
-using System.Collections.ObjectModel;
-using System.Globalization;
-using System.Threading;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 #if ADD_CAMERA
 using CNC.Controls.Camera;
 #endif
@@ -452,8 +448,6 @@ namespace GCode_Sender
         {
             Properties.Settings.Default.ColorMode = "Black";
             AppConfig.Settings.Theme.ThemeSelection = "Black";
-            //var app = (App)Application.Current;
-            //app.ChangeTheme(new Uri("pack://application:,,,/BalckThemeStyle.xaml"));
         }
         private void themeDark_Click(object sender, RoutedEventArgs e)
         {
@@ -471,7 +465,6 @@ namespace GCode_Sender
             Properties.Settings.Default.ColorMode = "White";
             AppConfig.Settings.Theme.ThemeSelection = "White";
         }
-        bool _resizeInProcess = false;
         private void MinimizeWindow(object sender, RoutedEventArgs e)
         {
             App.Current.MainWindow.WindowState = WindowState.Minimized;
@@ -502,74 +495,6 @@ namespace GCode_Sender
             if (Application.Current.MainWindow != null)
                 Application.Current.MainWindow.Close();
         }
-        //todo REMOVE ME AFTER TESTING 
-
-        //private void Resize_Init(object sender, MouseButtonEventArgs e)
-        //{
-        //    Rectangle senderRect = sender as Rectangle;
-        //    if (senderRect != null)
-        //    {
-        //        _resizeInProcess = true;
-        //        senderRect.CaptureMouse();
-        //    }
-        //}
-
-        //private void Resize_End(object sender, MouseButtonEventArgs e)
-        //{
-        //    //if (e.LeftButton == MouseButtonState.Pressed) return;
-        //    Rectangle senderRect = sender as Rectangle;
-        //    if (senderRect != null)
-        //    {
-        //        _resizeInProcess = false; ;
-        //        senderRect.ReleaseMouseCapture();
-        //    }
-        //}
-        //private void Resizeing_Form(object sender, MouseEventArgs e)
-        //{
-        //    if (_resizeInProcess)
-        //    {
-        //        Rectangle senderRect = sender as Rectangle;
-        //        Window mainWindow = senderRect.Tag as Window;
-        //        if (senderRect != null)
-        //        {
-        //            double width = e.GetPosition(mainWindow).X;
-        //            double height = e.GetPosition(mainWindow).Y;
-        //            senderRect.CaptureMouse();
-        //            if (senderRect.Name.ToLower().Contains("right"))
-        //            {
-        //                width += 5;
-        //                if (width > 0)
-        //                    mainWindow.Width = width;
-        //            }
-        //            if (senderRect.Name.ToLower().Contains("left"))
-        //            {
-        //                width -= 5;
-        //                mainWindow.Left += width;
-        //                width = mainWindow.Width - width;
-        //                if (width > 0)
-        //                {
-        //                    mainWindow.Width = width;
-        //                }
-        //            }
-        //            if (senderRect.Name.ToLower().Contains("bottom"))
-        //            {
-        //                height += 5;
-        //                if (height > 0)
-        //                    mainWindow.Height = height;
-        //            }
-        //            if (senderRect.Name.ToLower().Contains("top"))
-        //            {
-        //                height -= 5;
-        //                mainWindow.Top += height;
-        //                height = mainWindow.Height - height;
-        //                if (height > 0)
-        //                {
-        //                    mainWindow.Height = height;
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
         private void AdjustWindowSize()
         {
             if (App.Current.MainWindow.WindowState == WindowState.Maximized)
@@ -583,7 +508,5 @@ namespace GCode_Sender
                 MaximizeButton.Content = "";
             }
         }
-
-
     }
 }

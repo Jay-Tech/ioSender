@@ -25,7 +25,7 @@ namespace GCode_Sender.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Black")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Standard")]
         public string ColorMode {
             get {
                 return ((string)(this["ColorMode"]));

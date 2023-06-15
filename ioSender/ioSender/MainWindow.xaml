@@ -73,6 +73,7 @@
                 <MenuItem x:Uid="mnu_errorsAndAlarms" Header="_Error and alarm codes" Click="errorAndAlarms_Click"/>
                 <MenuItem x:Uid="mnu_about" Header="_About" Click="aboutMenuItem_Click"/>
                 <MenuItem x:Uid="mnu_theme" Header="_Theme">
+                    <MenuItem  x:Uid="mnu_themeBlack" Header="Standard" Click="themeStandard_Click"></MenuItem>
                     <MenuItem  x:Uid="mnu_themeBlack" Header="Black" Click="themeBlack_Click"></MenuItem>
                     <MenuItem  x:Uid="mnu_themeDark" Header="Dark" Click="themeDark_Click"></MenuItem>
                     <MenuItem  x:Uid="mnu_themeLight" Header="Light" Click="themeLight_Click"></MenuItem>
@@ -141,7 +142,7 @@
             <cnccontrols:MachinePositionFlyout x:Name="mposFlyout" Visibility="Hidden" Canvas.Right="22"/>
             <cnccontrols:THCMonitorControl x:Name="thcControl" Visibility="Hidden" Canvas.Right="22"/>
         </Canvas>
-        <TabControl Background="Transparent" DockPanel.Dock="Left" x:Name="tabMode" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Focusable="False" SelectionChanged="TabMode_SelectionChanged">
+        <TabControl Style="{StaticResource CustomTabControl}" DockPanel.Dock="Left" x:Name="tabMode" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Focusable="False" SelectionChanged="TabMode_SelectionChanged">
             <TabControl.Resources>
                 <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource customTabItem}"> 
                     <Setter Property="Height" Value="32" />

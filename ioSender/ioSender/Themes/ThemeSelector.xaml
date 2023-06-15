@@ -5,6 +5,7 @@
 
 
     <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="StandardTheme.xaml"/>
         <ResourceDictionary Source="BlackTheme.xaml"/>
         <ResourceDictionary Source="DarkTheme.xaml"/>
         <ResourceDictionary Source="LightTheme.xaml"/>
@@ -24,6 +25,10 @@
 
     <Style TargetType="{x:Type Window}" x:Key="WidowStyle">
         <Style.Triggers>
+            <DataTrigger Binding="{Binding Source= {x:Static  properties:Settings.Default}, Path=ColorMode}" Value="Standard">
+                <Setter Property="BorderBrush" Value="{StaticResource StandardPrimary}"></Setter>
+                <Setter Property="BorderBrush" Value="{StaticResource StandardPrimaryBorderBrush}"></Setter>
+            </DataTrigger>
             <DataTrigger Binding="{Binding Source= {x:Static  properties:Settings.Default}, Path=ColorMode}" Value="Black">
                 <Setter Property="Background" Value="{StaticResource  BlackPrimaryBrush}"></Setter>
                 <Setter Property="BorderBrush" Value="{StaticResource BlackPrimaryBrush}"></Setter>
@@ -132,6 +137,9 @@
 
     <Style x:Key="FileOpen" BasedOn="{StaticResource FileButtonStyle}" TargetType="Button">
         <Style.Triggers>
+            <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Standard">
+                <Setter Property="Content" Value="{DynamicResource Open}"></Setter>
+            </DataTrigger>
             <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Black">
                 <Setter Property="Content" Value="{DynamicResource OpenWhite}"></Setter>
             </DataTrigger>
@@ -149,6 +157,9 @@
 
     <Style x:Key="FileReload" BasedOn="{StaticResource FileButtonStyle}" TargetType="Button">
         <Style.Triggers>
+            <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Standard">
+                <Setter Property="Content" Value="{DynamicResource Reload}"></Setter>
+            </DataTrigger>
             <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Black">
                 <Setter Property="Content" Value="{DynamicResource ReloadWhite}"></Setter>
             </DataTrigger>
@@ -166,6 +177,9 @@
 
     <Style x:Key="FileEdit" BasedOn="{StaticResource FileButtonStyle}" TargetType="Button">
         <Style.Triggers>
+            <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Standard">
+                <Setter Property="Content" Value="{DynamicResource Edit}"></Setter>
+            </DataTrigger>
             <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Black">
                 <Setter Property="Content" Value="{DynamicResource EditWhite}"></Setter>
             </DataTrigger>
@@ -183,6 +197,9 @@
 
     <Style x:Key="FileClose" BasedOn="{StaticResource FileButtonStyle}" TargetType="Button">
         <Style.Triggers>
+            <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Standard">
+                <Setter Property="Content" Value="{DynamicResource Close}"></Setter>
+            </DataTrigger>
             <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Black">
                 <Setter Property="Content" Value="{DynamicResource CloseWhite}"></Setter>
             </DataTrigger>
@@ -321,10 +338,13 @@
                         <ContentPresenter ContentSource="Header"  Margin="1"  HorizontalAlignment="Center" VerticalAlignment="Center"  />
                     </Border>
                     <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Standard">
+                            <Setter Property="Background" Value="{StaticResource StandardControlBackGround}"></Setter>
+                            <Setter Property="Foreground" Value="{StaticResource StandardControlForeGround}"></Setter>
+                        </DataTrigger>
                         <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Black">
                             <Setter Property="BorderBrush" Value="{StaticResource BlackPrimaryBorderBrush }"></Setter>
                             <Setter Property="Background" Value="{StaticResource BlackControlBackGround}"></Setter>
-                            <!--<Setter Property="Foreground" Value="{StaticResource BlackControlForeGround}"></Setter>-->
                             <Setter Property="Opacity" Value="{StaticResource BlackOpacity}"></Setter>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Dark">
@@ -353,8 +373,9 @@
         </Setter>
     </Style>
 
-    <Style  x:Key="MainMenuStyle" TargetType="{x:Type MenuItem}">
+    <Style x:Key="MainMenuStyle" TargetType="{x:Type MenuItem}">
         <Style.Triggers>
+
             <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Black">
                 <Setter Property="Background" Value="{StaticResource BlackControlBackGround}"></Setter>
                 <Setter Property="Foreground" Value="{StaticResource BlackControlForeGround}"></Setter>
@@ -379,24 +400,21 @@
 
     <Style  x:Key="CustomItemControl" TargetType="{x:Type ItemsControl}">
         <Style.Triggers>
+            <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Standard">
+                <Setter Property="Background" Value="{StaticResource StandardPrimary}"></Setter>
+                <Setter Property="Foreground" Value="{StaticResource StandardControlForeGround}"></Setter>
+            </DataTrigger>
             <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Black">
-                <Setter Property="Background" Value="{StaticResource BlackControlBackGround}"></Setter>
-                <Setter Property="Foreground" Value="{StaticResource BlackControlForeGround}"></Setter>
-                <Setter Property="Opacity" Value="{StaticResource BlackOpacity}"></Setter>
+                <Setter Property="Background" Value="Transparent"></Setter>
             </DataTrigger>
             <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Dark">
-                <Setter Property="Background" Value="{StaticResource DarkControlBackGround}"></Setter>
-                <Setter Property="Foreground" Value="{StaticResource DarkControlForeGround}"></Setter>
-                <Setter Property="Opacity" Value="{StaticResource DarkOpacity}"></Setter>
+                <Setter Property="Background" Value="Transparent"></Setter>
             </DataTrigger>
             <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Light">
-                <Setter Property="Background" Value="{StaticResource LightPrimaryBrush}"></Setter>
-                <Setter Property="Foreground" Value="{StaticResource LightControlForeGround}"></Setter>
-                <Setter Property="Opacity" Value="{StaticResource LightOpacity}"></Setter>
+                <Setter Property="Background" Value="Transparent"></Setter>
             </DataTrigger>
             <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="White">
-                <Setter Property="Background" Value="{StaticResource WhiteControlBackGround}"></Setter>
-                <Setter Property="Foreground" Value="{StaticResource WhiteControlForeGround}"></Setter>
+                <Setter Property="Background" Value="Transparent"></Setter>
             </DataTrigger>
         </Style.Triggers>
     </Style>
@@ -406,6 +424,10 @@
         <Setter Property="Padding" Value="0"></Setter>
         <Setter Property="Margin" Value="0"></Setter>
         <Style.Triggers>
+            <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Standard">
+                <Setter Property="Background" Value="{StaticResource StandardControlBackGround}"></Setter>
+                <Setter Property="Foreground" Value="{StaticResource StandardControlForeGround}"></Setter>
+            </DataTrigger>
             <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Black">
                 <Setter Property="Background" Value="{StaticResource BlackPrimaryBrush}"></Setter>
             </DataTrigger>
@@ -424,6 +446,9 @@
 
     <Style TargetType="{x:Type ToolBarTray}">
         <Style.Triggers>
+            <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Standard">
+                <Setter Property="Background" Value= "{StaticResource StandardControlBackGround}"></Setter>
+            </DataTrigger>
             <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Black">
                 <Setter Property="Background" Value= "{StaticResource BlackPrimaryBrush}"></Setter>
             </DataTrigger>
@@ -442,24 +467,27 @@
 
     <Style TargetType="{x:Type ToolBar}">
         <Style.Triggers>
+            <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Standard">
+                <Setter Property="Background" Value= "#FFEEF5FD"></Setter>
+            </DataTrigger>
             <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Black">
-                <Setter Property="Background" Value="#FF111111"></Setter>
-                <Setter Property="Foreground" Value="White"></Setter>
+                <Setter Property="Background" Value="{StaticResource  BlackPrimaryBrush}"></Setter>
+                <Setter Property="Foreground" Value="{StaticResource BlackControlBackGround}"></Setter>
                 <Setter Property="FontWeight" Value="Bold"></Setter>
             </DataTrigger>
             <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Dark">
-                <Setter Property="Background" Value="#363c49"></Setter>
-                <Setter Property="Foreground" Value="White"></Setter>
+                <Setter Property="Background" Value="{StaticResource DarkPrimaryBrush}"></Setter>
+                <Setter Property="Foreground" Value="{StaticResource DarkControlBackGround }"></Setter>
                 <Setter Property="FontWeight" Value="Bold"></Setter>
             </DataTrigger>
             <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Light">
-                <Setter Property="Background" Value="LightGray"></Setter>
-                <Setter Property="Foreground" Value="#FF111111"></Setter>
+                <Setter Property="Background" Value="{StaticResource LightPrimaryBrush}"></Setter>
+                <Setter Property="Foreground" Value="{StaticResource LightControlForeGround}"></Setter>
                 <Setter Property="FontWeight" Value="Bold"></Setter>
             </DataTrigger>
             <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="White">
-                <Setter Property="Background" Value="White"></Setter>
-                <Setter Property="Foreground" Value="#FF111111"></Setter>
+                <Setter Property="Background" Value="{StaticResource WhiteBrush}"></Setter>
+                <Setter Property="Foreground" Value="{StaticResource WhiteControlForeGround}"></Setter>
                 <Setter Property="FontWeight" Value="Bold"></Setter>
             </DataTrigger>
         </Style.Triggers>
@@ -468,6 +496,13 @@
     <Style TargetType="{x:Type StatusBar}">
         <Setter Property="BorderBrush" Value="Transparent"></Setter>
         <Style.Triggers>
+            <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Standard">
+                <Setter Property="Background" Value= "{StaticResource StandardControlBackGround}"></Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Black">
+                <Setter Property="Background" Value="{StaticResource  StandardPrimaryBrush}"></Setter>
+                <Setter Property="Foreground" Value="{StaticResource BlackControlBackGround}"></Setter>
+            </DataTrigger>
             <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Black">
                 <Setter Property="Background" Value="{StaticResource  BlackPrimaryBrush}"></Setter>
                 <Setter Property="Foreground" Value="{StaticResource BlackControlBackGround}"></Setter>
@@ -486,15 +521,19 @@
         </Style.Triggers>
     </Style>
 
-    <Style TargetType="{x:Type TabControl}">
+    <Style x:Key="CustomTabControl" TargetType="{x:Type TabControl}">
         <Style.Triggers>
+            <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Standard">
+                <Setter Property="Background" Value="{StaticResource StandardPrimaryBrush}"></Setter>
+                <!--<Setter Property="Foreground" Value="{StaticResource StandardControlForeGround}"></Setter>-->
+            </DataTrigger>
             <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Black">
                 <Setter Property="Background" Value="{StaticResource BlackPrimaryBrush}"></Setter>
-                <Setter Property="Foreground" Value="{StaticResource BlackControlBackGround}"></Setter>
+                <!--Setter Property="Foreground" Value="{StaticResource BlackControlBackGround}"></Setter>-->
             </DataTrigger>
             <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Dark">
                 <Setter Property="Background" Value="{StaticResource DarkPrimaryBrush}"></Setter>
-                <Setter Property="Foreground" Value="{StaticResource DarkControlBackGround }"></Setter>
+                <!--<Setter Property="Foreground" Value="{StaticResource DarkControlBackGround }"></Setter>-->
             </DataTrigger>
             <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Light">
                 <Setter Property="Background" Value="{StaticResource LightPrimaryBrush }">
@@ -520,10 +559,14 @@
                         <ContentPresenter ContentSource="Header"  Margin="1"  HorizontalAlignment="Center" VerticalAlignment="Center"  />
                     </Border>
                     <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Standard">
+                            <Setter Property="Background" Value="{StaticResource StandardTabControl}"></Setter>
+                            <!--<Setter Property="Background" Value="red"></Setter>-->
+                            <Setter Property="Foreground" Value="{StaticResource StandardControlForeGround}"></Setter>
+                        </DataTrigger>
                         <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Black">
                             <Setter Property="BorderBrush" Value="{StaticResource BlackPrimaryBorderBrush }"></Setter>
                             <Setter Property="Background" Value="{StaticResource BlackControlBackGround}"></Setter>
-                            <!--<Setter Property="Foreground" Value="{StaticResource BlackControlForeGround}"></Setter>-->
                             <Setter Property="Opacity" Value="{StaticResource BlackOpacity}"></Setter>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Dark">
@@ -545,6 +588,7 @@
                         </DataTrigger>
                         <Trigger Property="IsSelected" Value="True">
                             <Setter TargetName="PART_Border" Property="BorderBrush" Value="Black" />
+                            <Setter TargetName="PART_Border" Property="Opacity" Value=".8" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -555,6 +599,7 @@
     <!--Style Panels /GroupBoxes-->
     <Style x:Key="CustomStackPanel" TargetType="{x:Type StackPanel}">
         <Style.Triggers>
+
             <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Black">
                 <Setter Property="Background" Value="{StaticResource BlackPrimaryBrush}"></Setter>
             </DataTrigger>
@@ -573,6 +618,9 @@
 
     <Style TargetType="{x:Type DockPanel}">
         <Style.Triggers>
+            <!--<DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Standard">
+                <Setter Property="Background" Value="Transparent"></Setter>
+            </DataTrigger>-->
             <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Black">
                 <Setter Property="Background" Value="{StaticResource BlackPrimaryBrush}"></Setter>
             </DataTrigger>
@@ -716,6 +764,10 @@
 
     <Style TargetType="{x:Type Canvas}">
         <Style.Triggers>
+            <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Standard">
+                <Setter Property="Background" Value="{StaticResource StandardControlBackGround}"></Setter>
+
+            </DataTrigger>
             <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Black">
                 <Setter Property="Background" Value="{StaticResource BlackPrimaryBrush}"></Setter>
             </DataTrigger>

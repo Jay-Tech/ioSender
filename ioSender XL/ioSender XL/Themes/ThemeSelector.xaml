@@ -580,6 +580,7 @@
                         </DataTrigger>
                         <Trigger Property="IsSelected" Value="True">
                             <Setter TargetName="PART_Border" Property="BorderBrush" Value="Black" />
+							<Setter TargetName="PART_Border" Property="Opacity" Value=".8" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

@@ -89,7 +89,6 @@ namespace GCode_Sender
             this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
             HeaderIcon.Source =
                 BitmapFrame.Create(new Uri("pack://application:,,,/App.ico", UriKind.RelativeOrAbsolute));
-          //var theme =  Application.Current.Resources.Source = new Uri("pack://application:,,,/Themes/ThemeSelector.xaml", UriKind.RelativeOrAbsolute);
         }
 
         public string BaseWindowTitle { get; set; }

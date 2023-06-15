@@ -353,7 +353,7 @@
         </Setter>
     </Style>
 
-    <Style  x:Key="MainMenuStyle" TargetType="{x:Type MenuItem}">
+    <Style x:Key="MainMenuStyle" TargetType="{x:Type MenuItem}">
         <Style.Triggers>
             <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Black">
                 <Setter Property="Background" Value="{StaticResource BlackControlBackGround}"></Setter>

@@ -53,14 +53,6 @@
                     <Button x:Name="CloseButton"  Style="{StaticResource CloseButtonStyle}" Click="CloseButton_Click" KeyboardNavigation.IsTabStop="False" />
                 </StackPanel>
             </Grid>
-            <!--<Rectangle x:Name="topSizeGrip" Height="7" VerticalAlignment="Top" Cursor="SizeNS" Style="{StaticResource RectBorderStyle}" />
-            <Rectangle x:Name="leftSizeGrip" Width="7" HorizontalAlignment="Left" Cursor="SizeWE" Style="{StaticResource RectBorderStyle}" />
-            <Rectangle x:Name="rightSizeGrip" Width="7" HorizontalAlignment="Right" Cursor="SizeWE" Style="{StaticResource RectBorderStyle}" />
-            <Rectangle x:Name="bottomSizeGrip" Height="7" VerticalAlignment="Bottom" Cursor="SizeNS" Style="{StaticResource RectBorderStyle}" />
-            <Rectangle Name="topLeftSizeGrip" Width="7" Height="7" HorizontalAlignment="Left" VerticalAlignment="Top" Cursor="SizeNWSE" Style="{StaticResource RectBorderStyle}" />
-            <Rectangle Name="bottomRightSizeGrip" Width="7" Height="7" HorizontalAlignment="Right" VerticalAlignment="Bottom" Cursor="SizeNWSE" Style="{StaticResource RectBorderStyle}" />
-            <Rectangle Name="topRightSizeGrip" Width="7" Height="7" HorizontalAlignment="Right" VerticalAlignment="Top" Cursor="SizeNESW" Style="{StaticResource RectBorderStyle}" />
-            <Rectangle Name="bottomLeftSizeGrip" Width="7" Height="7" HorizontalAlignment="Left" VerticalAlignment="Bottom" Cursor="SizeNESW" Style="{StaticResource RectBorderStyle}" />-->
         </Grid>
        
         <Menu IsEnabled="{Binding Path=IsJobRunning, Converter={StaticResource BooleanConverter}}" DockPanel.Dock="Top">

@@ -7,6 +7,7 @@
     <Brush x:Key="StandardTabControl">#FFE5E5E5</Brush>
     <Brush x:Key="StandardPrimaryBrush">#FFEFEFEF</Brush>
     <Brush x:Key="StandardPrimary">LightGray</Brush>
+    <Brush x:Key="StandardControlBrush">#FFE5E5EA</Brush>
     <Brush x:Key="StandardControlForeGround">Black</Brush>
     <Brush x:Key="StandardControlBackGround">White</Brush>
 

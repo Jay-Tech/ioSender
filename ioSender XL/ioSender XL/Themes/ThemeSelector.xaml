@@ -644,6 +644,28 @@
             </DataTrigger>
         </Style.Triggers>
     </Style>
+ <Style x:Key="CustomGroupBox"  TargetType="{x:Type GroupBox}">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Black">
+                <!--<Setter Property="Background" Value="{StaticResource BlackPrimaryBrush}"></Setter>-->
+                <Setter Property="Foreground" Value="{StaticResource StandardControlForeGround }"></Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Black">
+                <!--<Setter Property="Background" Value="{StaticResource BlackPrimaryBrush}"></Setter>-->
+                <Setter Property="Foreground" Value="{StaticResource BlackControlForeGround }"></Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Dark">
+                <!--Setter Property="Background" Value="{StaticResource DarkPrimaryBrush}"></Setter>-->
+                <Setter Property="Foreground" Value="{StaticResource DarkControlForeGround}"></Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="Light">
+                <!--<Setter Property="Background" Value="{StaticResource LightPrimaryBrush}"></Setter>-->
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Source= {x:Static properties:Settings.Default}, Path=ColorMode}" Value="White">
+                <!--<Setter Property="Background" Value="{StaticResource WhiteBrush}"></Setter>-->
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
 
     <Style TargetType="{x:Type TreeView}">
         <Style.Triggers>

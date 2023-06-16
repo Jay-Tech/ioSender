@@ -157,7 +157,7 @@
                 <cncviewer:Viewer x:Name="viewer"/>
             </TabItem>
             -->
-            <TabItem x:Uid="tab_probing" x:Name="tabProbing" Header="Probing">
+            <TabItem x:Uid="tab_probing" x:Name="tabProbing" Header="Probing" >
                 <cncprobingcontrols:ProbingView x:Name="probingView"/>
             </TabItem>
             <TabItem x:Uid="tab_sdCard" x:Name="tabSDCard" Header="SD Card">

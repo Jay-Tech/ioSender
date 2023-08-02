@@ -9,6 +9,13 @@
              d:DesignHeight="550" d:DesignWidth="875">
     <UserControl.Resources>
         <system:String x:Uid="msg_restart" x:Key="RestartMessage">A restart is required after changing settings!</system:String>
+        <Style x:Key="ConfigButtonStyle" TargetType="Button">
+            <Setter Property="MinWidth" Value="90" />
+            <Setter Property="MaxWidth" Value="150" />
+            <Setter Property="Height" Value="22" />
+            <Setter Property="Padding" Value="5,0" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+        </Style>
     </UserControl.Resources>
     <DockPanel>
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">

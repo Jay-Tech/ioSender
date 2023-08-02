@@ -170,6 +170,9 @@
             <TabItem x:Uid="tab_parting" x:Name="tabParting" Header="Parting">
                 <cnclathecontrols:PartingWizard x:Name="partingWizard"/>
             </TabItem>
+            <TabItem x:Uid="tab_facing" x:Name="tabFacing" Header="Facing">
+                <cnclathecontrols:FacingWizard x:Name="facingWizard"/>
+            </TabItem>
             <TabItem x:Uid="tab_threading" x:Name="tabThreading" Header="Threading">
                 <cnclathecontrols:ThreadingWizard x:Name="threadingWizard"/>
             </TabItem>

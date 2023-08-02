@@ -261,16 +261,16 @@ namespace CNC.Controls
         [XmlIgnore]
         public Dictionary<string, string> Themes { get; private set; } = new Dictionary<string, string>();
 
-        public string Theme
-        {
-            get { return _theme; }
-            set {
-                _theme = value; //.Substring(0, 1).ToUpper() + value.Substring(1);
-                Properties.Settings.Default.ColorMode = value; // value.Substring(0, 1).ToUpper() + value.Substring(1);
-                Properties.Settings.Default.Save();
-                OnPropertyChanged();
-            }
-        }
+        //public string Theme
+        //{
+        //    get { return _theme; }
+        //    set {
+        //        _theme = value; //.Substring(0, 1).ToUpper() + value.Substring(1);
+        //        Properties.Settings.Default.ColorMode = value; // value.Substring(0, 1).ToUpper() + value.Substring(1);
+        //        Properties.Settings.Default.Save();
+        //        OnPropertyChanged();
+        //    }
+        //}
         public int PollInterval { get { return _pollInterval < 100 ? 100 : _pollInterval; } set { _pollInterval = value; OnPropertyChanged(); } }
         public string PortParams { get; set; } = "COMn:115200,N,8,1";
         public int ResetDelay { get; set; } = 2000;

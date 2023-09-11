@@ -78,11 +78,13 @@ namespace CNC.Controls.Probing
         private CancellationToken cancellationToken = new CancellationToken();
 
         public bool Silent = false;
+        private bool _probeProtection;
 
         public Program(ProbingViewModel model)
         {
             Grbl = model.Grbl;
             probing = model;
+            //testing 
         }
 
         public bool IsCancelled { get; set; }
@@ -105,7 +107,8 @@ namespace CNC.Controls.Probing
 
                 case nameof(GrblViewModel.Signals):
                     var model = sender as GrblViewModel;
-                    if (model.Signals.Value.HasFlag(Signals.CycleStart)) {
+                    if (model.Signals.Value.HasFlag(Signals.CycleStart))
+                    {
                         if (probing.IsPaused && probeOnCycleStart)
                         {
                             probeOnCycleStart = false;
@@ -120,6 +123,9 @@ namespace CNC.Controls.Probing
                     }
                     break;
 
+                case nameof(GrblViewModel.ProbeProtectionPlugin):
+                    _probeProtection = Grbl.ProbeProtectionPlugin;
+                    break;
                 case nameof(GrblViewModel.Message):
                     if (!Silent)
                         probing.Message = Grbl.Message;
@@ -288,7 +294,7 @@ namespace CNC.Controls.Probing
             }
 
             probing.StartPosition.Set(probing.Grbl.MachinePosition);
-            if(probing.Grbl.UnitFactor != 1d)
+            if (probing.Grbl.UnitFactor != 1d)
                 probing.StartPosition.Scale(probing.Grbl.UnitFactor);
 
             hasPause = probeOnCycleStart = false;
@@ -303,7 +309,8 @@ namespace CNC.Controls.Probing
             _program.Add(probing.FastProbe + axisLetter + (negative ? "-" : "") + probing.ProbeDistance.ToInvariantString());
             if (probing.LatchDistance > 0d)
             {
-                _program.Add("!" + probing.RapidCommand + axisLetter + (negative ? "" : "-") + probing.LatchDistance.ToInvariantString());
+                var probeRetract = Grbl.ProbeProtectionPlugin ? probing.ProbeRetract : probing.RapidCommand;
+                _program.Add("!" + probeRetract + axisLetter + (negative ? "" : "-") + probing.LatchDistance.ToInvariantString());
                 _program.Add(probing.SlowProbe + axisLetter + (negative ? "-" : "") + Math.Max((probing.LatchDistance * 1.5d), 2d / probing.Grbl.UnitFactor).ToInvariantString());
             }
         }
@@ -345,7 +352,7 @@ namespace CNC.Controls.Probing
         {
             IsCancelled = true;
             Comms.com.WriteByte(GrblInfo.IsGrblHAL ? GrblConstants.CMD_STOP : GrblConstants.CMD_RESET);
-            if(!_isComplete)
+            if (!_isComplete)
                 ResponseReceived("cancel");
         }
 
@@ -360,7 +367,7 @@ namespace CNC.Controls.Probing
                 isRunning = Grbl.IsJobRunning = false;
                 Grbl.ExecuteCommand(probing.DistanceMode == DistanceMode.Absolute ? "G90" : "G91");
             }
-            if(!_isComplete || probing.IsSuccess)
+            if (!_isComplete || probing.IsSuccess)
                 probing.Message = message;
             _isComplete = true;
         }
@@ -389,7 +396,7 @@ namespace CNC.Controls.Probing
 
                     Grbl.OnCommandResponseReceived += ResponseReceived;
                     Grbl.PropertyChanged += Grbl_PropertyChanged;
-                    if(hasPause)
+                    if (hasPause)
                         probing.PropertyChanged += Probing_PropertyChanged;
                 }
 
@@ -405,7 +412,7 @@ namespace CNC.Controls.Probing
                 {
                     EventUtils.DoEvents();
 
-                    if(cmd_response != string.Empty)
+                    if (cmd_response != string.Empty)
                     {
                         response = cmd_response;
                         cmd_response = string.Empty;
@@ -444,7 +451,7 @@ namespace CNC.Controls.Probing
                                     //if ((isProbing = _program[step].Contains("G38")) && !IsProbeReady())
                                     //    response = "probe!";
                                     //else
-                                        Grbl.ExecuteCommand(_program[step]);
+                                    Grbl.ExecuteCommand(_program[step]);
                                 }
                             }
                         }
@@ -481,9 +488,9 @@ namespace CNC.Controls.Probing
             return probing.Program.Execute(true);
         }
 
-    private void ResponseReceived(string response)
+        private void ResponseReceived(string response)
         {
-            if(cmd_response != "cancel")
+            if (cmd_response != "cancel")
                 cmd_response = response;
         }
 

@@ -512,6 +512,7 @@ namespace CNC.Controls.Probing
         public bool OffsetEnable { get { return ((_probingType == ProbingType.EdgeFinderInternal || _probingType == ProbingType.EdgeFinderExternal) && _isCorner) || _probingType == ProbingType.Rotation; } }
         public bool XYOffsetEnable { get { return ((_probingType == ProbingType.EdgeFinderInternal || _probingType == ProbingType.EdgeFinderExternal) && _edge != Edge.None && _edge != Edge.Z) || _probingType == ProbingType.CenterFinder || _probingType == ProbingType.Rotation; } }
         public double Depth { get { return _depth; } set { _depth = value; OnPropertyChanged(); } }
+        public string ProbeRetract { get { return  "G38.5" + RapidsFeedRate.ToInvariantString(); }}
         public string RapidCommand { get { return RapidsFeedRate == 0d ? "G0" : "G1F" + RapidsFeedRate.ToInvariantString(); } }
         public string ProbeProgram { get { return Program.ToString().Replace("G53", string.Empty); } }
         public bool ProbeDiameterEnable { get { return _probingType == ProbingType.CenterFinder || ((_probingType == ProbingType.EdgeFinderInternal || _probingType == ProbingType.EdgeFinderExternal) && _edge != Edge.Z); } }
@@ -647,6 +648,6 @@ namespace CNC.Controls.Probing
             }
         }
         public double WorkpieceHeight { get { return _workpieceHeight; } set { _workpieceHeight = value; OnPropertyChanged(); } }
-
+        public bool PropProctionPlugin { get; set; }
     }
 }

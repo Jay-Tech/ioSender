@@ -212,7 +212,6 @@ namespace CNC.Core
         public GrblViewModel()
         {
             _a = _pn = _fs = _sc = _tool = string.Empty;
-
             Clear();
           
             Keyboard = new KeypressHandler(this);
@@ -263,7 +262,7 @@ namespace CNC.Core
             ResetCommand = new Command(SetResetCommand);
             SetDefaults();
             Connected = false;
-            
+            SetToolCommand();
         }
 
 
@@ -700,15 +699,15 @@ namespace CNC.Core
             {
                 if (_isJobRunning == value) return;
                 _isJobRunning = value;
-                SetToolCommand(value);
+                SetToolCommand();
                 OnPropertyChanged();
             }
         }
 
         public ObservableCollection<Macro> UtilityMacros { get; set; } = new ObservableCollection<Macro>();
-        private void SetToolCommand(bool isJobRunning)
+        private void SetToolCommand()
         {
-            GrblCommand.ToolChange = isJobRunning ? "T{0}M6" : "M61Q{0}";
+            GrblCommand.ToolChange = _isJobRunning ? "T{0}M6" : "M61Q{0}";
         }
 
         public bool IsProbing { get { return _isProbing; } set { _isProbing = value; OnPropertyChanged(); } }
@@ -1834,7 +1833,7 @@ namespace CNC.Core
                 GrblParserState.Get(true);
             }
 
-            GrblCommand.ToolChange = GrblInfo.ManualToolChange ? "M61Q{0}" : "T{0}";
+            GrblCommand.ToolChange = _isJobRunning?  "T{0}" : "M61Q{0}";
             if (!Poller.IsEnabled)
                 Poller.SetState(PollingInterval);
             Task.Factory.StartNew(DelayClearAlarm);

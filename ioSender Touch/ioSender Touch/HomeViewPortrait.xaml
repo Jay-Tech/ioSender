@@ -59,7 +59,8 @@
                         <Button  Name="btnShowConsole" Content="Console" Click="ButtonBase_OnClick"   Visibility="{Binding Path=IsFileLoaded, Converter= {StaticResource IsVisibleConverter}}"></Button>
                     </StackPanel>
                     <controls:ConsoleControl Grid.Row="1" Name="ConsoleControl" HorizontalAlignment="Stretch"   VerticalAlignment="Stretch" Margin="2,5,0,5" />
-                    <controls:GCodeListControl  ShowScrollBar="True" Grid.Row="1" Name ="CodeListControl"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" Margin="2,5,0,10" Visibility="{Binding Path=IsFileLoaded, Converter= {StaticResource IsVisibleConverter}}"></controls:GCodeListControl>
+                    <controls:GCodeListControl  ShowScrollBar="True" Grid.Row="1" Name ="CodeListControl" 
+                                                HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" Margin="2,5,0,10" Visibility="{Binding Path=IsFileLoaded, Converter= {StaticResource IsVisibleConverter}}"></controls:GCodeListControl>
                 </Grid>
             </Expander>
         </Border>

@@ -49,7 +49,7 @@ namespace CNC.Controls
     /// <summary>
     /// Interaction logic for OffsetView.xaml
     /// </summary>
-    public partial class OffsetView : UserControl, ICNCView
+    public partial class OffsetView : UserControl
     {
         CoordinateSystem selectedOffset = null;
         private GrblViewModel parameters;
@@ -96,37 +96,16 @@ namespace CNC.Controls
 
         #region Methods and properties required by CNCView interface
 
-        public ViewType ViewType { get { return ViewType.Offsets; } }
+        
         public bool CanEnable { get { return !(DataContext as GrblViewModel).IsGCLock; } }
 
-        public void Activate(bool activate, ViewType chgMode)
-        {
-            if (activate)
-            {
-                Comms.com.DataReceived += parameters.DataReceived;
-
-                GrblWorkParameters.Get(parameters);
-
-                parameters.AxisEnabledFlags = GrblInfo.AxisFlags;
-
-                dgrOffsets.ItemsSource = GrblWorkParameters.CoordinateSystems;
-                dgrOffsets.SelectedIndex = 0;
-            }
-            else
-            {
-                Comms.com.DataReceived -= parameters.DataReceived;
-                Comms.com.PurgeQueue();
-                dgrOffsets.ItemsSource = null;
-            }
-        }
+       
 
         public void CloseFile()
         {
         }
 
-        public void Setup(UIViewModel model, AppConfig profile)
-        {
-        }
+        
 
         #endregion
 

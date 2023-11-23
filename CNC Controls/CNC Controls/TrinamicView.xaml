@@ -48,7 +48,7 @@
                     </StackPanel>
                 </GroupBox>
                 <DockPanel>
-                    <local:StatusControl DockPanel.Dock="Left" Margin="0,5,0,0" VerticalAlignment="Bottom"/>
+                    
                     <local:SignalsControl DockPanel.Dock="Right" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
                 </DockPanel>
             </StackPanel>

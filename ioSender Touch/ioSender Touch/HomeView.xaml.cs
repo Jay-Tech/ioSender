@@ -9,6 +9,7 @@ using CNC.Controls.Probing;
 using CNC.Controls.Viewer;
 using CNC.Core;
 using ioSenderTouch.Controls;
+using ioSenderTouch.Utility;
 using ioSenderTouch.Views;
 using ConfigControl = CNC.Controls.Probing.ConfigControl;
 
@@ -51,7 +52,8 @@ namespace ioSenderTouch
             InitSystem();
             BuildOptionalUi();
             GCode.File.FileLoaded += File_FileLoaded;
-          
+            var gamepad = new HandController(_model);
+
         }
 
         private void BuildOptionalUi()
@@ -69,7 +71,7 @@ namespace ioSenderTouch
             {
                 _model.HasProbing = true;
                 _probeView = new ProbingView(_model);
-                _probeView.Activate(true, ViewType.Probing);
+                _probeView.Activate(true);
 
             }
         }
@@ -105,14 +107,14 @@ namespace ioSenderTouch
                 GCodeSender.EnablePolling(true);
             }
 
-            GrblCommand.ToolChange = GrblInfo.ManualToolChange ? "M61Q{0}" : "T{0}";
+            //GrblCommand.ToolChange = GrblInfo.ManualToolChange ? "M61Q{0}" : "T{0}";
 
 
             if (GrblInfo.HasProbe && GrblSettings.ReportProbeCoordinates)
             {
                 _model.HasProbing = true;
                 _probeView = new ProbingView(_model);
-                _probeView.Activate(true, ViewType.Probing);
+                _probeView.Activate(true);
 
             }
             return true;

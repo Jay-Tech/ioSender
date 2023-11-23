@@ -77,10 +77,10 @@ namespace CNC.Controls
 
         #region Methods and properties required by CNCView interface
 
-        public ViewType ViewType { get { return ViewType.Tools; } }
+       
         public bool CanEnable { get { return !_model.IsGCLock; } }
 
-        public void Activate(bool activate, ViewType chgMode)
+        public void Activate(bool activate)
         {
             if (activate)
             {
@@ -102,10 +102,7 @@ namespace CNC.Controls
         {
         }
 
-        public void Setup(UIViewModel model, AppConfig profile)
-        {
-        }
-
+    
         #endregion
 
         private void Parameters_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

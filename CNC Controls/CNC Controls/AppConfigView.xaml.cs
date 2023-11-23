@@ -46,7 +46,7 @@ namespace CNC.Controls
 {
     public partial class AppConfigView : UserControl
     {
-        private UIViewModel model;
+       
         private GrblViewModel grblmodel;
 
         public AppConfigView(GrblViewModel grblViewModel)
@@ -67,31 +67,10 @@ namespace CNC.Controls
 
         #region Methods and properties required by CNCView interface
 
-        public ViewType ViewType { get { return ViewType.AppConfig; } }
+     
         public bool CanEnable { get { return true; } }
 
-        public void Activate(bool activate, ViewType chgMode)
-        {
-            if (activate)
-            {
-
-                foreach (var control in model.ConfigControls) // TODO: use callback!
-                {
-                    if (control is JogConfigControl)
-                    {
-                        if (GrblSettings.GetString(grblHALSetting.JogStepSpeed) != null)
-                            control.Visibility = Visibility.Collapsed;
-                        else
-                            (control as JogConfigControl).IsGrbl = !GrblInfo.IsGrblHAL;
-                    }
-                    else if (control is ICameraConfig && model.Camera != null && !model.Camera.HasCamera)
-                        control.Visibility = Visibility.Collapsed;
-                }
-
-            }
-            grblmodel.Message = activate ? (string)FindResource("RestartMessage") : string.Empty;
-        }
-
+   
         public void CloseFile()
         {
         }

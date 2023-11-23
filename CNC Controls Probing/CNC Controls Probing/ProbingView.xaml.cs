@@ -293,7 +293,7 @@ namespace CNC.Controls.Probing
 
         public bool CanEnable { get { return DataContext is GrblViewModel ? !(DataContext as GrblViewModel).IsGCLock : !model.Grbl.IsGCLock; } }
 
-        public void Activate(bool activate, ViewType chgMode)
+        public void Activate(bool activate)
         {
             _grblViewModel.IsProbing = activate;
             if (activate)
@@ -385,11 +385,6 @@ namespace CNC.Controls.Probing
         {
         }
 
-        public void Setup(UIViewModel model, AppConfig profile)
-        {
-            if (!model.IsConfigControlInstantiated<ConfigControl>())
-                model.ConfigControls.Add(new ConfigControl());
-        }
 
         #endregion
 

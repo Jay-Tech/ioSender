@@ -106,7 +106,7 @@ namespace ioSenderTouch
             {
                 _model.HasProbing = true;
                 _probeView = new ProbingView(_model);
-                _probeView.Activate(true, ViewType.Probing);
+                _probeView.Activate(true);
 
             }
             return true;

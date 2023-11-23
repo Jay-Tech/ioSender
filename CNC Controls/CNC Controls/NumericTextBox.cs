@@ -103,7 +103,7 @@ namespace CNC.Controls
             {
                 if (!b)
                 {
-                    _keyBoard.Close();
+                    _keyBoard?.Close();
                 }
             }
         }

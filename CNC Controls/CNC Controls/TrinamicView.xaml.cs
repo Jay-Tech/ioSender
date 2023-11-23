@@ -54,7 +54,7 @@ namespace CNC.Controls
     /// <summary>
     /// Interaction logic for TrinamicView.xaml
     /// </summary>
-    public partial class TrinamicView : UserControl, ICNCView
+    public partial class TrinamicView : UserControl
     {
         private int sg_index = 0;
         private bool plot = false, read_status = false, grbl_reset = false, driver_reset = false;
@@ -93,40 +93,14 @@ namespace CNC.Controls
 
         #region Methods and properties required by CNCView interface
 
-        public ViewType ViewType { get { return ViewType.TrinamicTuner; } }
+       
         public bool CanEnable { get { return DataContext == null || !(DataContext as GrblViewModel).IsGCLock; } }
 
-        public void Activate(bool activate, ViewType chgMode)
-        {
-            Comms.com.WriteString(string.Format("M122S{0}H{1}\r", activate ? 1 : 0, SFiltEnabled == true ? 1 : 0));
-
-            if (activate)
-            {
-                DataContext = model;
-                model.OnResponseReceived += ProcessSGValue;
-                model.PropertyChanged += OnDataContextPropertyChanged;
-                var sgdetails = GrblSettings.Get(grblHALSetting.StallGuardBase + GrblInfo.AxisLetterToIndex(AxisEnabled.Value.ToString()));
-                SGValue = int.Parse(sgdetails.Value);
-                SGValueMin = (int)sgdetails.Min;
-                SGValueMax = (int)sgdetails.Max;
-                grbl_reset = false;
-            }
-            else
-            {
-                model.OnResponseReceived -= ProcessSGValue;
-                model.PropertyChanged -= OnDataContextPropertyChanged;
-                DataContext = null;
-            }
-            model.Poller.SetState(activate ? AppConfig.Settings.Base.PollInterval : 0);
-        }
 
         public void CloseFile()
         {
         }
 
-        public void Setup(UIViewModel model, AppConfig profile)
-        {
-        }
 
         #endregion
 

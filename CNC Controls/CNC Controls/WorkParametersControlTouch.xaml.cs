@@ -56,19 +56,6 @@ namespace CNC.Controls
         }
 
 
-        void cbxTool_KeyPress(object sender, KeyEventArgs e)
-        {
-            // UIUtils.ProcessMask((Control)sender, e);
-
-            //if (e.KeyChar == '\r' && cbxTool.Text != "")
-            //{
-            //    if (!cbxTool.Items.Contains(cbxTool.Text))
-            //        cbxTool.Items.Add(cbxTool.Text);
-            //    cbxTool.SelectedItem = cbxTool.Text;
-            //    cbxTool_TextChanged(cbxTool, null);
-            //}
-        }
-
         private void cbxOffset_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (e.AddedItems.Count == 1 && ((ComboBox)sender).IsDropDownOpen)
@@ -78,7 +65,11 @@ namespace CNC.Controls
         private void cbxTool_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (e.AddedItems.Count == 1 && ((ComboBox)sender).IsDropDownOpen)
-                (DataContext as GrblViewModel)?.ExecuteCommand(string.Format(GrblCommand.ToolChange, ((Tool)e.AddedItems[0]).Code));
+
+                if (DataContext is GrblViewModel vm)
+                {
+                    vm.ExecuteCommand(string.Format(GrblCommand.ToolChange, ((Tool)e.AddedItems[0]).Code));
+                }
         }
     }
 }

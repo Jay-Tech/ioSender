@@ -674,16 +674,7 @@ namespace CNC.Controls
                 }
 
                 // ...if so show dialog for wait for it to stop polling and relinquish control.
-                if (MPGactive == true)
-                {
-                    MPGPending await = new MPGPending(model);
-                    await.ShowDialog();
-                    if (await.Cancelled)
-                    {
-                        Comms.com.Close(); //!!
-                        status = 2;
-                    }
-                }
+               
 
                 model.IsReady = true;
             }

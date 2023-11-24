@@ -13,7 +13,7 @@ namespace ioSenderTouch.Utility
 {
     public class HandController
     {
-        private  GrblViewModel _grblViewModel;
+        private GrblViewModel _grblViewModel;
         private Gamepad _controller;
         private Timer _timer;
         private bool _singleActionPress;
@@ -22,10 +22,10 @@ namespace ioSenderTouch.Utility
         private double[] _distanceRate;
         private bool _stepMode;
         private bool _jogProcessed;
-        private  Task _buttonPollThread;
-        private int _pollRate =100;
+        private Task _buttonPollThread;
+        private int _pollRate = 100;
         CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
-       
+
 
         public double DistanceRate => _distanceRate[(int)JogStepRate];
         public double FeedRate => _feedRate[(int)JogFeedRate];
@@ -37,10 +37,7 @@ namespace ioSenderTouch.Utility
             _grblViewModel = grblViewModel;
             Gamepad.GamepadAdded += Gamepad_GamepadAdded;
             Gamepad.GamepadRemoved += Gamepad_GamepadRemoved;
-            //_timer = new Timer(20);
-            //_timer.Elapsed += _timer_Elapsed;
             _grblViewModel.GrblInitialized += _grblViewModel_GrblInitialized;
-            //_buttonPollThread = Task.Factory.StartNew(() => Poll(),_cancellationTokenSource.Token);
         }
 
         private void _grblViewModel_GrblInitialized(object sender, EventArgs e)
@@ -61,13 +58,12 @@ namespace ioSenderTouch.Utility
         {
             _controller = null;
             _cancellationTokenSource.Cancel();
-           
         }
 
         private void Gamepad_GamepadAdded(object sender, Gamepad e)
         {
             _controller = Gamepad.Gamepads.First();
-          
+
             if (_buttonPollThread?.Status != TaskStatus.Running)
             {
                 _buttonPollThread = Task.Factory.StartNew(Poll, _cancellationTokenSource.Token);
@@ -242,7 +238,7 @@ namespace ioSenderTouch.Utility
             }
 
         }
-        private void ProcessJogCommand(string command )
+        private void ProcessJogCommand(string command)
         {
             if (!_stepMode)
             {

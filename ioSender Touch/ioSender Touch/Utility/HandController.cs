@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Windows.Gaming.Input;
 using CNC.Core;
 using ioSenderTouch.Controls;
 using Timer = System.Timers.Timer;
 using CNC.Controls;
+using System.Threading;
 
 
 namespace ioSenderTouch.Utility
 {
     public class HandController
     {
-        private readonly GrblViewModel _grblViewModel;
+        private  GrblViewModel _grblViewModel;
         private Gamepad _controller;
         private Timer _timer;
         private bool _singleActionPress;
@@ -20,6 +22,10 @@ namespace ioSenderTouch.Utility
         private double[] _distanceRate;
         private bool _stepMode;
         private bool _jogProcessed;
+        private  Task _buttonPollThread;
+        private int _pollRate =100;
+        CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+       
 
         public double DistanceRate => _distanceRate[(int)JogStepRate];
         public double FeedRate => _feedRate[(int)JogFeedRate];
@@ -31,9 +37,10 @@ namespace ioSenderTouch.Utility
             _grblViewModel = grblViewModel;
             Gamepad.GamepadAdded += Gamepad_GamepadAdded;
             Gamepad.GamepadRemoved += Gamepad_GamepadRemoved;
-            _timer = new Timer(20);
-            _timer.Elapsed += _timer_Elapsed;
+            //_timer = new Timer(20);
+            //_timer.Elapsed += _timer_Elapsed;
             _grblViewModel.GrblInitialized += _grblViewModel_GrblInitialized;
+            //_buttonPollThread = Task.Factory.StartNew(() => Poll(),_cancellationTokenSource.Token);
         }
 
         private void _grblViewModel_GrblInitialized(object sender, EventArgs e)
@@ -53,103 +60,120 @@ namespace ioSenderTouch.Utility
         private void Gamepad_GamepadRemoved(object sender, Gamepad e)
         {
             _controller = null;
-            _timer.Stop();
+            _cancellationTokenSource.Cancel();
+           
         }
 
         private void Gamepad_GamepadAdded(object sender, Gamepad e)
         {
             _controller = Gamepad.Gamepads.First();
-            _timer.Start();
+          
+            if (_buttonPollThread?.Status != TaskStatus.Running)
+            {
+                _buttonPollThread = Task.Factory.StartNew(Poll, _cancellationTokenSource.Token);
+            }
         }
-        private void _timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+
+        private void Poll()
         {
-            if (_controller == null) return;
-            string command = string.Empty;
-            var input = _controller.GetCurrentReading();
-            switch (input.Buttons)
+            while (true)
             {
-                case GamepadButtons.None:
-                    _singleActionPress = false;
-                    _jogProcessed = false;
-                    if (input.LeftTrigger != 1)
-                    {
-                        _stepMode = false;
-                    }
+                if (_cancellationTokenSource.IsCancellationRequested)
+                {
                     break;
-                case GamepadButtons.A:
-                    command = $"$J = G91G21Z{_grblViewModel.JogStep}F{_grblViewModel.JogRate}";
-                    ProcessJogCommand(command);
-                    break;
-                case GamepadButtons.B:
-                    command = $"$J = G91G21Z-{_grblViewModel.JogStep}F{_grblViewModel.JogRate}";
-                    ProcessJogCommand(command);
-                    break;
-                case GamepadButtons.DPadLeft:
-                    command = $"$J = G91G21X-{_grblViewModel.JogStep}F{_grblViewModel.JogRate}";
-                    ProcessJogCommand(command);
-                    break;
-                case GamepadButtons.DPadRight:
-                    command = $"$J = G91G21X{_grblViewModel.JogStep}F{_grblViewModel.JogRate}";
-                    ProcessJogCommand(command);
-                    break;
-                case GamepadButtons.DPadUp:
-                    command = $"$J = G91G21Y{_grblViewModel.JogStep}F{_grblViewModel.JogRate}";
-                    ProcessJogCommand(command);
-                    break;
-                case GamepadButtons.DPadDown:
-                    command = $"$J = G91G21Y-{_grblViewModel.JogStep}F{_grblViewModel.JogRate}";
-                    ProcessJogCommand(command);
-                    break;
-                case GamepadButtons.Y:
-                    ProcessSinglePressCommand("G10L20P0Y0");
-                    return;
-                    break;
-                case GamepadButtons.X:
-                    ProcessSinglePressCommand("G10L20P0X0");
-                    return;
-                    break;
-                case GamepadButtons.LeftShoulder:
-                    ProcessJogDistance();
-                    return;
-                    break;
-                case GamepadButtons.RightShoulder:
-                    ProcessJogFeedRate();
-                    return;
-                    break;
-                case GamepadButtons.Menu:
-                    ProcessSinglePressCommand("G10L20P0Z0");
-                    return;
-                    break;
-                case GamepadButtons.RightThumbstick:
-                    ProcessSinglePressCommand(GrblConstants.CMD_HOMING);
-                    return;
-                    break;
-                case GamepadButtons.LeftThumbstick:
-                    ProcessSinglePressCommand(GrblConstants.CMD_UNLOCK);
-                    return;
-                    break;
+                }
+
+                if (_controller == null) return;
+                string command = string.Empty;
+                var input = _controller.GetCurrentReading();
+                switch (input.Buttons)
+                {
+                    case GamepadButtons.None:
+                        _singleActionPress = false;
+                        _jogProcessed = false;
+                        if (input.LeftTrigger != 1)
+                        {
+                            _stepMode = false;
+                        }
+
+                        break;
+                    case GamepadButtons.A:
+                        command = $"$J = G91G21Z{_grblViewModel.JogStep}F{_grblViewModel.JogRate}";
+                        ProcessJogCommand(command);
+                        break;
+                    case GamepadButtons.B:
+                        command = $"$J = G91G21Z-{_grblViewModel.JogStep}F{_grblViewModel.JogRate}";
+                        ProcessJogCommand(command);
+                        break;
+                    case GamepadButtons.DPadLeft:
+                        command = $"$J = G91G21X-{_grblViewModel.JogStep}F{_grblViewModel.JogRate}";
+                        ProcessJogCommand(command);
+                        break;
+                    case GamepadButtons.DPadRight:
+                        command = $"$J = G91G21X{_grblViewModel.JogStep}F{_grblViewModel.JogRate}";
+                        ProcessJogCommand(command);
+                        break;
+                    case GamepadButtons.DPadUp:
+                        command = $"$J = G91G21Y{_grblViewModel.JogStep}F{_grblViewModel.JogRate}";
+                        ProcessJogCommand(command);
+                        break;
+                    case GamepadButtons.DPadDown:
+                        command = $"$J = G91G21Y-{_grblViewModel.JogStep}F{_grblViewModel.JogRate}";
+                        ProcessJogCommand(command);
+                        break;
+                    case GamepadButtons.Y:
+                        ProcessSinglePressCommand("G10L20P0Y0");
+                        continue;
+                        break;
+                    case GamepadButtons.X:
+                        ProcessSinglePressCommand("G10L20P0X0");
+                        continue;
+                        break;
+                    case GamepadButtons.LeftShoulder:
+                        ProcessJogDistance();
+                        continue;
+                        break;
+                    case GamepadButtons.RightShoulder:
+                        ProcessJogFeedRate();
+                        continue;
+                        break;
+                    case GamepadButtons.Menu:
+                        ProcessSinglePressCommand("G10L20P0Z0");
+                        continue;
+                        break;
+                    case GamepadButtons.RightThumbstick:
+                        ProcessSinglePressCommand(GrblConstants.CMD_HOMING);
+                        continue;
+                        break;
+                    case GamepadButtons.LeftThumbstick:
+                        ProcessSinglePressCommand(GrblConstants.CMD_UNLOCK);
+                        continue;
+                        break;
+                }
+
+                if (Math.Abs(input.LeftTrigger - 1) < 0.1)
+                {
+                    _stepMode = true;
+                }
+                //if (Math.Abs(input.RightTrigger - 1) < 0.1)
+                //{
+
+                //}
+
+                //var x = Math.Round(input.LeftThumbstickX, 1);
+                //var y = Math.Round(input.LeftThumbstickY, 1);
+
+                if (input.Buttons == GamepadButtons.None
+                    && _previousDown != GamepadButtons.None
+                    && !_stepMode)
+                {
+                    //Comms.com.PurgeQueue();
+                    Comms.com.WriteByte(GrblConstants.CMD_JOG_CANCEL);
+                }
+
+                _previousDown = input.Buttons;
+                Thread.Sleep(_pollRate);
             }
-            if (Math.Abs(input.LeftTrigger - 1) < 0.1)
-            {
-                _stepMode = true;
-            }
-            //if (Math.Abs(input.RightTrigger - 1) < 0.1)
-            //{
-
-            //}
-
-            //var x = Math.Round(input.LeftThumbstickX, 1);
-            //var y = Math.Round(input.LeftThumbstickY, 1);
-
-            if (input.Buttons == GamepadButtons.None
-                && _previousDown != GamepadButtons.None
-                                                     && !_stepMode)
-            {
-                Comms.com.PurgeQueue();
-                Comms.com.WriteByte(GrblConstants.CMD_JOG_CANCEL);
-            }
-
-            _previousDown = input.Buttons;
         }
 
         private void ProcessPos(double y, string command)

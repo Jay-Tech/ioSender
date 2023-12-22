@@ -46,7 +46,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using CNC.Core.Comands;
-using CNC.GCode;
+using CNC.Core;
 using Color = System.Windows.Media.Color;
 
 namespace CNC.Core
@@ -76,7 +76,7 @@ namespace CNC.Core
         private HomedState _homedState = HomedState.Unknown;
         private GrblEncoderMode _encoder_ovr = GrblEncoderMode.Unknown;
         private StreamingState _streamingState;
-        public SpindleState _spindleStatePrev = GCode.SpindleState.Off;
+        public SpindleState _spindleStatePrev = Core.SpindleState.Off;
 
         private Thread pollThread = null;
 
@@ -449,8 +449,8 @@ namespace CNC.Core
 
         private void SpindleState_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            _rpmDisplay = _spindleStatePrev == GCode.SpindleState.Off ? _rpmInput : _rpm;
-            if (!(SpindleState.Value.HasFlag(GCode.SpindleState.Off | GCode.SpindleState.CW) || SpindleState.Value.HasFlag(GCode.SpindleState.Off | GCode.SpindleState.CCW)))
+            _rpmDisplay = _spindleStatePrev == Core.SpindleState.Off ? _rpmInput : _rpm;
+            if (!(SpindleState.Value.HasFlag(Core.SpindleState.Off | Core.SpindleState.CW) || SpindleState.Value.HasFlag(Core.SpindleState.Off | Core.SpindleState.CCW)))
             {
                 OnPropertyChanged(nameof(SpindleState));
                 OnPropertyChanged(nameof(RPM));
@@ -743,7 +743,7 @@ namespace CNC.Core
         public Position ToolOffset { get; private set; } = new Position();
         public Position ProbePosition { get; private set; } = new Position();
         public bool IsProbeSuccess { get { return _isProbeSuccess; } private set { _isProbeSuccess = value; OnPropertyChanged(); } }
-        public EnumFlags<SpindleState> SpindleState { get; private set; } = new EnumFlags<SpindleState>(GCode.SpindleState.Off);
+        public EnumFlags<SpindleState> SpindleState { get; private set; } = new EnumFlags<SpindleState>(Core.SpindleState.Off);
         public EnumFlags<Signals> Signals { get; private set; } = new EnumFlags<Signals>(Core.Signals.Off);
         public EnumFlags<Signals> OptionalSignals { get; set; } = new EnumFlags<Signals>(Core.Signals.Off);
         public EnumFlags<AxisFlags> AxisScaled { get; private set; } = new EnumFlags<AxisFlags>(AxisFlags.None);
@@ -948,7 +948,7 @@ namespace CNC.Core
                     else if (!IsGrblHAL && (_a == "S" || _a == "C")) // Hack for legacy Grbl no informing about spindle going off
                     {
                         _a = "";
-                        SpindleState.Value = GCode.SpindleState.Off;
+                        SpindleState.Value =Core.SpindleState.Off;
                     }
 
                     if (double.IsNaN(ActualRPM))
@@ -1301,14 +1301,14 @@ namespace CNC.Core
                         if (_a == "")
                         {
                             Mist = Flood = IsToolChanging = false;
-                            SpindleState.Value = GCode.SpindleState.Off;
+                            SpindleState.Value = Core.SpindleState.Off;
                         }
                         else
                         {
                             Mist = value.Contains("M");
                             Flood = value.Contains("F");
                             IsToolChanging = value.Contains("T");
-                            SpindleState.Value = value.Contains("S") ? GCode.SpindleState.CW : (value.Contains("C") ? GCode.SpindleState.CCW : GCode.SpindleState.Off);
+                            SpindleState.Value = value.Contains("S") ? Core.SpindleState.CW : (value.Contains("C") ? Core.SpindleState.CCW : Core.SpindleState.Off);
                         }
                     }
                     break;

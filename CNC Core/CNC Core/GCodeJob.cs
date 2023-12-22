@@ -43,7 +43,6 @@ using System.Data;
 using System.IO;
 using System.ComponentModel;
 using System.Windows;
-using CNC.GCode;
 using System.Windows.Media.Media3D;
 
 namespace CNC.Core

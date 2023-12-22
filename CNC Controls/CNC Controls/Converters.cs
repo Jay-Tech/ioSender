@@ -47,7 +47,6 @@ using System.Windows;
 using System.Collections.Generic;
 using System.Windows.Controls;
 using CNC.Core;
-using CNC.GCode;
 
 namespace CNC.Controls
 {
@@ -806,6 +805,7 @@ namespace CNC.Controls
             return value is Visibility && (Visibility)value == Visibility.Visible;
         }
     }
+   
     public class BoolToNotVisibleConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

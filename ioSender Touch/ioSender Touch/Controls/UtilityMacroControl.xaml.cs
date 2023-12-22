@@ -1,15 +1,11 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
-using System.Net.Mime;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Input;
+
 using CNC.Controls;
 using CNC.Core;
-using CNC.Core.Comands;
-using CNC.GCode;
-using ioSenderTouch.ViewModels;
+
 
 namespace ioSenderTouch.Controls
 {

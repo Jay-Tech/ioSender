@@ -39,8 +39,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 using System.Collections.Generic;
 using System.Linq;
-using CNC.GCode;
-using System.Windows.Media.Media3D;
 using System.Globalization;
 
 namespace CNC.Core
@@ -119,15 +117,15 @@ namespace CNC.Core
 
             switch (GrblParserState.Plane)
             {
-                case GCode.Plane.XY:
+                case Core.Plane.XY:
                     Plane = new GCPlane(Commands.G17, 0);
                     break;
 
-                case GCode.Plane.XZ:
+                case Core.Plane.XZ:
                     Plane = new GCPlane(Commands.G18, 0);
                     break;
 
-                case GCode.Plane.YZ:
+                case Core.Plane.YZ:
                     Plane = new GCPlane(Commands.G19, 0);
                     break;
             }

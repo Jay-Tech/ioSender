@@ -8,6 +8,7 @@
              xmlns:local="clr-namespace:CNC.Controls.Probing"
              mc:Ignorable="d"
              Loaded="UserControl_Loaded"
+             HorizontalAlignment="Left"
              SizeChanged="ProbingView_SizeChanged" Height="619.344" Width="1258.643" VerticalAlignment="Top">
     <UserControl.Resources>
         <system:String x:Uid="str_runMacro" x:Key="RunMacro">Run {0} macro?</system:String>

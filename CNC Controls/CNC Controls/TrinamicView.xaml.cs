@@ -47,7 +47,6 @@ using System.Threading;
 using System.Windows.Threading;
 using System.ComponentModel;
 using CNC.Core;
-using CNC.GCode;
 
 namespace CNC.Controls
 {

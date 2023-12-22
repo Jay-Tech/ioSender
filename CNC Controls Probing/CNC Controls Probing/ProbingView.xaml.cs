@@ -45,7 +45,6 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using CNC.Controls.Views;
 using CNC.Core;
-using CNC.GCode;
 
 namespace CNC.Controls.Probing
 {

@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CNC.Controls"
-             xmlns:gcode="clr-namespace:CNC.GCode;assembly=CNC.Core"
+             xmlns:core="clr-namespace:CNC.Core;assembly=CNC.Core"
              mc:Ignorable="d" 
              d:DesignHeight="515" d:DesignWidth="875">
     <UserControl.Resources>
@@ -34,7 +34,7 @@
                             <Binding Source="{StaticResource ProxyElement}" Path="DataContext.AxisEnabledFlags" />
                             <Binding>
                                 <Binding.Source>
-                                    <gcode:AxisFlags>Y</gcode:AxisFlags>
+                                    <core:AxisFlags>Y</core:AxisFlags>
                                 </Binding.Source>
                             </Binding>
                         </MultiBinding>

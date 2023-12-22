@@ -43,7 +43,6 @@ using System.Windows.Controls;
 using System.Collections.ObjectModel;
 using System.Linq;
 using CNC.Core;
-using CNC.GCode;
 using System.Threading;
 
 namespace CNC.Controls

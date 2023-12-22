@@ -44,18 +44,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Globalization;
 using System.IO;
-using System.Data;
 using System.Diagnostics;
-using System.Windows.Media;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading;
 using System.Windows.Threading;
 using System.Windows;
-using CNC.GCode;
-using System.Collections.Concurrent;
-using System.Drawing;
-using System.Threading.Tasks;
 using Color = System.Windows.Media.Color;
 
 namespace CNC.Core

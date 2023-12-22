@@ -1333,23 +1333,23 @@ namespace CNC.Core
                     break;
 
                 case NamedParam.absolute:
-                    value = machine.DistanceMode == GCode.DistanceMode.Absolute ? 1d : 0d;
+                    value = machine.DistanceMode == DistanceMode.Absolute ? 1d : 0d;
                     break;
 
                 case NamedParam.incremental:
-                    value = machine.DistanceMode == GCode.DistanceMode.Incremental ? 1d : 0d;
+                    value = machine.DistanceMode == DistanceMode.Incremental ? 1d : 0d;
                     break;
 
                 case NamedParam.inverse_time:
-                    value = machine.FeedRateMode == GCode.FeedRateMode.InverseTime ? 1d : 0d;
+                    value = machine.FeedRateMode == FeedRateMode.InverseTime ? 1d : 0d;
                     break;
 
                 case NamedParam.units_per_minute:
-                    value = machine.FeedRateMode == GCode.FeedRateMode.UnitsPerMin ? 1d : 0d;
+                    value = machine.FeedRateMode == FeedRateMode.UnitsPerMin ? 1d : 0d;
                     break;
 
                 case NamedParam.units_per_rev:
-                    value = machine.FeedRateMode == GCode.FeedRateMode.UnitsPerRev ? 1d : 0d;
+                    value = machine.FeedRateMode == FeedRateMode.UnitsPerRev ? 1d : 0d;
                     break;
 
                 case NamedParam.coord_system:
@@ -1357,7 +1357,7 @@ namespace CNC.Core
                     break;
 
                 case NamedParam.tool_offset:
-                    value = machine.ToolLengthOffset == GCode.ToolLengthOffset.Cancel ? 0d : 1d;
+                    value = machine.ToolLengthOffset == ToolLengthOffset.Cancel ? 0d : 1d;
                     break;
 
                 case NamedParam.retract_r_plane:
@@ -1377,31 +1377,31 @@ namespace CNC.Core
                     break;
 
                 case NamedParam.ijk_absolute_mode:
-                    value = machine.IJKMode == GCode.IJKMode.Absolute ? 1d : 0d;
+                    value = machine.IJKMode ==IJKMode.Absolute ? 1d : 0d;
                     break;
 
                 case NamedParam.lathe_diameter_mode:
-                    value = machine.LatheMode != GCode.LatheMode.Radius ? 1d : 0d;
+                    value = machine.LatheMode != LatheMode.Radius ? 1d : 0d;
                     break;
 
                 case NamedParam.lathe_radius_mode:
-                    value = machine.LatheMode == GCode.LatheMode.Radius ? 1d : 0d;
+                    value = machine.LatheMode == LatheMode.Radius ? 1d : 0d;
                     break;
 
                 case NamedParam.spindle_on:
-                    value = machine.SpindleState != GCode.SpindleState.Off ? 1d : 0d;
+                    value = machine.SpindleState != SpindleState.Off ? 1d : 0d;
                     break;
 
                 case NamedParam.spindle_cw:
-                    value = machine.SpindleState == GCode.SpindleState.CW ? 1d : 0d;
+                    value = machine.SpindleState == SpindleState.CW ? 1d : 0d;
                     break;
 
                 case NamedParam.mist:
-                    value = machine.CoolantState.HasFlag(GCode.CoolantState.Mist) ? 1d : 0d;
+                    value = machine.CoolantState.HasFlag(CoolantState.Mist) ? 1d : 0d;
                     break;
 
                 case NamedParam.flood:
-                    value = machine.CoolantState.HasFlag(GCode.CoolantState.Flood) ? 1d : 0d;
+                    value = machine.CoolantState.HasFlag(CoolantState.Flood) ? 1d : 0d;
                     break;
 
                 case NamedParam.speed_override:

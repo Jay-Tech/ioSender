@@ -8,6 +8,8 @@
         xmlns:cnccontrols="clr-namespace:CNC.Controls;assembly=CNC.Controls.WPF"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
+        d:DesignHeight="1080"
+        d:DesignWidth="1920"
         WindowStyle="None"
         WindowState="Maximized"
         Loaded="Window_Load"

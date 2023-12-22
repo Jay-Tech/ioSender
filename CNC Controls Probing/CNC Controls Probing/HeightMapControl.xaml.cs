@@ -42,7 +42,6 @@ using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Win32;
 using CNC.Core;
-using CNC.GCode;
 using HelixToolkit.Wpf;
 
 namespace CNC.Controls.Probing

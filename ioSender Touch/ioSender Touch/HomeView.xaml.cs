@@ -8,6 +8,7 @@ using CNC.Controls;
 using CNC.Controls.Probing;
 using CNC.Controls.Viewer;
 using CNC.Core;
+using CNC.Core.Comands;
 using ioSenderTouch.Controls;
 using ioSenderTouch.Utility;
 using ioSenderTouch.Views;
@@ -33,8 +34,11 @@ namespace ioSenderTouch
         private SDCardView _sdView;
         private ToolView _toolView;
         private readonly UtilityView _utilityView;
+        
 
+        public ICommand ChangeView { get;}
 
+        public UIElement Content { get; set; }
         public HomeView(GrblViewModel model)
         {
             _model = model;
@@ -46,7 +50,7 @@ namespace ioSenderTouch
             _grblAppSettings = new AppConfigView(_model);
             _offsetView = new OffsetView(_model);
             _utilityView = new UtilityView(_model);
-            FillBorder.Child = _renderView;
+            CenterView.Content  = _renderView;
             AppConfig.Settings.OnConfigFileLoaded += AppConfiguationLoaded;
             AppConfig.Settings.SetupAndOpen(_model, Application.Current.Dispatcher);
             InitSystem();
@@ -54,6 +58,43 @@ namespace ioSenderTouch
             GCode.File.FileLoaded += File_FileLoaded;
             var gamepad = new HandController(_model);
 
+            ChangeView = new Command(x =>
+            {
+                HandleChangeView(x);
+            });
+
+
+        }
+
+        private void HandleChangeView(object x)
+        {
+            switch (x.ToString())
+            {
+                case "offsetView":
+                    CenterView.Content = _offsetView;
+                    break;
+                case "sdcardView":
+                    CenterView.Content = _sdView;
+                    break;
+                case "grblsettingsView":
+                    CenterView.Content = _grblSettingView;
+                    break;
+                case "appsettingsView":
+                    CenterView.Content = _grblAppSettings;
+                    break;
+                case "probeView":
+                    CenterView.Content = _probeView;
+                    break;
+                case "utilityView":
+                    CenterView.Content = _utilityView;
+                    break;
+                case "toolView":
+                    CenterView.Content = _toolView;
+                    break;
+                case "renderView":
+                    CenterView.Content = _renderView;
+                    break;
+            }
         }
 
         private void BuildOptionalUi()
@@ -143,40 +184,40 @@ namespace ioSenderTouch
 
         private void Button_ClickSDView(object sender, RoutedEventArgs e)
         {
-            FillBorder.Child = _sdView;
+            CenterView.Content = _sdView;
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            FillBorder.Child = _grblSettingView;
+            CenterView.Content = _grblSettingView;
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            FillBorder.Child = _probeView;
+            CenterView.Content = _probeView;
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            FillBorder.Child = _renderView;
+            CenterView.Content = _renderView;
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            FillBorder.Child = _grblAppSettings;
+            CenterView.Content = _grblAppSettings;
         }
 
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
-            FillBorder.Child = _offsetView;
+            CenterView.Content = _offsetView;
         }
 
         private void Button_Click_Utility(object sender, RoutedEventArgs e)
         {
-            FillBorder.Child = _utilityView;
+            CenterView.Content = _utilityView;
         }
         private void Button_Click_Tools(object sender, RoutedEventArgs e)
         {
-            FillBorder.Child = _toolView;
+            CenterView.Content = _toolView;
         }
 
         private void AppConfiguationLoaded(object sender, EventArgs e)

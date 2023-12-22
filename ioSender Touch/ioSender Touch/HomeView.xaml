@@ -6,6 +6,8 @@
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:controls="clr-namespace:CNC.Controls;assembly=CNC.Controls.WPF"
              xmlns:local="clr-namespace:ioSenderTouch.Controls"
+             xmlns:core="clr-namespace:CNC.Core;assembly=CNC.Core"
+             d:DataContext="{d:DesignInstance Type=core:GrblViewModel, IsDesignTimeCreatable=True}"
              mc:Ignorable="d"
              Focusable="True">
     <UserControl.Resources>
@@ -21,21 +23,27 @@
         <system:String x:Uid="str_msgNoComm" x:Key="MsgNoComm">Controller is in {0} state and cannot respond, try a soft reset?</system:String>
         <system:String x:Uid="str_msgResetExit" x:Key="MsgResetExit">Controller soft reset failed, exiting.</system:String>
         <system:String x:Uid="str_msgNoResponse" x:Key="MsgNoResponse">Controller is not responding!</system:String>
-        
+        <controls:BoolToNotVisibleConverter x:Key="BoolToNotVisibleConverter"/>
         <controls:BoolToVisibleConverter x:Key="IsVisibleConverter" />
     </UserControl.Resources>
     <DockPanel Name="DockPanelMain">
         <Border Height="35"  BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Top">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Content="Job" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Button_Click_2"  Width="140" Margin="1,0,1,0" ></Button>
-                <Button Content="Probe" Visibility="{Binding  Path= HasProbing,Converter={StaticResource IsVisibleConverter}}" HorizontalContentAlignment="Center"
+                <Button Content="Probe" IsEnabled="{Binding IsJobRunning, Converter={StaticResource InvertBooleanConverter }, Mode=TwoWay}" Visibility="{Binding  Path= HasProbing,Converter={StaticResource IsVisibleConverter}}" HorizontalContentAlignment="Center"
                         VerticalContentAlignment="Center" Click="Button_Click_1"  Width="140" Margin="1,0,1,0" ></Button>
-                <Button Content="SD Card" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Button_ClickSDView" Visibility="{Binding  Path= HasSDCard,Converter={StaticResource IsVisibleConverter}}"  Width="140" Margin="1,0,1,0" ></Button>
-                <Button Content="Offset" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Button_Click_4" Width="140" Margin="1,0,1,0" ></Button>
-                <Button Content="Utility" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Button_Click_Utility" Width="140" Margin="1,0,1,0" ></Button>
-                <Button Content="Tools" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Button_Click_Tools"  Visibility="{Binding  Path= HasATC,Converter={StaticResource IsVisibleConverter}}" Width="140" Margin="1,0,1,0" ></Button>
-                <Button Content="Grbl Settings" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Button_Click" Width="140" Margin="1,0,1,0"  ></Button>
-                <Button Content="App Settings" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Button_Click_3" Width="140" Margin="1,0,1,0" ></Button>
+                <Button Content="SD Card" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Button_ClickSDView" Visibility="{Binding  Path= HasSDCard,Converter={StaticResource IsVisibleConverter}}"  
+                        IsEnabled="{Binding IsJobRunning, Converter={StaticResource InvertBooleanConverter}}" Width="140" Margin="1,0,1,0" ></Button>
+                <Button Content="Offset" IsEnabled="{Binding IsJobRunning, Converter={StaticResource InvertBooleanConverter}}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Button_Click_4"
+                        Width="140" Margin="1,0,1,0" ></Button>
+                <Button Content="Utility" IsEnabled="{Binding IsJobRunning, Converter={StaticResource InvertBooleanConverter}}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Button_Click_Utility" 
+                        Width="140" Margin="1,0,1,0" ></Button>
+                <Button Content="Tools" IsEnabled="{Binding IsJobRunning, Converter={StaticResource InvertBooleanConverter}}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Button_Click_Tools" 
+                        Visibility="{Binding  Path= HasATC,Converter={StaticResource IsVisibleConverter}}" Width="140" Margin="1,0,1,0" ></Button>
+                <Button Content="Grbl Settings" IsEnabled="{Binding IsJobRunning, Converter={StaticResource InvertBooleanConverter}}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Button_Click"
+                        Width="140" Margin="1,0,1,0"  ></Button>
+                <Button Content="App Settings" IsEnabled="{Binding IsJobRunning,  Converter={StaticResource InvertBooleanConverter}}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Button_Click_3"
+                        Width="140" Margin="1,0,1,0" ></Button>
             </StackPanel>
         </Border>
         <Border Name="MainControlBorder" Height="320"  BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
@@ -76,7 +84,8 @@
                 <local:UtilityMacroControl Grid.Row="2" Margin="3,3,3,3" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch"></local:UtilityMacroControl>
             </Grid>
         </Border>
-        <Border Name="FillBorder" BorderBrush="Black" BorderThickness="1"  DockPanel.Dock="Right">
+        <Border  BorderBrush="Black" BorderThickness="1"  DockPanel.Dock="Right">
+            <ContentControl Name="CenterView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></ContentControl>
         </Border>
     </DockPanel>
 </UserControl>

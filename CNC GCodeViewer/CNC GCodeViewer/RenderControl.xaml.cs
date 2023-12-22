@@ -41,7 +41,6 @@ using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Windows.Input;
 using CNC.Core;
-using CNC.GCode;
 
 namespace CNC.Controls.Viewer
 {

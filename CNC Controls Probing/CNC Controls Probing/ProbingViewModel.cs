@@ -42,7 +42,6 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Collections.ObjectModel;
 using CNC.Core;
-using CNC.GCode;
 using System.Diagnostics;
 using System.Windows;
 

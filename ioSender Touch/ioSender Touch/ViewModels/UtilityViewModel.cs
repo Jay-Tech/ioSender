@@ -2,20 +2,16 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Forms;
 using System.Windows.Input;
 using CNC.Controls;
-using CNC.Controls.Views;
 using CNC.Core;
 using CNC.Core.Comands;
-using CNC.GCode;
 using ioSenderTouch.Controls;
 using ioSenderTouch.Utility;
 

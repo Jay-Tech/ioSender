@@ -22,30 +22,17 @@
     <GroupBox Width="Auto" Header=" Job">
         <StackPanel Orientation="Vertical">
             <DockPanel  Margin="0,0,0,3">
-                <!--<Label  Margin ="3,5,3,5" BorderThickness="1"  BorderBrush="Black" 
-                       Width ="10" Background="{Binding Path=StreamingState, Converter={StaticResource StreamingStateConvertor}}"
-                       Content="{Binding Path=LabelName}"/>-->
                 <Button Margin="0,2" Height="45" x:Uid="btn_cycleStart" x:Name="btnStart" Content="Cycle Start" ToolTip="Alt+R"  Click="btnStart_Click" />
             </DockPanel>
             <DockPanel  Margin="0,0,0,3">
-                <!--<Label Margin ="3,5,3,5" BorderThickness="1"  BorderBrush="Black" 
-                       Width ="10" Background="{Binding Path=StreamingState, Converter={StaticResource StreamingHoldStateConvertor}}"/>-->
                 <Button Margin="0,2" Height="45" x:Uid="btn_feedHold" x:Name="btnHold" Content="Feed Hold" ToolTip="Space"   Click="btnHold_Click"/>
             </DockPanel>
             <DockPanel  Margin="0,0,0,3">
-                <!--<Label  Margin ="3,5,3,5" BorderThickness="1"  BorderBrush="Black" 
-                       Width ="10" Background="{Binding Path=StreamingState, Converter={StaticResource StreamingStopStateConvertor}}"/>-->
                 <Button Margin="0,2" Height="45" x:Uid="btn_stop" x:Name="btnStop" Content="Stop" ToolTip="Alt+S" Click="btnStop_Click"/>
             </DockPanel>
             <DockPanel  Margin="0,0,0,3">
-                <!--<Label  Margin ="3,5,3,5" BorderThickness="1"  BorderBrush="Black" 
-                        Width ="10" Background="{Binding Path=StreamingState, Converter={StaticResource StreamingReWindStateConvertor}}"/>-->
                 <Button Margin="0,2" Height="45" x:Uid="btn_rewind" x:Name="btnRewind" Content="Rewind"  Click="btnRewind_Click"/>
             </DockPanel>
-            <!--<Button Margin="0,2" Height="45" x:Uid="btn_cycleStart" x:Name="btnStart" Content="Cycle Start" ToolTip="Alt+R"  Click="btnStart_Click" />-->
-            <!--<Button Margin="0,2" Height="45" x:Uid="btn_feedHold" x:Name="btnHold" Content="Feed Hold" ToolTip="Space"   Click="btnHold_Click"/>-->
-            <!--<Button Margin="0,2" Height="45" x:Uid="btn_stop" x:Name="btnStop" Content="Stop" ToolTip="Alt+S" Click="btnStop_Click"/>-->
-            <!--<Button Margin="0,2" Height="45" x:Uid="btn_rewind" x:Name="btnRewind" Content="Rewind"  Click="btnRewind_Click"/>-->
         </StackPanel>
     </GroupBox>
 </UserControl>

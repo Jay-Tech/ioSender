@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Gaming.Input;
@@ -23,21 +24,21 @@ namespace ioSenderTouch.Utility
         private bool _stepMode;
         private bool _jogProcessed;
         private Task _buttonPollThread;
-        private int _pollRate = 100;
+        private int _pollRate = 75;
         CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
 
-        public double DistanceRate => _distanceRate[(int)JogStepRate];
-        public double FeedRate => _feedRate[(int)JogFeedRate];
+        public double DistanceRate => _distanceRate?[(int)JogStepRate] ?? 1;
+        public double FeedRate => _feedRate?[(int)JogFeedRate] ?? 1000;
         public JogFeed JogFeedRate { get; set; }
         public JogStep JogStepRate { get; set; }
 
         public HandController(GrblViewModel grblViewModel)
         {
             _grblViewModel = grblViewModel;
+            _grblViewModel.GrblInitialized += _grblViewModel_GrblInitialized;
             Gamepad.GamepadAdded += Gamepad_GamepadAdded;
             Gamepad.GamepadRemoved += Gamepad_GamepadRemoved;
-            _grblViewModel.GrblInitialized += _grblViewModel_GrblInitialized;
         }
 
         private void _grblViewModel_GrblInitialized(object sender, EventArgs e)
@@ -45,13 +46,21 @@ namespace ioSenderTouch.Utility
             SetupRates();
         }
 
+
         private void SetupRates()
         {
-            var isMetric = GrblSettings.GetInteger(GrblSetting.ReportInches) == 0;
-            _distanceRate = isMetric ? AppConfig.Settings.JogUiMetric.Distance : AppConfig.Settings.JogUiImperial.Distance;
-            _feedRate = isMetric ? AppConfig.Settings.JogUiMetric.Feedrate : AppConfig.Settings.JogUiImperial.Feedrate;
-            JogStepRate = (JogStep)Array.FindIndex(_distanceRate, row => row.Equals(_grblViewModel.JogStep));
-            JogFeedRate = (JogFeed)Array.FindIndex(_feedRate, row => row.Equals((int)_grblViewModel.JogRate));
+            try
+            {
+                var isMetric = GrblSettings.GetInteger(GrblSetting.ReportInches) == 0;
+                _distanceRate = isMetric ? AppConfig.Settings.JogUiMetric.Distance : AppConfig.Settings.JogUiImperial.Distance;
+                _feedRate = isMetric ? AppConfig.Settings.JogUiMetric.Feedrate : AppConfig.Settings.JogUiImperial.Feedrate;
+                JogStepRate = (JogStep)Array.FindIndex(_distanceRate, row => row.Equals(_grblViewModel.JogStep));
+                JogFeedRate = (JogFeed)Array.FindIndex(_feedRate, row => row.Equals((int)_grblViewModel.JogRate));
+            }
+            catch (Exception e)
+            {
+                //
+            }
         }
 
         private void Gamepad_GamepadRemoved(object sender, Gamepad e)
@@ -82,6 +91,10 @@ namespace ioSenderTouch.Utility
                 if (_controller == null) return;
                 string command = string.Empty;
                 var input = _controller.GetCurrentReading();
+                if (input.Buttons != GamepadButtons.None)
+                {
+
+                }
                 switch (input.Buttons)
                 {
                     case GamepadButtons.None:
@@ -93,11 +106,12 @@ namespace ioSenderTouch.Utility
                         }
 
                         break;
-                    case GamepadButtons.A:
+
+                    case GamepadButtons.B:
                         command = $"$J = G91G21Z{_grblViewModel.JogStep}F{_grblViewModel.JogRate}";
                         ProcessJogCommand(command);
                         break;
-                    case GamepadButtons.B:
+                    case GamepadButtons.A:
                         command = $"$J = G91G21Z-{_grblViewModel.JogStep}F{_grblViewModel.JogRate}";
                         ProcessJogCommand(command);
                         break;
@@ -133,7 +147,10 @@ namespace ioSenderTouch.Utility
                         ProcessJogFeedRate();
                         continue;
                         break;
-                    case GamepadButtons.Menu:
+                    //case GamepadButtons.Menu:
+                    //continue;
+                    // break;
+                    case GamepadButtons.View:
                         ProcessSinglePressCommand("G10L20P0Z0");
                         continue;
                         break;
@@ -153,7 +170,7 @@ namespace ioSenderTouch.Utility
                 }
                 //if (Math.Abs(input.RightTrigger - 1) < 0.1)
                 //{
-
+                     //todo no right trigger setting atm
                 //}
 
                 //var x = Math.Round(input.LeftThumbstickX, 1);
@@ -163,7 +180,6 @@ namespace ioSenderTouch.Utility
                     && _previousDown != GamepadButtons.None
                     && !_stepMode)
                 {
-                    //Comms.com.PurgeQueue();
                     Comms.com.WriteByte(GrblConstants.CMD_JOG_CANCEL);
                 }
 

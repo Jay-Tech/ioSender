@@ -33,7 +33,8 @@
                 <Button Content="Probe" IsEnabled="{Binding IsJobRunning, Converter={StaticResource InvertBooleanConverter }, Mode=TwoWay}" Visibility="{Binding  Path= HasProbing,Converter={StaticResource IsVisibleConverter}}" HorizontalContentAlignment="Center"
                         VerticalContentAlignment="Center" Click="Button_Click_1"  Width="140" Margin="1,0,1,0" ></Button>
                 <Button Content="SD Card" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Button_ClickSDView" Visibility="{Binding  Path= HasSDCard,Converter={StaticResource IsVisibleConverter}}"  
-                        IsEnabled="{Binding IsJobRunning, Converter={StaticResource InvertBooleanConverter}}" Width="140" Margin="1,0,1,0" ></Button>
+                        IsEnabled="{Binding IsJobRunning, Converter={StaticResource InvertBooleanConverter}}" 
+                        Width="140" Margin="1,0,1,0" ></Button>
                 <Button Content="Offset" IsEnabled="{Binding IsJobRunning, Converter={StaticResource InvertBooleanConverter}}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Button_Click_4"
                         Width="140" Margin="1,0,1,0" ></Button>
                 <Button Content="Utility" IsEnabled="{Binding IsJobRunning, Converter={StaticResource InvertBooleanConverter}}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Button_Click_Utility" 

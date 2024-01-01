@@ -148,9 +148,6 @@ namespace ioSenderTouch
                 GCodeSender.EnablePolling(true);
             }
 
-            //GrblCommand.ToolChange = GrblInfo.ManualToolChange ? "M61Q{0}" : "T{0}";
-
-
             if (GrblInfo.HasProbe && GrblSettings.ReportProbeCoordinates)
             {
                 _model.HasProbing = true;

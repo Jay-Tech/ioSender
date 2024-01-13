@@ -8,12 +8,19 @@ using ioSenderTouch.Controls;
 using Timer = System.Timers.Timer;
 using CNC.Controls;
 using System.Threading;
+using Action = System.Action;
+using CNC.Controls.Viewer;
+using System.Runtime.Remoting.Lifetime;
+using System.Windows.Forms;
+using CNC.Core.Comands;
 
 
 namespace ioSenderTouch.Utility
 {
     public class HandController
     {
+        private const string JogHeader = "$J = G91G21";
+
         private GrblViewModel _grblViewModel;
         private Gamepad _controller;
         private Timer _timer;
@@ -24,8 +31,9 @@ namespace ioSenderTouch.Utility
         private bool _stepMode;
         private bool _jogProcessed;
         private Task _buttonPollThread;
-        private int _pollRate = 75;
-        CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+        private int _pollRate = 50;
+        CancellationTokenSource _cancellationTokenSource;
+        private bool _joystickJogging;
 
 
         public double DistanceRate => _distanceRate?[(int)JogStepRate] ?? 1;
@@ -66,30 +74,29 @@ namespace ioSenderTouch.Utility
         private void Gamepad_GamepadRemoved(object sender, Gamepad e)
         {
             _controller = null;
-            _cancellationTokenSource.Cancel();
+            _cancellationTokenSource?.Cancel();
         }
 
         private void Gamepad_GamepadAdded(object sender, Gamepad e)
         {
             _controller = Gamepad.Gamepads.First();
-
-            if (_buttonPollThread?.Status != TaskStatus.Running)
-            {
-                _buttonPollThread = Task.Factory.StartNew(Poll, _cancellationTokenSource.Token);
-            }
+            if (_buttonPollThread?.Status == TaskStatus.Running) return;
+            _cancellationTokenSource = new CancellationTokenSource();
+            _buttonPollThread = Task.Factory.StartNew(() => Poll(_cancellationTokenSource), TaskCreationOptions.LongRunning);
         }
 
-        private void Poll()
+
+        private void Poll(CancellationTokenSource cancellationToken)
         {
             while (true)
             {
-                if (_cancellationTokenSource.IsCancellationRequested)
+                if (cancellationToken.IsCancellationRequested)
                 {
                     break;
                 }
 
                 if (_controller == null) return;
-                string command = string.Empty;
+                string command;
                 var input = _controller.GetCurrentReading();
                 if (input.Buttons != GamepadButtons.None)
                 {
@@ -131,11 +138,11 @@ namespace ioSenderTouch.Utility
                         command = $"$J = G91G21Y-{_grblViewModel.JogStep}F{_grblViewModel.JogRate}";
                         ProcessJogCommand(command);
                         break;
-                    case GamepadButtons.Y:
+                    case GamepadButtons.X:
                         ProcessSinglePressCommand("G10L20P0Y0");
                         continue;
                         break;
-                    case GamepadButtons.X:
+                    case GamepadButtons.Y:
                         ProcessSinglePressCommand("G10L20P0X0");
                         continue;
                         break;
@@ -170,11 +177,8 @@ namespace ioSenderTouch.Utility
                 }
                 //if (Math.Abs(input.RightTrigger - 1) < 0.1)
                 //{
-                     //todo no right trigger setting atm
+                //todo no right trigger setting atm
                 //}
-
-                //var x = Math.Round(input.LeftThumbstickX, 1);
-                //var y = Math.Round(input.LeftThumbstickY, 1);
 
                 if (input.Buttons == GamepadButtons.None
                     && _previousDown != GamepadButtons.None
@@ -182,78 +186,161 @@ namespace ioSenderTouch.Utility
                 {
                     Comms.com.WriteByte(GrblConstants.CMD_JOG_CANCEL);
                 }
-
+                var x = Math.Round(input.LeftThumbstickX, 1);
+                var y = Math.Round(input.LeftThumbstickY, 1);
+                
+                ProcessJoyStick(x, y);
                 _previousDown = input.Buttons;
                 Thread.Sleep(_pollRate);
             }
         }
 
-        private void ProcessPos(double y, string command)
+        private void ProcessJoyStick(double x, double y)
         {
+            if ((x + y) == 0 && !_joystickJogging) return;
+            var commandX = x > 0 ? "X" : "X-";
+            var commandY = y > 0 ? "Y" : "Y-";
+            var absX = Math.Abs(x);
+            var absY = Math.Abs(y);
+            var command = ProcessVelocity(absX, commandX, absY, commandY);
+            if (string.IsNullOrEmpty(command)) return;
+            Console.WriteLine(command);
+            Send(command);
+        }
 
-            if (y > .8)
+        private string ProcessVelocity(double velocityX, string commandX, double velocityY, string commandY)
+        {
+            string command;
+            _joystickJogging = true;
+            var feedRateX = BuildJoggingCommand(velocityX);
+            var feedRateY = BuildJoggingCommand(velocityY);
+            var averageRate = (feedRateX + feedRateY) / 2;
+            
+            if (feedRateX == 0)
             {
-                command += $"{_grblViewModel.JogStep}F{_feedRate[3]}";
+                var step = CalculateJogStep(feedRateY);
+                command = $"{JogHeader}{commandY}{step}F{feedRateY}";
             }
-            else if (y > .6)
+            else if (feedRateY == 0)
             {
-                command += $"{_grblViewModel.JogStep}F{_feedRate[2]}";
+                var step = CalculateJogStep(feedRateX);
+                command = $"{JogHeader}{commandX}{step}F{feedRateX}";
             }
-            else if (y > .4)
+            else
             {
-                command += $"{_grblViewModel.JogStep}F{_feedRate[1]}";
-            }
-            else if (y > .2)
-            {
-                command += $"{_grblViewModel.JogStep}F{_feedRate[0]}";
+                var step = CalculateJogStep(averageRate);
+                command = $"{JogHeader}{commandX}{step}{commandY}{_grblViewModel.JogStep}F{averageRate}";
             }
 
-            if (y < .2)
-            {
-                Comms.com.WriteByte(GrblConstants.CMD_JOG_CANCEL);
-                command = string.Empty;
-            }
+            if (!averageRate.Equals(0)) return command;
+            _joystickJogging = false;
+            Comms.com.WriteByte(GrblConstants.CMD_JOG_CANCEL);
+            command = string.Empty;
+            _pollRate = 50;
+            return command;
+        }
 
+        private double CalculateJogStep(double feedRate)
+        {
+            var step = 0.0;
+            if (feedRate > 1500)
+            {
+                step = 1.65;
+                _pollRate = 50;
+            }
+            else if(feedRate > 500)
+            {
+               step = 1.5;
+               _pollRate = 110;
+
+            }
+            else
+            {
+                step = .35;
+                _pollRate = 210;
+            }
+            return step;
+        }
+
+        private double BuildJoggingCommand(double velocity)
+        {
+            double feedRate = 0;
+            //if (velocity >= .7)
+            //{
+            //    feedRate = _feedRate[3];
+            //}
+            //else if (velocity > .4)
+            //{
+            //    feedRate = _feedRate[2];
+            //}
+            //else if (velocity > .3)
+            //{
+            //    feedRate = _feedRate[1];
+            //}
+            if (velocity > .3)
+            {
+                feedRate = _grblViewModel.JogRate;
+            }
+            else if (velocity <= .3)
+            {
+                feedRate = 0;
+            }
+            return feedRate;
+        }
+
+
+        // Single Axis Joystick movement 
+        // For using joystick for Jog found to much drift on release of joystick causing machine to jog and appearance of latency 
+        private void ProcessX(double movement)
+        {
+            if (movement == 0 && !_joystickJogging) return;
+            var command = movement > 0 ? "$J = G91G21X" : "$J = G91G21X-";
+            var x = Math.Abs(movement);
+            var c = ProcessVelocity(x, command);
+            if (!string.IsNullOrEmpty(c))
+            {
+                Send(c);
+            }
+        }
+        // Single Axis Joystick movement 
+        // For using joystick for Jog found to much drift on release of joystick causing machine to jog and appearance of latency
+        private void ProcessY(double movement)
+        {
+            if (movement == 0 && !_joystickJogging) return;
+            var command = movement > 0 ? $"$J = G91G21Y" : $"$J = G91G21Y-";
+            var y = Math.Abs(movement);
+            command += ProcessVelocity(y, command);
             if (!string.IsNullOrEmpty(command))
             {
                 Send(command);
             }
         }
-        private void ProcessNeg(double y)
+        //// Single Axis Joystick movement 
+        private string ProcessVelocity(double velocity, string command)
         {
-            string command = null;
-            if (y > .8)
+            _joystickJogging = true;
+           
+            if (velocity > .8)
             {
-                command = $"$J = G91G21Y{_grblViewModel.JogStep}F{_feedRate[3]}";
-
+                command += $"{_grblViewModel.JogStep}F{_feedRate[3]}";
             }
-            else if (y > .6)
+            else if (velocity > .5)
             {
-                command = $"$J = G91G21Y{_grblViewModel.JogStep}F{_feedRate[2]}";
-
+                command += $"{_grblViewModel.JogStep}F{_feedRate[2]}";
             }
-            else if (y > .4)
+            else if (velocity > .2)
             {
-                command = $"$J = G91G21Y{_grblViewModel.JogStep}F{_feedRate[1]}";
-
+                command += $"{_grblViewModel.JogStep}F{_feedRate[1]}";
             }
-            else if (y > .2)
-            {
-                command = $"$J = G91G21Y{_grblViewModel.JogStep}F{_feedRate[0]}";
-
-            }
-            else if (y < .2)
+            else if (velocity <= .2)
             {
                 Comms.com.WriteByte(GrblConstants.CMD_JOG_CANCEL);
-                command = null;
+                command = string.Empty;
+                _joystickJogging = false;
             }
-
-            if (string.IsNullOrEmpty(command))
-            {
-                Send(command);
-            }
-
+            return command;
         }
+
         private void ProcessJogCommand(string command)
         {
             if (!_stepMode)

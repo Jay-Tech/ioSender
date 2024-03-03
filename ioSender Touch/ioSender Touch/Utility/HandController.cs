@@ -1,18 +1,15 @@
 ﻿using System;
-using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
-using Windows.Gaming.Input;
 using CNC.Core;
 using ioSenderTouch.Controls;
-using Timer = System.Timers.Timer;
 using CNC.Controls;
 using System.Threading;
-using Action = System.Action;
-using CNC.Controls.Viewer;
-using System.Runtime.Remoting.Lifetime;
-using System.Windows.Forms;
-using CNC.Core.Comands;
+using System.Runtime;
+using Windows.Gaming.Input;
+using System.Collections;
+using System.Text;
+using System.Windows.Markup;
 
 
 namespace ioSenderTouch.Utility
@@ -23,7 +20,6 @@ namespace ioSenderTouch.Utility
 
         private GrblViewModel _grblViewModel;
         private Gamepad _controller;
-        private Timer _timer;
         private bool _singleActionPress;
         private GamepadButtons _previousDown;
         private int[] _feedRate;
@@ -31,9 +27,10 @@ namespace ioSenderTouch.Utility
         private bool _stepMode;
         private bool _jogProcessed;
         private Task _buttonPollThread;
-        private int _pollRate = 50;
+        private int _pollRate = 20;
         CancellationTokenSource _cancellationTokenSource;
         private bool _joystickJogging;
+        private bool _continuousJogActive;
 
 
         public double DistanceRate => _distanceRate?[(int)JogStepRate] ?? 1;
@@ -98,15 +95,13 @@ namespace ioSenderTouch.Utility
                 if (_controller == null) return;
                 string command;
                 var input = _controller.GetCurrentReading();
-                if (input.Buttons != GamepadButtons.None)
-                {
-
-                }
+                double step = 0;
                 switch (input.Buttons)
                 {
                     case GamepadButtons.None:
                         _singleActionPress = false;
                         _jogProcessed = false;
+                        _continuousJogActive = false;
                         if (input.LeftTrigger != 1)
                         {
                             _stepMode = false;
@@ -115,27 +110,96 @@ namespace ioSenderTouch.Utility
                         break;
 
                     case GamepadButtons.B:
-                        command = $"$J = G91G21Z{_grblViewModel.JogStep}F{_grblViewModel.JogRate}";
+                        if (_continuousJogActive) continue;
+                        if (_stepMode)
+                        {
+                            step = _grblViewModel.JogStep;
+                        }
+                        else
+                        {
+                            _continuousJogActive = true;
+                            var zCurrent = Math.Abs(_grblViewModel.MachinePosition.Z);
+                            var zMax = _grblViewModel.MaxDistanceZ;
+                            step = zMax - zCurrent;
+                        }
+                        command = $"$J = G91G21Z{step}F{_grblViewModel.JogRate}";
                         ProcessJogCommand(command);
                         break;
                     case GamepadButtons.A:
-                        command = $"$J = G91G21Z-{_grblViewModel.JogStep}F{_grblViewModel.JogRate}";
+                        if (_continuousJogActive) continue;
+                        if (_stepMode)
+                        {
+                            step = _grblViewModel.JogStep;
+                        }
+                        else
+                        {
+                            _continuousJogActive = true;
+                            var zCurrent = _grblViewModel.MachinePosition.Z;
+                            step = zCurrent;
+                        }
+                        command = $"$J = G91G21Z-{step}F{_grblViewModel.JogRate}";
                         ProcessJogCommand(command);
                         break;
                     case GamepadButtons.DPadLeft:
-                        command = $"$J = G91G21X-{_grblViewModel.JogStep}F{_grblViewModel.JogRate}";
+                        if (_continuousJogActive) continue;
+                        if (_stepMode)
+                        {
+                            step = _grblViewModel.JogStep;
+                        }
+                        else
+                        {
+                            _continuousJogActive = true;
+                            var xCurrent = _grblViewModel.MachinePosition.X;
+                            step = xCurrent;
+                        }
+                        command = $"$J = G91G21X-{step}F{_grblViewModel.JogRate}";
                         ProcessJogCommand(command);
                         break;
                     case GamepadButtons.DPadRight:
-                        command = $"$J = G91G21X{_grblViewModel.JogStep}F{_grblViewModel.JogRate}";
+                        if (_continuousJogActive) continue;
+                        if (_stepMode)
+                        {
+                            step = _grblViewModel.JogStep;
+                        }
+                        else
+                        {
+                            _continuousJogActive = true;
+                            var xCurrent = Math.Abs(_grblViewModel.MachinePosition.X);
+                            var xMax = _grblViewModel.MaxDistanceX;
+                            step = xMax - xCurrent;
+                        }
+                        command = $"$J = G91G21X{step}F{_grblViewModel.JogRate}";
                         ProcessJogCommand(command);
                         break;
                     case GamepadButtons.DPadUp:
-                        command = $"$J = G91G21Y{_grblViewModel.JogStep}F{_grblViewModel.JogRate}";
+                        if (_continuousJogActive) continue;
+                        if (_stepMode)
+                        {
+                            step = _grblViewModel.JogStep;
+                        }
+                        else
+                        {
+                            _continuousJogActive = true;
+                            var yCurrent = Math.Abs(_grblViewModel.MachinePosition.Y);
+                            var yMax = _grblViewModel.MaxDistanceY;
+                            step = yMax - yCurrent;
+                        }
+                        command = $"$J = G91G21Y{step}F{_grblViewModel.JogRate}";
                         ProcessJogCommand(command);
                         break;
                     case GamepadButtons.DPadDown:
-                        command = $"$J = G91G21Y-{_grblViewModel.JogStep}F{_grblViewModel.JogRate}";
+                        if (_continuousJogActive) continue;
+                        if (_stepMode)
+                        {
+                            step = _grblViewModel.JogStep;
+                        }
+                        else
+                        {
+                            _continuousJogActive = true;
+                            var yCurrent = _grblViewModel.MachinePosition.Y;
+                            step = yCurrent;
+                        }
+                        command = $"$J = G91G21Y-{step}F{_grblViewModel.JogRate}";
                         ProcessJogCommand(command);
                         break;
                     case GamepadButtons.X:
@@ -173,7 +237,9 @@ namespace ioSenderTouch.Utility
 
                 if (Math.Abs(input.LeftTrigger - 1) < 0.1)
                 {
+                    _continuousJogActive = false;
                     _stepMode = true;
+
                 }
                 //if (Math.Abs(input.RightTrigger - 1) < 0.1)
                 //{
@@ -184,12 +250,14 @@ namespace ioSenderTouch.Utility
                     && _previousDown != GamepadButtons.None
                     && !_stepMode)
                 {
+
                     Comms.com.WriteByte(GrblConstants.CMD_JOG_CANCEL);
+                    _continuousJogActive = false;
                 }
-                var x = Math.Round(input.LeftThumbstickX, 1);
-                var y = Math.Round(input.LeftThumbstickY, 1);
-                
-                ProcessJoyStick(x, y);
+                //TODO JoyStick has a little of drift when releasing 
+                //var x = Math.Round(input.LeftThumbstickX, 1);
+                //var y = Math.Round(input.LeftThumbstickY, 1);
+                // ProcessJoyStick(x, y);
                 _previousDown = input.Buttons;
                 Thread.Sleep(_pollRate);
             }
@@ -215,7 +283,7 @@ namespace ioSenderTouch.Utility
             var feedRateX = BuildJoggingCommand(velocityX);
             var feedRateY = BuildJoggingCommand(velocityY);
             var averageRate = (feedRateX + feedRateY) / 2;
-            
+
             if (feedRateX == 0)
             {
                 var step = CalculateJogStep(feedRateY);
@@ -248,10 +316,10 @@ namespace ioSenderTouch.Utility
                 step = 1.65;
                 _pollRate = 50;
             }
-            else if(feedRate > 500)
+            else if (feedRate > 500)
             {
-               step = 1.5;
-               _pollRate = 110;
+                step = 1.5;
+                _pollRate = 110;
 
             }
             else
@@ -319,7 +387,7 @@ namespace ioSenderTouch.Utility
         private string ProcessVelocity(double velocity, string command)
         {
             _joystickJogging = true;
-           
+
             if (velocity > .8)
             {
                 command += $"{_grblViewModel.JogStep}F{_feedRate[3]}";

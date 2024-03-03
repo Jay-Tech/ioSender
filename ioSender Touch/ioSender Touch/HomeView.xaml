@@ -61,15 +61,19 @@
         </Border>
 
         <Grid DockPanel.Dock="Left" Width="440">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="29*"/>
+                <ColumnDefinition Width="81*"/>
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0" VerticalAlignment ="Top"  HorizontalAlignment="Stretch" Height="35" >
+            <StackPanel Grid.Row="0" VerticalAlignment ="Top" Height="35" Grid.ColumnSpan="2" Grid.RowSpan="2" >
                 <Button  Name="btnShowConsole" Content="Console" Click="ButtonBase_OnClick"   Visibility="{Binding Path=IsFileLoaded, Converter= {StaticResource IsVisibleConverter}}"></Button>
             </StackPanel>
-            <controls:ConsoleControl Grid.Row="1" Name="ConsoleControl" HorizontalAlignment="Stretch"   VerticalAlignment="Stretch" Margin="2,5,0,0" />
-            <controls:GCodeListControl Grid.Row="1" Name ="CodeListControl"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="2,5,0,0" Visibility="{Binding Path=IsFileLoaded, Converter= {StaticResource IsVisibleConverter}}"></controls:GCodeListControl>
+            <controls:ConsoleControl Grid.Row="1" Name="ConsoleControl" Margin="2,5,0,0" Grid.ColumnSpan="2" />
+            <controls:GCodeListControl Grid.Row="1" Name ="CodeListControl" Margin="2,5,0,0" Visibility="{Binding Path=IsFileLoaded, Converter= {StaticResource IsVisibleConverter}}" Grid.ColumnSpan="2"/>
             <!--<controls:MDIControl Grid.Row="2" x:Name="MdiControl" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="Auto" Height="Auto" Margin="5,3,0,5"/>-->
         </Grid>
 

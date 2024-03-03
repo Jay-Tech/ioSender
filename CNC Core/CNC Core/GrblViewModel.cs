@@ -213,7 +213,7 @@ namespace CNC.Core
         {
             _a = _pn = _fs = _sc = _tool = string.Empty;
             Clear();
-          
+
             Keyboard = new KeypressHandler(this);
             Keyboard.LoadMappings("KeyMap0");
             MDICommand = new ActionCommand<string>(ExecuteMDI);
@@ -236,7 +236,7 @@ namespace CNC.Core
             ToolOffset.PropertyChanged += ToolOffset_PropertyChanged;
 
             //TODO new command linking  
-           
+
             ShutDownCommand = new Command(SetShutDown);
 
             ClearAlarmCommand = new Command(_ =>
@@ -713,15 +713,18 @@ namespace CNC.Core
         public bool IsProbing { get { return _isProbing; } set { _isProbing = value; OnPropertyChanged(); } }
         public bool ProgramEnd { get { return _pgmEnd; } set { _pgmEnd = value; if (_pgmEnd) OnPropertyChanged(); } }
         public int GrblError { get { return _grblState.Error; } set { _grblState.Error = value; OnPropertyChanged(); } }
-        public StreamingState StreamingState { get { return _streamingState; }
+        public StreamingState StreamingState
+        {
+            get { return _streamingState; }
             set
             {
                 if (_streamingState != value)
                 {
-                    _streamingState = value; 
+                    _streamingState = value;
                     OnPropertyChanged();
                 }
-            } }
+            }
+        }
         public string WorkCoordinateSystem { get { return _wcs; } private set { _wcs = value; OnPropertyChanged(); } }
         public string ToolNumber { get { return _toolNumber; } private set { _toolNumber = value; OnPropertyChanged(); } }
         public Position MachinePosition { get; private set; } = new Position();
@@ -948,7 +951,7 @@ namespace CNC.Core
                     else if (!IsGrblHAL && (_a == "S" || _a == "C")) // Hack for legacy Grbl no informing about spindle going off
                     {
                         _a = "";
-                        SpindleState.Value =Core.SpindleState.Off;
+                        SpindleState.Value = Core.SpindleState.Off;
                     }
 
                     if (double.IsNaN(ActualRPM))
@@ -1563,6 +1566,15 @@ namespace CNC.Core
             {
 
             }
+
+            if (data.Contains("|MPG:1"))
+            {
+
+            }
+            if (data.Contains("|MPG:0"))
+            {
+
+            }
             if (data.First() == '<')
             {
                 stateChanged = ParseStatus(data);
@@ -1754,8 +1766,8 @@ namespace CNC.Core
                         Poller.SetState(PollingInterval);
                     }
                 }
-                
-                
+
+
             }
             else if (_grblState.State != GrblStates.Jog)
             {
@@ -1833,7 +1845,7 @@ namespace CNC.Core
                 GrblParserState.Get(true);
             }
 
-            GrblCommand.ToolChange = _isJobRunning?  "T{0}" : "M61Q{0}";
+            GrblCommand.ToolChange = _isJobRunning ? "T{0}" : "M61Q{0}";
             if (!Poller.IsEnabled)
                 Poller.SetState(PollingInterval);
             Task.Factory.StartNew(DelayClearAlarm);
@@ -1849,13 +1861,34 @@ namespace CNC.Core
         public void SettingsLoaded()
         {
             var result = GrblSettings.Get(grblHALSetting.HomingEnable).Value;
-            var bitValue =(byte)int.Parse(result);
+            var bitValue = (byte)int.Parse(result);
             IsIndividualHomingEnabled = ((bitValue & 0x02) == 0x02);
+            if (double.TryParse(GrblSettings.Get(grblHALSetting.MaxTravelBase).Value, out var x))
+            {
+                MaxDistanceX = x;
+            }
+
+            if (double.TryParse(GrblSettings.Get(grblHALSetting.MaxTravelYBase).Value, out var y))
+            {
+                MaxDistanceY = y;
+            }
+
+            if (double.TryParse(GrblSettings.Get(grblHALSetting.MaxTravelZBase).Value, out var z))
+            {
+                MaxDistanceZ = z;
+            }
+
         }
+
+        public Double MaxDistanceZ { get; set; }
+
+        public Double MaxDistanceY { get; set; }
+
+        public Double MaxDistanceX { get; set; }
 
         public void LoadComplete()
         {
-            GrblInitialized?.Invoke(this,null);
+            GrblInitialized?.Invoke(this, null);
         }
     }
 }

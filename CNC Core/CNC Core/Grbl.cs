@@ -266,6 +266,8 @@ namespace CNC.Core
         MaxFeedRateBase = 110,
         AccelerationBase = 120,
         MaxTravelBase = 130,
+        MaxTravelYBase = 131,
+        MaxTravelZBase = 132,
         MotorCurrentBase = 140,
         MicroStepsBase = 150,
         StallGuardBase = 200,
@@ -2917,7 +2919,10 @@ namespace CNC.Core
                 Comms.com.WriteByte(RTCommand);
 
             if (RTCommand == GrblConstants.CMD_STATUS_REPORT_ALL)
-                RTCommand = GrblLegacy.ConvertRTCommand(GrblConstants.CMD_STATUS_REPORT);
+            {
+                //RTCommand = GrblLegacy.ConvertRTCommand(GrblConstants.CMD_STATUS_REPORT);
+            }
+               
         }
     }
 

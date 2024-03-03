@@ -64,6 +64,7 @@ namespace ioSenderTouch
 
             if (_model.HasATC)
             {
+                //todo fix ToolView
                // _toolView = new ToolView(_model);
             }
         }

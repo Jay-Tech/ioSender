@@ -102,7 +102,7 @@ namespace CNC.Controls.Probing
         private Center _center = Center.None;
         private int _coordinateSystem = 0, _passes = 1;
         private ProbingType _probingType = ProbingType.None;
-        private ProbingProfile _profile;
+        private ProbingProfile _profile = new ProbingProfile();
         private CancellationToken cancellationToken = new CancellationToken();
 
         public Program Program;
@@ -116,7 +116,7 @@ namespace CNC.Controls.Probing
             Program = new Program(this);
 
             Profiles = profile.Profiles;
-            Profile = profile.Profiles[0];
+            Profile = Profiles[0];
 
             HeightMap.PropertyChanged += HeightMap_PropertyChanged;
             Measurement.PropertyChanged += Measurement_PropertyChanged;
@@ -409,7 +409,9 @@ namespace CNC.Controls.Probing
             get { return _profile; }
             set
             {
+                
                 _profile = value;
+                if(_profile == null)return;
                 RapidsFeedRate = _profile.RapidsFeedRate;
                 ProbeFeedRate = _profile.ProbeFeedRate;
                 LatchFeedRate = _profile.LatchFeedRate;

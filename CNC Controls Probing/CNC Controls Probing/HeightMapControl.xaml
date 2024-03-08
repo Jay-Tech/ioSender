@@ -8,7 +8,7 @@
     xmlns:Controls="clr-namespace:CNC.Controls;assembly=CNC.Controls.WPF" x:Class="CNC.Controls.Probing.HeightMapControl"
     xmlns:helix="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf"
     mc:Ignorable="d" Height="370"
-    d:DesignHeight="370" d:DesignWidth="600">
+    d:DesignHeight="500" d:DesignWidth="600">
     <UserControl.Resources>
         <system:String x:Uid="str_heightMapInstructions" x:Key="Instructions">A rapid motion to X0Y0 will be performed before probing the height map starts.\nEnsure the initial Z-position is clear of any obstacles that might be encountered during probing.</system:String>
         <system:String x:Uid="str_heightMapFailed" x:Key="ProbingFailed">Probing failed</system:String>
@@ -16,8 +16,8 @@
         <Controls:LogicalNotConverter x:Key="IsNotRunningConverter" />
     </UserControl.Resources>
         <Grid>
-        <StackPanel Margin="5,5,0,0" Width="250" HorizontalAlignment="Left" VerticalAlignment="Top">
-            <GroupBox x:Uid="grp_probeArea" Header="Area to probe" Height="Auto" HorizontalAlignment="Left" VerticalAlignment="Top">
+        <StackPanel Margin="5,5,0,0" Width="260" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <GroupBox x:Uid="grp_probeArea" Header="Area to probe" Height="Auto" HorizontalAlignment="Left">
                 <StackPanel Margin="5,5,0,0">
                     <StackPanel Orientation="Horizontal">
                         <Controls:NumericField Label="X:" ColonAt="20" Value="{Binding Path=HeightMap.MinX, Mode=TwoWay}" Format="-###0.0##"/>

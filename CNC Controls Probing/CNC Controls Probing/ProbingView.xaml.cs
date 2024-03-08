@@ -269,7 +269,7 @@ namespace CNC.Controls.Probing
 
         private void ProbingView_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            showProbeProperties();
+           // showProbeProperties();
         }
         private void showProbeProperties()
         {
@@ -285,7 +285,7 @@ namespace CNC.Controls.Probing
             else
                 height = probeProperties.ActualHeight;
 
-            probeProperties.Visibility = (dp.ActualHeight - t1.ActualHeight - Jog.ActualHeight + probeProperties.ActualHeight) > height ? Visibility.Visible : Visibility.Collapsed;
+           // probeProperties.Visibility = (dp.ActualHeight - t1.ActualHeight - Jog.ActualHeight + probeProperties.ActualHeight) > height ? Visibility.Visible : Visibility.Collapsed;
         }
         #region Methods and properties required by CNCView interface
 

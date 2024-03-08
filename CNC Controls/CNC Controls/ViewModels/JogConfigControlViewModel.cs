@@ -15,7 +15,7 @@ namespace CNC.Controls.ViewModels
         private readonly GrblViewModel _grblViewModel;
         private string _unit;
         private JogConfig _measurement;
-        private bool _isGrbl;
+        private bool _isGrbl = false;
 
         public string Unit
         {
@@ -51,7 +51,6 @@ namespace CNC.Controls.ViewModels
         public JogConfigControlViewModel(GrblViewModel grblViewModel)
         {
             _grblViewModel = grblViewModel;
-            IsGrbl = !_grblViewModel.IsGrblHAL;
             _grblViewModel.PropertyChanged += _grblViewModel_PropertyChanged;
             Measurement = _grblViewModel.IsMetric ? AppConfig.Settings.Base.JogMetric : AppConfig.Settings.Base.JogImperial;
             Unit = _grblViewModel.IsMetric ? "mm" : "in";

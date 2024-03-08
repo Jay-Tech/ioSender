@@ -30,9 +30,6 @@ namespace ioSenderTouch
             InitializeComponent();
            
             Title = string.Format(Title, Version);
-            int res;
-            //if ((res = AppConfig.Settings.SetupAndOpen(Title, (GrblViewModel)DataContext, App.Current.Dispatcher)) != 0)
-            //    Environment.Exit(res);
             _viewModel = DataContext as GrblViewModel ?? new GrblViewModel();
             BaseWindowTitle = Title;
             AppConfig.Settings.OnConfigFileLoaded += Settings_OnConfigFileLoaded;

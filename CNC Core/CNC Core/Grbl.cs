@@ -2885,7 +2885,7 @@ namespace CNC.Core
         internal static void Suspend()
         {
             suspend = true;
-            Comms.com.PurgeQueue();
+            Comms.com?.PurgeQueue();
         }
 
         internal static void Resume()

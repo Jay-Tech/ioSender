@@ -103,6 +103,7 @@
     <Compile Include="GCodeJob.cs" />
     <Compile Include="GrblViewModel.cs" />
     <Compile Include="KeypressHandler.cs" />
+    <Compile Include="Logging\ExceptionLogging.cs" />
     <Compile Include="Machine.cs" />
     <Compile Include="MeasureViewModel.cs" />
     <Compile Include="NGCExpr.cs" />

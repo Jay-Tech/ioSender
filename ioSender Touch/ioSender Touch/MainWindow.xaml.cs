@@ -8,6 +8,7 @@ using System.Windows.Threading;
 using CNC.Controls;
 using CNC.Converters;
 using CNC.Core;
+using CNC.Core.Logging;
 using ioSenderTouch.Controls;
 using MaterialDesignThemes.Wpf;
 
@@ -16,7 +17,7 @@ namespace ioSenderTouch
 {
     public partial class MainWindow : Window
     {
-        private const string Version = "1.0.4";
+        private const string Version = "1.0.4-D";
         private const string App_Name = "IO Sender Touch";
         public static MainWindow ui = null;
         public static UIViewModel UIViewModel { get; } = new UIViewModel();
@@ -29,55 +30,62 @@ namespace ioSenderTouch
         public bool JobRunning => _viewModel.IsJobRunning;
         public MainWindow()
         {
-            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config"+Path.DirectorySeparatorChar);
-            CNC.Core.Resources.Path = path;
-            InitializeComponent();
-            ui = this;
-            Title = string.Format(Title, Version);
-            int res;
-            //if ((res = AppConfig.Settings.SetupAndOpen(Title, (GrblViewModel)DataContext, App.Current.Dispatcher)) != 0)
-            //    Environment.Exit(res);
-            _viewModel = DataContext as GrblViewModel ?? new GrblViewModel();
-            BaseWindowTitle = Title;
-            AppConfig.Settings.OnConfigFileLoaded += Settings_OnConfigFileLoaded;
+            try
+            {
+                var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config" + Path.DirectorySeparatorChar);
+                CNC.Core.Resources.Path = path;
+                InitializeComponent();
+                ui = this;
+                Title = string.Format(Title, Version);
+                _viewModel = DataContext as GrblViewModel ?? new GrblViewModel();
+                BaseWindowTitle = Title;
+                AppConfig.Settings.OnConfigFileLoaded += Settings_OnConfigFileLoaded;
 
-            if (SystemInformation.ScreenOrientation ==ScreenOrientation.Angle90 || SystemInformation.ScreenOrientation == ScreenOrientation.Angle270)
-            {
-                _homeViewPortrait = new HomeViewPortrait(_viewModel);
-                DockPanel.SetDock(_homeViewPortrait, Dock.Left);
-                DockPanel.Children.Add(_homeViewPortrait);
-                MenuBorder.Child = new PortraitMenu();
-                MenuBorder.DataContext = _viewModel;
-            }
-            else
-            {
-                _homeView = new HomeView(_viewModel);
-                DockPanel.SetDock(_homeView, Dock.Left);
-                DockPanel.Children.Add(_homeView);
-                var menu = new LandScapeMenu
+                if (SystemInformation.ScreenOrientation == ScreenOrientation.Angle90 || SystemInformation.ScreenOrientation == ScreenOrientation.Angle270)
                 {
-                    VerisonLabel =
+                    _homeViewPortrait = new HomeViewPortrait(_viewModel);
+                    DockPanel.SetDock(_homeViewPortrait, Dock.Left);
+                    DockPanel.Children.Add(_homeViewPortrait);
+                    MenuBorder.Child = new PortraitMenu();
+                    MenuBorder.DataContext = _viewModel;
+                }
+                else
+                {
+                    _homeView = new HomeView(_viewModel);
+                    DockPanel.SetDock(_homeView, Dock.Left);
+                    DockPanel.Children.Add(_homeView);
+                    var menu = new LandScapeMenu
+                    {
+                        VerisonLabel =
                     {
                         Content = $"{App_Name} {Version}"
                     }
-                };
-                MenuBorder.Child =menu;
-                MenuBorder.DataContext = _viewModel;
+                    };
+                    MenuBorder.Child = menu;
+                    MenuBorder.DataContext = _viewModel;
+                }
+                _viewModel.OnShutDown += _viewModel_OnShutDown;
             }
-            _viewModel.OnShutDown += _viewModel_OnShutDown;
-           
-            new PipeServer(App.Current.Dispatcher);
-            PipeServer.FileTransfer += Pipe_FileTransfer;
-            
+            catch (Exception ex )
+            {
+                ExceptionLogging.SendErrorToText(ex, "Error MainWindow Constructor ");
+            }
         }
 
         protected override void OnContentRendered(EventArgs e)
         {
-            base.OnContentRendered(e);
-            if (_shown)
-                return;
-            _shown = true;
-            _viewModel.LoadComplete();
+            try
+            {
+                base.OnContentRendered(e);
+                if (_shown)
+                    return;
+                _shown = true;
+                _viewModel.LoadComplete();
+            }
+            catch (Exception ex)
+            {
+                ExceptionLogging.SendErrorToText(ex, "Error Main Window LoadComplete" );
+            }
         }
 
         private  void SetPrimaryColor(Color color)

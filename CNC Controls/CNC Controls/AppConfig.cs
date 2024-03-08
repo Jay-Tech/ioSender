@@ -49,6 +49,8 @@ using CNC.Core;
 using CNC.GCode;
 using static CNC.GCode.GCodeParser;
 using System.Collections.Generic;
+using System.Windows.Forms.VisualStyles;
+using CNC.Core.Logging;
 
 namespace CNC.Controls
 {
@@ -500,154 +502,144 @@ namespace CNC.Controls
 
         public int SetupAndOpen(GrblViewModel model, System.Windows.Threading.Dispatcher dispatcher)
         {
-            int status = 0;
-            bool selectPort = false;
-            int jogMode = -1;
-            string port = string.Empty, baud = string.Empty;
-            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config" + Path.DirectorySeparatorChar);
-            Resources.Path = path;
-
-            string[] args = Environment.GetCommandLineArgs();
-
-            int p = 0;
-            while (p < args.GetLength(0)) switch (args[p++].ToLowerInvariant())
-                {
-                    case "-inifile":
-                        CNC.Core.Resources.IniName = GetArg(args, p++);
-                        break;
-
-                    case "-debugfile":
-                        CNC.Core.Resources.DebugFile = GetArg(args, p++);
-                        break;
-
-                    case "-configmapping":
-                        CNC.Core.Resources.ConfigName = GetArg(args, p++);
-                        break;
-
-                    case "-locale":
-                    case "-language": // deprecated
-                        CNC.Core.Resources.Locale = GetArg(args, p++);
-                        break;
-
-                    case "-port":
-                        port = GetArg(args, p++);
-                        break;
-
-                    case "-baud":
-                        baud = GetArg(args, p++);
-                        break;
-
-                    case "-selectport":
-                        selectPort = true;
-                        break;
-
-                    case "-islegacy":
-                        CNC.Core.Resources.IsLegacyController = true;
-                        break;
-
-                    case "-jogmode":
-                        if (int.TryParse(GetArg(args, p++), out jogMode))
-                            jogMode = Math.Min(Math.Max(jogMode, 0), (int)JogConfig.JogMode.KeypadAndUI);
-                        break;
-
-                    default:
-                        if (!args[p - 1].EndsWith(".exe") && File.Exists(args[p - 1]))
-                            FileName = args[p - 1];
-                        break;
-                }
-
-            if (!Load(CNC.Core.Resources.IniFile))
+            try
             {
-                if (MessageBox.Show(LibStrings.FindResource("CreateConfig"), "IoSender", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-                {
-                    if (!Save(CNC.Core.Resources.IniFile))
+                int status = 0;
+                bool selectPort = false;
+                int jogMode = -1;
+                string port = string.Empty, baud = string.Empty;
+                var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config" + Path.DirectorySeparatorChar);
+                Resources.Path = path;
+
+                string[] args = Environment.GetCommandLineArgs();
+
+                int p = 0;
+                while (p < args.GetLength(0)) switch (args[p++].ToLowerInvariant())
                     {
-                        MessageBox.Show(LibStrings.FindResource("CreateConfigFail"), "IoSender");
-                        status = 1;
+                        case "-inifile":
+                            CNC.Core.Resources.IniName = GetArg(args, p++);
+                            break;
+
+                        case "-debugfile":
+                            CNC.Core.Resources.DebugFile = GetArg(args, p++);
+                            break;
+
+                        case "-configmapping":
+                            CNC.Core.Resources.ConfigName = GetArg(args, p++);
+                            break;
+
+                        case "-locale":
+                        case "-language": // deprecated
+                            CNC.Core.Resources.Locale = GetArg(args, p++);
+                            break;
+
+                        case "-port":
+                            port = GetArg(args, p++);
+                            break;
+
+                        case "-baud":
+                            baud = GetArg(args, p++);
+                            break;
+
+                        case "-selectport":
+                            selectPort = true;
+                            break;
+
+                        case "-islegacy":
+                            CNC.Core.Resources.IsLegacyController = true;
+                            break;
+
+                        case "-jogmode":
+                            if (int.TryParse(GetArg(args, p++), out jogMode))
+                                jogMode = Math.Min(Math.Max(jogMode, 0), (int)JogConfig.JogMode.KeypadAndUI);
+                            break;
+
+                        default:
+                            if (!args[p - 1].EndsWith(".exe") && File.Exists(args[p - 1]))
+                                FileName = args[p - 1];
+                            break;
                     }
-                }
-                else
-                    return 1;
-            }
 
-            if (jogMode != -1)
-                Base.Jog.Mode = (JogConfig.JogMode)jogMode;
-
-            if (!string.IsNullOrEmpty(port))
-                selectPort = false;
-
-            if (!selectPort)
-            {
-                if (!string.IsNullOrEmpty(port))
-                    setPort(port, baud);
-#if USEWEBSOCKET
-                if (Base.PortParams.ToLower().StartsWith("ws://"))
-                    new WebsocketStream(Base.PortParams, dispatcher);
-                else
-#endif
-                if (char.IsDigit(Base.PortParams[0])) // We have an IP address
-                    new TelnetStream(Base.PortParams, dispatcher);
-                else
-#if USEELTIMA
-                    new EltimaStream(Config.PortParams, Config.ResetDelay, dispatcher);
-#else
-                    new SerialStream(Base.PortParams, Base.ResetDelay, dispatcher);
-#endif
-            }
-
-            if ((Comms.com == null || !Comms.com.IsOpen) && string.IsNullOrEmpty(port))
-            {
-                PortDialog portsel = new PortDialog();
-
-                port = portsel.ShowDialog(Base.PortParams);
-                if (string.IsNullOrEmpty(port))
-                    status = 2;
-
-                else
+                if (!Load(CNC.Core.Resources.IniFile))
                 {
-                    setPort(port, string.Empty);
+                    if (MessageBox.Show(LibStrings.FindResource("CreateConfig"), "IoSender", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                    {
+                        if (!Save(CNC.Core.Resources.IniFile))
+                        {
+                            MessageBox.Show(LibStrings.FindResource("CreateConfigFail"), "IoSender");
+                            status = 1;
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Failed to create connection settings  IoSender Touch closing", "IoSender", MessageBoxButton.OK,
+                            MessageBoxImage.Question);
+                        ExceptionLogging.SendErrorToText(new Exception(" connection  setting terminated"), "Settings config setup/load Terminated");
+                        Environment.Exit(0);
+                    };
+                }
+
+                if (jogMode != -1)
+                    Base.Jog.Mode = (JogConfig.JogMode)jogMode;
+
+                if (!string.IsNullOrEmpty(port))
+                    selectPort = false;
+
+                if (!selectPort)
+                {
+                    if (!string.IsNullOrEmpty(port))
+                        setPort(port, baud);
 #if USEWEBSOCKET
-                    if (port.ToLower().StartsWith("ws://"))
+                    if (Base.PortParams.ToLower().StartsWith("ws://"))
                         new WebsocketStream(Base.PortParams, dispatcher);
                     else
 #endif
-                    if (char.IsDigit(port[0])) // We have an IP address
+                    if (char.IsDigit(Base.PortParams[0])) // We have an IP address
                         new TelnetStream(Base.PortParams, dispatcher);
                     else
 #if USEELTIMA
-                        new EltimaStream(Config.PortParams, Config.ResetDelay, dispatcher);
+                    new EltimaStream(Config.PortParams, Config.ResetDelay, dispatcher);
 #else
                         new SerialStream(Base.PortParams, Base.ResetDelay, dispatcher);
 #endif
-                    Save(CNC.Core.Resources.IniFile);
-                    OnConfigFileLoaded?.Invoke(this, null);
                 }
-            }
 
-            if (Comms.com != null && Comms.com.IsOpen)
-            {
-                Comms.com.DataReceived += model.DataReceived;
-
-                CancellationToken cancellationToken = new CancellationToken();
-
-                // Wait 400ms to see if a MPG is polling Grbl...
-
-                new Thread(() =>
+                if ((Comms.com == null || !Comms.com.IsOpen) && string.IsNullOrEmpty(port))
                 {
-                    MPGactive = WaitFor.SingleEvent<string>(
-                    cancellationToken,
-                    null,
-                    a => model.OnRealtimeStatusProcessed += a,
-                    a => model.OnRealtimeStatusProcessed -= a,
-                    500);
-                }).Start();
+                    PortDialog portsel = new PortDialog();
 
-                while (MPGactive == null)
-                    EventUtils.DoEvents();
+                    port = portsel.ShowDialog(Base.PortParams);
+                    if (string.IsNullOrEmpty(port))
+                        status = 2;
 
-                if (MPGactive == true)
+                    else
+                    {
+                        setPort(port, string.Empty);
+#if USEWEBSOCKET
+                        if (port.ToLower().StartsWith("ws://"))
+                            new WebsocketStream(Base.PortParams, dispatcher);
+                        else
+#endif
+                        if (char.IsDigit(port[0])) // We have an IP address
+                            new TelnetStream(Base.PortParams, dispatcher);
+                        else
+#if USEELTIMA
+                        new EltimaStream(Config.PortParams, Config.ResetDelay, dispatcher);
+#else
+                            new SerialStream(Base.PortParams, Base.ResetDelay, dispatcher);
+#endif
+                        Save(CNC.Core.Resources.IniFile);
+                        OnConfigFileLoaded?.Invoke(this, null);
+                    }
+                }
+
+                if (Comms.com != null && Comms.com.IsOpen)
                 {
-                    MPGactive = null;
+                    Comms.com.DataReceived += model.DataReceived;
+
+                    CancellationToken cancellationToken = new CancellationToken();
+
+                    // Wait 400ms to see if a MPG is polling Grbl...
 
                     new Thread(() =>
                     {
@@ -656,7 +648,7 @@ namespace CNC.Controls
                         null,
                         a => model.OnRealtimeStatusProcessed += a,
                         a => model.OnRealtimeStatusProcessed -= a,
-                        500, () => Comms.com.WriteByte(GrblConstants.CMD_STATUS_REPORT_ALL));
+                        500);
                     }).Start();
 
                     while (MPGactive == null)
@@ -664,36 +656,59 @@ namespace CNC.Controls
 
                     if (MPGactive == true)
                     {
-                        if (model.IsMPGActive != true && model.AutoReportingEnabled)
+                        MPGactive = null;
+
+                        new Thread(() =>
                         {
-                            MPGactive = false;
-                            if (model.AutoReportInterval > 0)
-                                Comms.com.WriteByte(GrblConstants.CMD_AUTO_REPORTING_TOGGLE);
+                            MPGactive = WaitFor.SingleEvent<string>(
+                            cancellationToken,
+                            null,
+                            a => model.OnRealtimeStatusProcessed += a,
+                            a => model.OnRealtimeStatusProcessed -= a,
+                            500, () => Comms.com.WriteByte(GrblConstants.CMD_STATUS_REPORT_ALL));
+                        }).Start();
+
+                        while (MPGactive == null)
+                            EventUtils.DoEvents();
+
+                        if (MPGactive == true)
+                        {
+                            if (model.IsMPGActive != true && model.AutoReportingEnabled)
+                            {
+                                MPGactive = false;
+                                if (model.AutoReportInterval > 0)
+                                    Comms.com.WriteByte(GrblConstants.CMD_AUTO_REPORTING_TOGGLE);
+                            }
                         }
                     }
-                }
 
-                // ...if so show dialog for wait for it to stop polling and relinquish control.
-                if (MPGactive == true)
-                {
-                    MPGPending await = new MPGPending(model);
-                    await.ShowDialog();
-                    if (await.Cancelled)
+                    // ...if so show dialog for wait for it to stop polling and relinquish control.
+                    if (MPGactive == true)
                     {
-                        Comms.com.Close(); //!!
-                        status = 2;
+                        MPGPending await = new MPGPending(model);
+                        await.ShowDialog();
+                        if (await.Cancelled)
+                        {
+                            Comms.com.Close(); //!!
+                            status = 2;
+                        }
                     }
+
+                    model.IsReady = true;
+                }
+                else if (status != 2)
+                {
+                    MessageBox.Show(string.Format(LibStrings.FindResource("ConnectFailed"), Base.PortParams), "", MessageBoxButton.OK, MessageBoxImage.Error);
+                    status = 2;
                 }
 
-                model.IsReady = true;
+                return status;
             }
-            else if (status != 2)
+            catch (Exception exception)
             {
-                MessageBox.Show(string.Format(LibStrings.FindResource("ConnectFailed"), Base.PortParams), "", MessageBoxButton.OK, MessageBoxImage.Error);
-                status = 2;
+                ExceptionLogging.SendErrorToText(exception, "Error in loading/creating App Config");
+                return 2;
             }
-
-            return status;
         }
 
         private string GetArg(string[] args, int i)

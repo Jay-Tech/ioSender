@@ -46,6 +46,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using CNC.Core.Comands;
+using CNC.Core.Logging;
 using CNC.GCode;
 using Color = System.Windows.Media.Color;
 
@@ -1549,257 +1550,265 @@ namespace CNC.Core
 
         public void DataReceived(string data)
         {
-            Connected = true;
-            if (data.Length == 0)
-                return;
-
-            if (SuspendProcessing)
+            try
             {
-                OnResponseReceived?.Invoke(data);
-                return;
-            }
+                Connected = true;
+                if (data.Length == 0)
+                    return;
 
-            bool stateChanged = true;
-            if (data.StartsWith("NEWOPT"))
-            {
-
-            }
-            if (data.First() == '<')
-            {
-                stateChanged = ParseStatus(data);
-
-                OnRealtimeStatusProcessed?.Invoke(data);
-            }
-            else if (data.StartsWith("ALARM"))
-            {
-                string[] alarm = data.Split(':');
-
-                SetGRBLState("Alarm", alarm.Length == 2 ? int.Parse(alarm[1]) : -1, false);
-            }
-            else if (data.First() == '[')
-            {
-                int sep = data.IndexOf(':');
-                if (sep > 1) switch (data.Substring(1, sep - 1))
-                    {
-                        case "PRB":
-                            ParseProbeStatus(data);
-                            break;
-                        case "NEWOPT":
-                            string[] valuepair = data.Substring(1).TrimEnd(']').Split(':');
-                            var options = valuepair[1];
-                            string[] s2 = valuepair[1].Split(',');
-                            foreach (string value in s2)
-                            {
-
-                                switch (value)
-                                {
-                                    //case "ENUMS":
-                                    //    HasEnums = true;
-                                    //    break;
-
-                                    //case "EXPR":
-                                    //    ExpressionsSupported = true;
-                                    //    break;
-
-                                    //case "TC":
-                                    //    ManualToolChange = true;
-                                    //    break;
-
-                                    case "ATC":
-                                        HasATC = true;
-                                        break;
-
-                                    //case "RTC":
-                                    //    HasRTC = true;
-                                    //    break;
-
-                                    //case "ETH":
-                                    //    break;
-
-                                    //case "HOME":
-                                    //    HomingEnabled = true;
-                                    //    break;
-
-                                    case "SD":
-                                        HasSDCard = true;
-                                        break;
-
-                                    //case "SED":
-                                    //    HasSettingDescriptions = true;
-                                    //    break;
-
-                                    //case "YM":
-                                    //    if (UploadProtocol == string.Empty)
-                                    //        UploadProtocol = "YModem";
-                                    //    break;
-
-                                    case "FTP":
-                                        // UploadProtocol = "FTP";
-                                        break;
-
-                                    case "PID":
-                                        //  HasPIDLog = true;
-                                        break;
-
-                                    case "NOPROBE":
-                                        //  HasProbe = false;
-                                        break;
-
-                                    case "LATHE":
-                                        LatheModeEnabled = true;
-                                        break;
-
-                                    case "BD":
-                                        //  OptionalSignals |= Signals.BlockDelete;
-                                        break;
-
-                                    case "ES":
-                                        // OptionalSignals |= Signals.EStop;
-                                        break;
-
-                                    case "MW":
-                                        // OptionalSignals |= Signals.MotorWarning;
-                                        break;
-
-                                    case "OS":
-                                        // OptionalSignals |= Signals.OptionalStop;
-                                        break;
-
-                                    case "RT+":
-                                    case "RT-":
-                                        //  UseLegacyRTCommands = false;
-                                        break;
-                                }
-                            }
-                            break;
-                        case "GC":
-                            ParseGCStatus(data);
-                            break;
-
-                        case "TLR":
-                            TloReference = dbl.Parse(data.Substring(5).TrimEnd(']'));
-                            break;
-
-                        case "TLO":
-                            // Workaround for legacy grbl, it reports only one offset...
-                            ToolOffset.SuspendNotifications = true;
-                            ToolOffset.Z = double.NaN;
-                            ToolOffset.SuspendNotifications = false;
-                            // End workaround    
-
-                            ToolOffset.Parse(data.Substring(5).TrimEnd(']'));
-
-                            // Workaround for legacy grbl, copy X offset to Z (there is no info available for which axis...)
-                            if (double.IsNaN(ToolOffset.Z))
-                            {
-                                ToolOffset.Z = ToolOffset.X;
-                                ToolOffset.X = ToolOffset.Y = 0d;
-                                OnPropertyChanged(nameof(IsToolOffsetActive));
-                            }
-
-                            GrblWorkParameters.ToolLengtOffset.Z = ToolOffset.Z;
-                            // End workaround
-                            break;
-
-                        case "HOME":
-                            ParseHomedStatus(data);
-                            break;
-
-                        case "MSG":
-                            var msg = data.Substring(5).Trim().TrimEnd(']');
-                            if (msg == "'$H'|'$X' to unlock")
-                                Message = LibStrings.FindResource(GrblInfo.IsGrblHAL ? "ContUnlock" : "ContHomeUnlock");
-                            else if (GrblState.State == GrblStates.Alarm && msg != "Caution: Unlocked")
-                            {
-                                switch (GrblState.Substate)
-                                {
-                                    case 10:
-                                        _message = LibStrings.FindResource("ContClearResetUnlock");
-                                        break;
-                                    case 11:
-                                        _message = LibStrings.FindResource("ContHome");
-                                        break;
-
-                                    default:
-                                        _message = LibStrings.FindResource("ContResetUnlock");
-                                        break;
-                                }
-                                Message = (msg == "Reset to continue" ? string.Empty : msg + ", ") + _message;
-                            }
-                            else
-                                Message = msg;
-                            if (msg == "Pgm End")
-                                ProgramEnd = true;
-                            break;
-                    }
-            }
-            else if (data.ToLower().StartsWith("grbl"))
-            {
-                if (Poller != null)
-                    Poller.SetState(0);
-                _grblState.State = GrblStates.Unknown;
-                var msg = Message;
-                GrblReset = true;
-                OnGrblReset?.Invoke(data);
-                Message = msg;
-                //ResetSystem();
-                _reset = false;
-                OnPropertyChanged(nameof(IsCheckMode));
-                OnPropertyChanged(nameof(IsSleepMode));
-                if (IsReady && AutoReportingEnabled)
-                    Comms.com.WriteByte(GrblConstants.CMD_AUTO_REPORTING_TOGGLE);
-                else
+                if (SuspendProcessing)
                 {
-                    if (Poller != null && IsReady && !Poller.IsEnabled)
-                    {
-                        Poller.SetState(PollingInterval);
-                    }
+                    OnResponseReceived?.Invoke(data);
+                    return;
                 }
-                
-                
-            }
-            else if (_grblState.State != GrblStates.Jog)
-            {
-                if (data == "ok")
-                    OnCommandResponseReceived?.Invoke(data);
-                else
+
+                bool stateChanged = true;
+                if (data.StartsWith("NEWOPT"))
                 {
-                    if (data.StartsWith("error:"))
+
+                }
+                if (data.First() == '<')
+                {
+                    stateChanged = ParseStatus(data);
+
+                    OnRealtimeStatusProcessed?.Invoke(data);
+                }
+                else if (data.StartsWith("ALARM"))
+                {
+                    string[] alarm = data.Split(':');
+
+                    SetGRBLState("Alarm", alarm.Length == 2 ? int.Parse(alarm[1]) : -1, false);
+                }
+                else if (data.First() == '[')
+                {
+                    int sep = data.IndexOf(':');
+                    if (sep > 1) switch (data.Substring(1, sep - 1))
+                        {
+                            case "PRB":
+                                ParseProbeStatus(data);
+                                break;
+                            case "NEWOPT":
+                                string[] valuepair = data.Substring(1).TrimEnd(']').Split(':');
+                                var options = valuepair[1];
+                                string[] s2 = valuepair[1].Split(',');
+                                foreach (string value in s2)
+                                {
+
+                                    switch (value)
+                                    {
+                                        //case "ENUMS":
+                                        //    HasEnums = true;
+                                        //    break;
+
+                                        //case "EXPR":
+                                        //    ExpressionsSupported = true;
+                                        //    break;
+
+                                        //case "TC":
+                                        //    ManualToolChange = true;
+                                        //    break;
+
+                                        case "ATC":
+                                            HasATC = true;
+                                            break;
+
+                                        //case "RTC":
+                                        //    HasRTC = true;
+                                        //    break;
+
+                                        //case "ETH":
+                                        //    break;
+
+                                        //case "HOME":
+                                        //    HomingEnabled = true;
+                                        //    break;
+
+                                        case "SD":
+                                            HasSDCard = true;
+                                            break;
+
+                                        //case "SED":
+                                        //    HasSettingDescriptions = true;
+                                        //    break;
+
+                                        //case "YM":
+                                        //    if (UploadProtocol == string.Empty)
+                                        //        UploadProtocol = "YModem";
+                                        //    break;
+
+                                        case "FTP":
+                                            //UploadProtocol = "FTP";
+                                            break;
+
+                                        case "PID":
+                                            //  HasPIDLog = true;
+                                            break;
+
+                                        case "NOPROBE":
+                                            //  HasProbe = false;
+                                            break;
+
+                                        case "LATHE":
+                                            LatheModeEnabled = true;
+                                            break;
+
+                                        case "BD":
+                                            //  OptionalSignals |= Signals.BlockDelete;
+                                            break;
+
+                                        case "ES":
+                                            // OptionalSignals |= Signals.EStop;
+                                            break;
+
+                                        case "MW":
+                                            // OptionalSignals |= Signals.MotorWarning;
+                                            break;
+
+                                        case "OS":
+                                            // OptionalSignals |= Signals.OptionalStop;
+                                            break;
+
+                                        case "RT+":
+                                        case "RT-":
+                                            //  UseLegacyRTCommands = false;
+                                            break;
+                                    }
+                                }
+                                break;
+                            case "GC":
+                                ParseGCStatus(data);
+                                break;
+
+                            case "TLR":
+                                TloReference = dbl.Parse(data.Substring(5).TrimEnd(']'));
+                                break;
+
+                            case "TLO":
+                                // Workaround for legacy grbl, it reports only one offset...
+                                ToolOffset.SuspendNotifications = true;
+                                ToolOffset.Z = double.NaN;
+                                ToolOffset.SuspendNotifications = false;
+                                // End workaround    
+
+                                ToolOffset.Parse(data.Substring(5).TrimEnd(']'));
+
+                                // Workaround for legacy grbl, copy X offset to Z (there is no info available for which axis...)
+                                if (double.IsNaN(ToolOffset.Z))
+                                {
+                                    ToolOffset.Z = ToolOffset.X;
+                                    ToolOffset.X = ToolOffset.Y = 0d;
+                                    OnPropertyChanged(nameof(IsToolOffsetActive));
+                                }
+
+                                GrblWorkParameters.ToolLengtOffset.Z = ToolOffset.Z;
+                                // End workaround
+                                break;
+
+                            case "HOME":
+                                ParseHomedStatus(data);
+                                break;
+
+                            case "MSG":
+                                var msg = data.Substring(5).Trim().TrimEnd(']');
+                                if (msg == "'$H'|'$X' to unlock")
+                                    Message = LibStrings.FindResource(GrblInfo.IsGrblHAL ? "ContUnlock" : "ContHomeUnlock");
+                                else if (GrblState.State == GrblStates.Alarm && msg != "Caution: Unlocked")
+                                {
+                                    switch (GrblState.Substate)
+                                    {
+                                        case 10:
+                                            _message = LibStrings.FindResource("ContClearResetUnlock");
+                                            break;
+                                        case 11:
+                                            _message = LibStrings.FindResource("ContHome");
+                                            break;
+
+                                        default:
+                                            _message = LibStrings.FindResource("ContResetUnlock");
+                                            break;
+                                    }
+                                    Message = (msg == "Reset to continue" ? string.Empty : msg + ", ") + _message;
+                                }
+                                else
+                                    Message = msg;
+                                if (msg == "Pgm End")
+                                    ProgramEnd = true;
+                                break;
+                        }
+                }
+                else if (data.ToLower().StartsWith("grbl"))
+                {
+                    if (Poller != null)
+                        Poller.SetState(0);
+                    _grblState.State = GrblStates.Unknown;
+                    var msg = Message;
+                    GrblReset = true;
+                    OnGrblReset?.Invoke(data);
+                    Message = msg;
+                    //ResetSystem();
+                    _reset = false;
+                    OnPropertyChanged(nameof(IsCheckMode));
+                    OnPropertyChanged(nameof(IsSleepMode));
+                    if (IsReady && AutoReportingEnabled)
+                        Comms.com.WriteByte(GrblConstants.CMD_AUTO_REPORTING_TOGGLE);
+                    else
                     {
-                        try
+                        if (Poller != null && IsReady && !Poller.IsEnabled)
                         {
-                            SetGrblError(int.Parse(data.Substring(6)));
+                            Poller.SetState(PollingInterval);
                         }
-                        catch
-                        {
-                        }
+                    }
+
+
+                }
+                else if (_grblState.State != GrblStates.Jog)
+                {
+                    if (data == "ok")
                         OnCommandResponseReceived?.Invoke(data);
-                    }
-                    else if (!data.StartsWith("?"))
+                    else
                     {
-                        //                 Message = data; //??
+                        if (data.StartsWith("error:"))
+                        {
+                            try
+                            {
+                                SetGrblError(int.Parse(data.Substring(6)));
+                            }
+                            catch
+                            {
+                            }
+                            OnCommandResponseReceived?.Invoke(data);
+                        }
+                        else if (!data.StartsWith("?"))
+                        {
+                            //                 Message = data; //??
+                        }
                     }
                 }
-            }
 
-            if (ResponseLogVerbose || !(data.First() == '<' || data.First() == '$' || data.First() == 'o' || (data.First() == '[' && (data.StartsWith("[GC") || DataIsEnumeration(data)))) || data.StartsWith("error"))
-            {
-                if (!(data.First() == '<' && ResponseLogFilterRT))
+                if (ResponseLogVerbose || !(data.First() == '<' || data.First() == '$' || data.First() == 'o' || (data.First() == '[' && (data.StartsWith("[GC") || DataIsEnumeration(data)))) || data.StartsWith("error"))
                 {
-                    if (data.StartsWith("error:"))
+                    if (!(data.First() == '<' && ResponseLogFilterRT))
                     {
-                        var msg = GrblErrors.GetMessage(data.Substring(6));
-                        ResponseLog.Add(data + (msg == data ? "" : " - " + msg));
+                        if (data.StartsWith("error:"))
+                        {
+                            var msg = GrblErrors.GetMessage(data.Substring(6));
+                            ResponseLog.Add(data + (msg == data ? "" : " - " + msg));
+                        }
+                        else if (data == "ok" ? !ResponseLogFilterOk : stateChanged || ResponseLogShowRTAll)
+                            ResponseLog.Add(data);
+
+                        if (ResponseLog.Count > 200)
+                            ResponseLog.RemoveAt(0);
                     }
-                    else if (data == "ok" ? !ResponseLogFilterOk : stateChanged || ResponseLogShowRTAll)
-                        ResponseLog.Add(data);
-
-                    if (ResponseLog.Count > 200)
-                        ResponseLog.RemoveAt(0);
                 }
-            }
 
-            OnResponseReceived?.Invoke(data);
+                OnResponseReceived?.Invoke(data);
+            }
+            catch (Exception ex)
+            {
+
+                ExceptionLogging.SendErrorToText(ex, "Error Parsing on DataReceived");
+            }
         }
 
 

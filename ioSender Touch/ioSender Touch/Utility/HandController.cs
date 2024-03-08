@@ -87,6 +87,8 @@ namespace ioSenderTouch.Utility
         {
             while (true)
             {
+                var mode = _grblViewModel.IsMetric ? "G21" : "G20";
+                var useImperial = !_grblViewModel.IsMetric;
                 if (cancellationToken.IsCancellationRequested)
                 {
                     break;
@@ -119,10 +121,10 @@ namespace ioSenderTouch.Utility
                         {
                             _continuousJogActive = true;
                             var zCurrent = Math.Abs(_grblViewModel.MachinePosition.Z);
-                            var zMax = _grblViewModel.MaxDistanceZ;
+                            var zMax = useImperial ? _grblViewModel.MaxDistanceZ/25.4: _grblViewModel.MaxDistanceX;
                             step = zMax - zCurrent;
                         }
-                        command = $"$J = G91G21Z{step}F{_grblViewModel.JogRate}";
+                        command = $"$J = G91{mode}Z{step}F{_grblViewModel.JogRate}";
                         ProcessJogCommand(command);
                         break;
                     case GamepadButtons.A:
@@ -137,7 +139,7 @@ namespace ioSenderTouch.Utility
                             var zCurrent = _grblViewModel.MachinePosition.Z;
                             step = zCurrent;
                         }
-                        command = $"$J = G91G21Z-{step}F{_grblViewModel.JogRate}";
+                        command = $"$J = G91{mode}Z-{step}F{_grblViewModel.JogRate}";
                         ProcessJogCommand(command);
                         break;
                     case GamepadButtons.DPadLeft:
@@ -152,7 +154,7 @@ namespace ioSenderTouch.Utility
                             var xCurrent = _grblViewModel.MachinePosition.X;
                             step = xCurrent;
                         }
-                        command = $"$J = G91G21X-{step}F{_grblViewModel.JogRate}";
+                        command = $"$J = G91{mode}X-{step}F{_grblViewModel.JogRate}";
                         ProcessJogCommand(command);
                         break;
                     case GamepadButtons.DPadRight:
@@ -165,10 +167,11 @@ namespace ioSenderTouch.Utility
                         {
                             _continuousJogActive = true;
                             var xCurrent = Math.Abs(_grblViewModel.MachinePosition.X);
-                            var xMax = _grblViewModel.MaxDistanceX;
+                            var xMax = useImperial ? _grblViewModel.MaxDistanceX / 25.4:
+                                _grblViewModel.MaxDistanceX; 
                             step = xMax - xCurrent;
                         }
-                        command = $"$J = G91G21X{step}F{_grblViewModel.JogRate}";
+                        command = $"$J = G91{mode}X{step}F{_grblViewModel.JogRate}";
                         ProcessJogCommand(command);
                         break;
                     case GamepadButtons.DPadUp:
@@ -181,10 +184,11 @@ namespace ioSenderTouch.Utility
                         {
                             _continuousJogActive = true;
                             var yCurrent = Math.Abs(_grblViewModel.MachinePosition.Y);
-                            var yMax = _grblViewModel.MaxDistanceY;
+                            var yMax =  useImperial ? _grblViewModel.MaxDistanceY/25.4:
+                                _grblViewModel.MaxDistanceY;
                             step = yMax - yCurrent;
                         }
-                        command = $"$J = G91G21Y{step}F{_grblViewModel.JogRate}";
+                        command = $"$J = G91{mode}Y{step}F{_grblViewModel.JogRate}";
                         ProcessJogCommand(command);
                         break;
                     case GamepadButtons.DPadDown:
@@ -199,7 +203,7 @@ namespace ioSenderTouch.Utility
                             var yCurrent = _grblViewModel.MachinePosition.Y;
                             step = yCurrent;
                         }
-                        command = $"$J = G91G21Y-{step}F{_grblViewModel.JogRate}";
+                        command = $"$J = G91{mode}Y-{step}F{_grblViewModel.JogRate}";
                         ProcessJogCommand(command);
                         break;
                     case GamepadButtons.X:
@@ -358,7 +362,7 @@ namespace ioSenderTouch.Utility
 
 
         // Single Axis Joystick movement 
-        // For using joystick for Jog found to much drift on release of joystick causing machine to jog and appearance of latency 
+        // For using joystick for JogMetric found to much drift on release of joystick causing machine to jog and appearance of latency 
         private void ProcessX(double movement)
         {
             if (movement == 0 && !_joystickJogging) return;
@@ -371,7 +375,7 @@ namespace ioSenderTouch.Utility
             }
         }
         // Single Axis Joystick movement 
-        // For using joystick for Jog found to much drift on release of joystick causing machine to jog and appearance of latency
+        // For using joystick for JogMetric found to much drift on release of joystick causing machine to jog and appearance of latency
         private void ProcessY(double movement)
         {
             if (movement == 0 && !_joystickJogging) return;

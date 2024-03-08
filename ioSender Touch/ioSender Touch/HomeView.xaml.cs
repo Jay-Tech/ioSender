@@ -224,14 +224,14 @@ namespace ioSenderTouch
 
             controls.Add(new BasicConfigControl());
             controls.Add(new ConfigControl());
-            if (AppConfig.Settings.Jog.Mode != JogConfig.JogMode.Keypad)
+            if (AppConfig.Settings.JogMetric.Mode != JogConfig.JogMode.Keypad)
             {
-                controls.Add(new JogUiConfigControl());
+                controls.Add(new JogUiConfigControl(_model));
             }
             controls.Add(new AppUiSettings());
-            if (AppConfig.Settings.Jog.Mode != JogConfig.JogMode.UI)
+            if (AppConfig.Settings.JogMetric.Mode != JogConfig.JogMode.UI)
             {
-                controls.Add(new JogConfigControl());
+                controls.Add(new JogConfigControl(_model));
             }
             controls.Add(new StripGCodeConfigControl());
          

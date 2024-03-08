@@ -36,7 +36,7 @@
                 <Binding Path="GrblState" Converter="{StaticResource IsJoggingConverter}"/>
             </MultiBinding>
         </Grid.IsEnabled>
-        <GroupBox Header="Jog" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Width="Auto" Height="Auto">
+        <GroupBox Header="JogMetric" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Width="Auto" Height="Auto">
             <Grid Name="MainGrid">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="45"></RowDefinition>

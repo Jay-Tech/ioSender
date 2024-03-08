@@ -35,8 +35,8 @@
             <!--<Label Name ="ConnectionColorLabel" Background="{Binding ConnectionColor}" Width="25" Height="25" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>-->
             <Label  Name = "StateLabel" Content="{Binding GrblCurentState}" ContentStringFormat="GRBL State: {0}" FontSize=" 16" HorizontalContentAlignment="Center" VerticalAlignment="Center" />
             <Label Name ="StateColorLabel" Background="{Binding Path =GrblState, Converter={StaticResource StateColorConverter}}" Width="25" Height="25" VerticalAlignment="Center" HorizontalContentAlignment="Center" />
-            <Label  Name="JogDistance" Content="{Binding JogStep}" ContentStringFormat="Jog Distance: {0}" BorderThickness="1" FontSize="16"  VerticalAlignment="Center"  Margin="10,0,0,0" HorizontalContentAlignment="Center"/>
-            <Label  Name="JogFeed" Content="{Binding JogRate}" ContentStringFormat="Jog Feed: {0}"  BorderThickness="1" FontSize="16" Margin="10,0,0,0"  VerticalAlignment="Center"  HorizontalContentAlignment="Center"/>
+            <Label  Name="JogDistance" Content="{Binding JogStep}" ContentStringFormat="JogMetric Distance: {0}" BorderThickness="1" FontSize="16"  VerticalAlignment="Center"  Margin="10,0,0,0" HorizontalContentAlignment="Center"/>
+            <Label  Name="JogFeed" Content="{Binding JogRate}" ContentStringFormat="JogMetric Feed: {0}"  BorderThickness="1" FontSize="16" Margin="10,0,0,0"  VerticalAlignment="Center"  HorizontalContentAlignment="Center"/>
             <Label  Name="WCS" Content="{Binding WorkCoordinateSystem}"  ContentStringFormat="WCS:{0}"  Margin="10,0,0,0" BorderThickness="1" FontSize="16"  VerticalAlignment="Center"  HorizontalContentAlignment="Left"/>
             <Label  Name="Signals" Content="Signals:"  BorderThickness="1" FontSize="16" VerticalAlignment="Center" HorizontalContentAlignment="Center"  Margin="0,0,0,0"/>
             <controls:SignalsControl VerticalAlignment="Top" Width="155" ></controls:SignalsControl>

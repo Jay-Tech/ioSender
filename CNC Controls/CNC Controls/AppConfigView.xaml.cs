@@ -92,7 +92,7 @@ namespace CNC.Controls
 
         private void btnSaveKeyMap_Click(object sender, RoutedEventArgs e)
         {
-            string filename = CNC.Core.Resources.Path + string.Format("KeyMap{0}.xml", (int)AppConfig.Settings.Jog.Mode);
+            string filename = CNC.Core.Resources.Path + string.Format("KeyMap{0}.xml", (int)AppConfig.Settings.JogMetric.Mode);
             if (Grbl.GrblViewModel.Keyboard.SaveMappings(filename))
                 Grbl.GrblViewModel.Message = string.Format(LibStrings.FindResource("KeymappingsSaved"), filename);
         }

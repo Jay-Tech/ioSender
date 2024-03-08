@@ -314,7 +314,7 @@ namespace CNC.Controls.Probing
                 if (GrblInfo.IsGrblHAL)
                     Comms.com.WriteByte(GrblConstants.CMD_STATUS_REPORT_ALL);
 
-                if (!model.Grbl.IsGrblHAL && !AppConfig.Settings.Jog.KeyboardEnable)
+                if (!model.Grbl.IsGrblHAL && !AppConfig.Settings.JogMetric.KeyboardEnable)
                     Jog.Visibility = Visibility.Collapsed;
 
                 if (GrblInfo.IsGrblHAL)

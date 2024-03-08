@@ -353,7 +353,8 @@ namespace CNC.Controls
         public CommandIgnoreState IgnoreM8 { get { return _ignoreM8; } set { _ignoreM8 = value; OnPropertyChanged(); } }
         public CommandIgnoreState IgnoreG61G64 { get { return _ignoreG61G64; } set { _ignoreG61G64 = value; OnPropertyChanged(); } }
         public ObservableCollection<Macro> Macros { get; set; } = new ObservableCollection<Macro>();
-        public JogConfig Jog { get; set; } = new JogConfig();
+        public JogConfig JogMetric { get; set; } = new JogConfig();
+        public JogConfig JogImperial { get; set; } = new JogConfig();
         public JogUIConfig JogUiMetric { get; set; } = new JogUIConfig(new int[4] { 5, 100, 500, 1000 }, new double[4] { .01d, .1d, 1d, 10d });
         public JogUIConfig JogUiImperial { get; set; } = new JogUIConfig(new int[4] { 5, 10, 50, 100 }, new double[4] { .001d, .01d, .1d, 1d });
 
@@ -395,7 +396,8 @@ namespace CNC.Controls
         }
 
         public ObservableCollection<Macro> Macros { get { return Base == null ? null : Base.Macros; } }
-        public JogConfig Jog { get { return Base == null ? null : Base.Jog; } }
+        public JogConfig JogMetric { get { return Base == null ? null : Base.JogMetric; } }
+        public JogConfig JogImperial { get { return Base == null ? null : Base.JogMetric; } }
         public JogUIConfig JogUiMetric { get { return Base == null ? null : Base.JogUiMetric; } }
         public JogUIConfig JogUiImperial { get { return Base == null ? null : Base.JogUiImperial; } }
 
@@ -570,7 +572,7 @@ namespace CNC.Controls
             }
 
             if (jogMode != -1)
-                Base.Jog.Mode = (JogConfig.JogMode)jogMode;
+                Base.JogMetric.Mode = (JogConfig.JogMode)jogMode;
 
             if (!string.IsNullOrEmpty(port))
                 selectPort = false;

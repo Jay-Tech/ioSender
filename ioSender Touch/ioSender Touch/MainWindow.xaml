@@ -24,7 +24,7 @@
         <system:String x:Uid="str_mnuArcsToLines" x:Key="MenuArcsToLines">Arcs to lines</system:String>
         <system:String x:Uid="str_mnuCompress" x:Key="MenuCompress">Compress (experimental)</system:String>
         <system:String x:Uid="str_mnuDragKnife" x:Key="MenuDragKnife">Add drag knife moves</system:String>
-        <system:String x:Uid="str_jogStep" x:Key="JogStep">Jog step: {0}</system:String>
+        <system:String x:Uid="str_jogStep" x:Key="JogStep">JogMetric step: {0}</system:String>
         <system:String x:Uid="str_runTime" x:Key="RunTime">Run time: {0}</system:String>
         <cnccontrols:BlocksToStringConverter x:Key="BlocksToStringConverter" />
         <cnccontrols:LogicalNotConverter x:Key="BooleanConverter" />

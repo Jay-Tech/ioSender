@@ -121,7 +121,7 @@ namespace ioSenderTouch.Controls
                 viewModel.JogStep = Distance;
                 if (!keyboardMappingsOk)
                 {
-                    if (!GrblInfo.HasFirmwareJog || AppConfig.Settings.Jog.LinkStepJogToUI)
+                    if (!GrblInfo.HasFirmwareJog || AppConfig.Settings.JogMetric.LinkStepJogToUI)
                         if (softLimits)
                             _grblViewModel.PropertyChanged += Model_PropertyChanged;
 
@@ -129,7 +129,7 @@ namespace ioSenderTouch.Controls
 
                     keyboardMappingsOk = true;
 
-                    if (AppConfig.Settings.Jog.Mode == JogConfig.JogMode.UI)
+                    if (AppConfig.Settings.JogMetric.Mode == JogConfig.JogMode.UI)
                     {
                         keyboard.AddHandler(Key.PageUp, ModifierKeys.None, CursorJogZplus, false);
                         keyboard.AddHandler(Key.PageDown, ModifierKeys.None, CursorJogZminus, false);
@@ -151,7 +151,7 @@ namespace ioSenderTouch.Controls
                         keyboard.AddHandler(aminus, ModifierKeys.Control | ModifierKeys.Shift, KeyJogAminus, false);
                     }
 
-                    if (AppConfig.Settings.Jog.Mode != JogConfig.JogMode.Keypad)
+                    if (AppConfig.Settings.JogMetric.Mode != JogConfig.JogMode.Keypad)
                     {
                         keyboard.AddHandler(Key.End, ModifierKeys.None, EndJog, false);
 

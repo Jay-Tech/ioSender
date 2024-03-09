@@ -102,7 +102,7 @@ namespace CNC.Core
         private bool _hasAtc;
         private bool _isIndividualHomingEnabled;
         private bool _displayMenuBar;
-        private string _measurementUnit;
+        private string _measurementUnit = "mm";
 
         public delegate void GrblResetHandler();
 

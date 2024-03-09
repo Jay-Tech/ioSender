@@ -39,11 +39,15 @@
                 
                 <Ellipse Name ="StateColorLabel" Fill="{Binding Path =GrblState, Converter={StaticResource StateColorConverter}}" Width="25" Height="25" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
-                <Label  Name="JogDistanceLabel" Content="{Binding MeasurementUnit}" ContentStringFormat="Jog Distance {0}:"  BorderThickness="1" FontSize="20" HorizontalContentAlignment="Center"  VerticalAlignment="Center" Margin="20,0,0,0"/>
-                <Label  Name="JogDistance" Content="{Binding JogStep}" Width="65" HorizontalAlignment="Left" BorderThickness="1" FontSize="20"  VerticalAlignment="Center"  HorizontalContentAlignment="Left"/>
+                <Label  Name="JogDistanceLabel" Content="{Binding MeasurementUnit}" ContentStringFormat="Jog Distance {0}:"  BorderThickness="1"
+                        FontSize="20" HorizontalContentAlignment="Center"  VerticalAlignment="Center" Margin="20,0,0,0"/>
+                <Label  Name="JogDistance" Content="{Binding JogStep}" Width="65" HorizontalAlignment="Left" BorderThickness="1" 
+                        FontSize="20"  VerticalAlignment="Center"  Visibility="{Binding Connected, Converter = {StaticResource BoolVisibleConverter}}"  HorizontalContentAlignment="Left"/>
 
-                <Label  Name="JogFeedLabel"  Content="{Binding MeasurementUnit}" ContentStringFormat="Jog Feed {0}:"  BorderThickness="1" FontSize="20" HorizontalContentAlignment="Right"  VerticalAlignment="Center" Margin="20,0,0,0"/>
-                <Label  Name="JogFeed" Content="{Binding JogRate}" Width="60" BorderThickness="1" FontSize="20"  VerticalAlignment="Center"  HorizontalAlignment="Left" HorizontalContentAlignment="Left"/>
+                <Label  Name="JogFeedLabel"  Content="{Binding MeasurementUnit}" ContentStringFormat="Jog Feed {0}:" 
+                        BorderThickness="1" FontSize="20" HorizontalContentAlignment="Right"  VerticalAlignment="Center" Margin="20,0,0,0"/>
+                <Label  Name="JogFeed" Content="{Binding JogRate}" Width="60" BorderThickness="1" FontSize="20" 
+                        VerticalAlignment="Center"  HorizontalAlignment="Left" Visibility="{Binding Connected, Converter = {StaticResource BoolVisibleConverter}}" HorizontalContentAlignment="Left"/>
 
                 <Label  Name="WCSLabel" Content="WCS:"  BorderThickness="1" FontSize="20" HorizontalContentAlignment="Center"  VerticalAlignment="Center" Margin="20,0,0,0"/>
                 <Label  Name="WCS" Content="{Binding WorkCoordinateSystem}"  BorderThickness="1" FontSize="20"  VerticalAlignment="Center"  HorizontalContentAlignment="Center"/>

@@ -7,6 +7,10 @@
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:local="clr-namespace:ioSenderTouch.Controls"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             Background="{DynamicResource MaterialDesignPaper}"
+             FontFamily="{wpf:MaterialDesignFont}"
+             xmlns:wpf="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
              FocusVisualStyle="{x:Null}">
     <UserControl.Resources>
@@ -17,6 +21,8 @@
             <Setter Property="BorderBrush" Value="Black"></Setter>
             <Setter Property="BorderThickness" Value="1"></Setter>
             <Setter Property="Foreground" Value="Black"></Setter>
+            <Setter Property="Background" Value="{DynamicResource PrimaryHueDarkBrush;
+}"></Setter>
             <Setter Property="Content" Value="xx"/>
         </Style>
         <controls:EnumValueToBooleanConverter x:Key="EnumToCheckedConverter" />

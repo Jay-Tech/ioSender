@@ -53,7 +53,7 @@ namespace ioSenderTouch.Controls
     /// <summary>
     /// Interaction logic for JogControl.xaml
     /// </summary>
-    public partial class JogControlT : UserControl, INotifyPropertyChanged
+    public partial class JogControl : UserControl, INotifyPropertyChanged
     {
 
         private const Key xplus = Key.J, xminus = Key.H, yplus = Key.K, yminus = Key.L, zplus = Key.I,
@@ -187,7 +187,7 @@ namespace ioSenderTouch.Controls
                 OnPropertyChanged();
             }
         }
-        public JogControlT()
+        public JogControl()
         {
             InitializeComponent();
             AppConfig.Settings.OnConfigFileLoaded += Settings_OnConfigFileLoaded;

@@ -1,8 +1,6 @@
 
 using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Resources;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;

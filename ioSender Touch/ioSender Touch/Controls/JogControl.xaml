@@ -6,13 +6,17 @@
              xmlns:controls="clr-namespace:CNC.Controls;assembly=CNC.Controls.WPF"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:local="clr-namespace:ioSenderTouch.Controls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
              FocusVisualStyle="{x:Null}">
     <UserControl.Resources>
-        <Style x:Key="JogButtonStyle" TargetType="Button">
+        <Style x:Key="JogButtonStyle" TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedAccentButton}">
             <Setter Property="Width" Value="55"/>
             <Setter Property="Height" Value="55"/>
             <Setter Property="Focusable" Value="False"/>
+            <Setter Property="BorderBrush" Value="Black"></Setter>
+            <Setter Property="BorderThickness" Value="1"></Setter>
+            <Setter Property="Foreground" Value="Black"></Setter>
             <Setter Property="Content" Value="xx"/>
         </Style>
         <controls:EnumValueToBooleanConverter x:Key="EnumToCheckedConverter" />
@@ -74,25 +78,26 @@
 
                         </Grid.ColumnDefinitions>
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="Auto" Width="Auto">
-                            <Button VerticalAlignment="Stretch" Content="X-" Style="{StaticResource JogButtonStyle}" Click="Button_Click"/>
+                            <Button  materialDesign:ButtonAssist.CornerRadius="25 0 0 25" VerticalAlignment="Stretch" Content="X-" Style="{StaticResource JogButtonStyle}" Click="Button_Click"/>
                         </StackPanel>
 
                         <StackPanel Grid.Column="1" VerticalAlignment="Center" Height="Auto" Width="Auto" HorizontalAlignment="Stretch">
-                            <Button Content="Y+" Style="{StaticResource JogButtonStyle}" Click="Button_Click"/>
-                            <Button Tag="stop" Style="{StaticResource JogButtonStyle}" Margin="0,5" Click="Button_Click">
+                            <Button Content="Y+"  materialDesign:ButtonAssist.CornerRadius="25 25 0 0" Style="{StaticResource JogButtonStyle}" Click="Button_Click" >
+                            </Button>
+                            <Button  Tag="stop" Style="{StaticResource JogButtonStyle}"  Margin="0,5" Click="Button_Click">
                                 <Button.Content>
                                     <Image Source= "/Resources/Symbols_Stop_32xLG.png"/>
                                 </Button.Content>
                             </Button>
-                            <Button Content="Y-" Style="{StaticResource JogButtonStyle}" Click="Button_Click"/>
+                            <Button materialDesign:ButtonAssist.CornerRadius="0 0 25 25" Content="Y-" Style="{StaticResource JogButtonStyle}" Click="Button_Click"/>
                         </StackPanel>
                         <StackPanel Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="Auto" Width="Auto">
-                            <Button  Content="X+" VerticalAlignment="Center" Style="{StaticResource JogButtonStyle}" Click="Button_Click"/>
+                            <Button materialDesign:ButtonAssist.CornerRadius="0 25 25 0" Content="X+" VerticalAlignment="Center" Style="{StaticResource JogButtonStyle}" Click="Button_Click"/>
                         </StackPanel>
 
                         <StackPanel Grid.Column="3" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Stretch"  Height="Auto" >
-                            <Button Content="Z+" Style="{StaticResource JogButtonStyle}" HorizontalAlignment="Center" Click="Button_Click"/>
-                            <Button Content="Z-" Style="{StaticResource JogButtonStyle}" HorizontalAlignment="Center" Margin="0,65,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+                            <Button materialDesign:ButtonAssist.CornerRadius="25 25 0 0" Content="Z+" Style="{StaticResource JogButtonStyle}" HorizontalAlignment="Center" Click="Button_Click"/>
+                            <Button materialDesign:ButtonAssist.CornerRadius="0 0 25 25" Content="Z-" Style="{StaticResource JogButtonStyle}" HorizontalAlignment="Center" Margin="0,65,0,0" VerticalAlignment="Top" Click="Button_Click"/>
                         </StackPanel>
                     </Grid>
                     <Border Grid.Column="1" x:Uid="grp_jogFeedrate"  Margin="5,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="Auto"  Width="Auto">

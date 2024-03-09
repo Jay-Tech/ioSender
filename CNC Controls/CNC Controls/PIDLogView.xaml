@@ -26,7 +26,7 @@
         <Label x:Name="lblTarget" Content="Target" Foreground="Green" HorizontalAlignment="Left" Margin="492,457,0,0" VerticalAlignment="Top" Width="50"/>
         <Label x:Name="lblError" Content="Error" Foreground="Red" HorizontalAlignment="Left" Margin="602,457,0,0" VerticalAlignment="Top" Width="50"/>
         <Label x:Name="lblActual" Content="Actual" Foreground="Blue" HorizontalAlignment="Left" Margin="547,457,0,0" VerticalAlignment="Top" Width="50"/>
-        <Button x:Name="btnGetPIDData" Content="Get data" HorizontalAlignment="Left" Height="34" Margin="10,462,0,0" VerticalAlignment="Top" Width="75" Click="btnGetPIDData_Click"/>
+        <Button x:Name="btnGetPIDData" Content="Get data" HorizontalAlignment="Left" Height="34" Margin="10,462,0,0" VerticalAlignment="Top" Width="85" Click="btnGetPIDData_Click"/>
         <Slider x:Name="sldError" Value="{Binding Path=ErrorScale}" HorizontalAlignment="Left" Margin="674,474,0,0" VerticalAlignment="Top" Width="169" Minimum="0" Maximum="5" TickPlacement="BottomRight" IsSnapToTickEnabled="True" ValueChanged="sldError_ValueChanged"/>
     </Grid>
 </UserControl>

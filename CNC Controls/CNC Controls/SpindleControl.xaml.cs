@@ -113,8 +113,11 @@ namespace CNC.Controls
         {
             var p = DataContext as GrblViewModel;
 
-            if(p.IsJobRunning && p.GrblState.State == GrblStates.Hold)
+            if (p.IsJobRunning && p.GrblState.State == GrblStates.Hold)
+            {
                 p.ExecuteCommand(((char)GrblConstants.CMD_SPINDLE_OVR_STOP).ToString());
+            }
+                
             else
             {
                 string rpm = p.ProgrammedRPM == 0d ? "S" + p.RPM.ToInvariantString() : "";

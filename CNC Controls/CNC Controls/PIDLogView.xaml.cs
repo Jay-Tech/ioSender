@@ -51,7 +51,7 @@ namespace CNC.Controls
     /// <summary>
     /// Interaction logic for PIDLogView.xaml
     /// </summary>
-    public partial class PIDLogView : UserControl, ICNCView
+    public partial class PIDLogView : UserControl
     {
         private double errorScale = 2500d;
 
@@ -71,20 +71,16 @@ namespace CNC.Controls
 
         #region Methods and properties required by CNCView interface
 
-        public ViewType ViewType { get { return ViewType.PIDTuner; } }
+       
         public bool CanEnable { get { return true; } }
 
-        public void Activate(bool activate, ViewType chgMode)
-        {
-        }
+    
 
         public void CloseFile()
         {
         }
 
-        public void Setup(UIViewModel model, AppConfig profile)
-        {
-        }
+    
 
         #endregion
 

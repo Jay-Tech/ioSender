@@ -6,7 +6,6 @@ using System.Windows.Forms;
 using System.Windows.Media;
 using System.Windows.Threading;
 using CNC.Controls;
-using CNC.Converters;
 using CNC.Core;
 using ioSenderTouch.Controls;
 using MaterialDesignThemes.Wpf;
@@ -16,32 +15,26 @@ namespace ioSenderTouch
 {
     public partial class MainWindow : Window
     {
-        private const string Version = "1.0.4";
+        private const string Version = "1.1.0";
         private const string App_Name = "IO Sender Touch";
-        public static MainWindow ui = null;
-        public static UIViewModel UIViewModel { get; } = new UIViewModel();
+
         private readonly GrblViewModel _viewModel;
         private readonly HomeView _homeView;
         private readonly HomeViewPortrait _homeViewPortrait;
         private bool _shown;
-
         public string BaseWindowTitle { get; set; }
-        public bool JobRunning => _viewModel.IsJobRunning;
         public MainWindow()
         {
             var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config"+Path.DirectorySeparatorChar);
             CNC.Core.Resources.Path = path;
             InitializeComponent();
-            ui = this;
+           
             Title = string.Format(Title, Version);
-            int res;
-            //if ((res = AppConfig.Settings.SetupAndOpen(Title, (GrblViewModel)DataContext, App.Current.Dispatcher)) != 0)
-            //    Environment.Exit(res);
             _viewModel = DataContext as GrblViewModel ?? new GrblViewModel();
             BaseWindowTitle = Title;
             AppConfig.Settings.OnConfigFileLoaded += Settings_OnConfigFileLoaded;
 
-            if (SystemInformation.ScreenOrientation ==ScreenOrientation.Angle90 || SystemInformation.ScreenOrientation == ScreenOrientation.Angle270)
+            if (SystemInformation.ScreenOrientation == ScreenOrientation.Angle90 || SystemInformation.ScreenOrientation == ScreenOrientation.Angle270)
             {
                 _homeViewPortrait = new HomeViewPortrait(_viewModel);
                 DockPanel.SetDock(_homeViewPortrait, Dock.Left);
@@ -65,10 +58,6 @@ namespace ioSenderTouch
                 MenuBorder.DataContext = _viewModel;
             }
             _viewModel.OnShutDown += _viewModel_OnShutDown;
-           
-            new PipeServer(App.Current.Dispatcher);
-            PipeServer.FileTransfer += Pipe_FileTransfer;
-            
         }
 
         protected override void OnContentRendered(EventArgs e)
@@ -123,21 +112,6 @@ namespace ioSenderTouch
                     GCode.File.Load(AppConfig.Settings.FileName);
                 }));
             }
-
-            IGCodeConverter c = new Excellon2GCode();
-            GCode.File.AddConverter(c.GetType(), c.FileType, c.FileExtensions);
-            c = new HpglToGCode();
-            GCode.File.AddConverter(c.GetType(), c.FileType, c.FileExtensions);
-            GCode.File.AddTransformer(typeof(GCodeRotateViewModel), (string)FindResource("MenuRotate"), UIViewModel.TransformMenuItems);
-            GCode.File.AddTransformer(typeof(ArcsToLines), (string)FindResource("MenuArcsToLines"), UIViewModel.TransformMenuItems);
-            GCode.File.AddTransformer(typeof(GCodeCompress), (string)FindResource("MenuCompress"), UIViewModel.TransformMenuItems);
         }
-  
-        private void Pipe_FileTransfer(string filename)
-        {
-            if (!JobRunning)
-                GCode.File.Load(filename);
-        }
-
     }
 }

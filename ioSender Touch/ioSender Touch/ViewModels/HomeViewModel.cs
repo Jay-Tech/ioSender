@@ -108,7 +108,7 @@ namespace ioSenderTouch.ViewModels
             {
                 _grblViewModel.HasProbing = true;
                 _probeView = new ProbingView(_grblViewModel);
-                _probeView.Activate(true, ViewType.Probing);
+                _probeView.Activate(true);
 
             }
             return true;
@@ -155,10 +155,7 @@ namespace ioSenderTouch.ViewModels
             // FillBorder.Child = _toolView;
         }
 
-        public void ConfiguationLoaded(UIViewModel uiViewModel, AppConfig settings)
-        {
-            //_grblAppSettings.Setup(uiViewModel, settings);
-        }
+
 
         public void SetNewView(object x)
         {

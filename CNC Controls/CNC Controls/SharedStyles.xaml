@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:gcode="clr-namespace:CNC.GCode;assembly=CNC.Core"
-                    xmlns:local="clr-namespace:CNC.Controls">
+                    xmlns:local="clr-namespace:CNC.Controls"
+                    xmlns:core="clr-namespace:CNC.Core;assembly=CNC.Core">
     <local:IsAxisVisibleConverter x:Key="IsAxisVisibleConverter" />
     <Style x:Key="SmallXButtonStyle" TargetType="Button">
         <Setter Property="Background" Value="Transparent" />
@@ -22,7 +22,7 @@
                     <Binding Path="AxisEnabledFlags" />
                     <Binding>
                         <Binding.Source>
-                            <gcode:AxisFlags>Y</gcode:AxisFlags>
+                            <core:AxisFlags>Y</core:AxisFlags>
                         </Binding.Source>
                     </Binding>
                 </MultiBinding>
@@ -36,7 +36,7 @@
                     <Binding Path="AxisEnabledFlags" />
                     <Binding>
                         <Binding.Source>
-                            <gcode:AxisFlags>Z</gcode:AxisFlags>
+                            <core:AxisFlags>Z</core:AxisFlags>
                         </Binding.Source>
                     </Binding>
                 </MultiBinding>
@@ -50,7 +50,7 @@
                     <Binding Path="AxisEnabledFlags" />
                     <Binding>
                         <Binding.Source>
-                            <gcode:AxisFlags>A</gcode:AxisFlags>
+                            <core:AxisFlags>A</core:AxisFlags>
                         </Binding.Source>
                     </Binding>
                 </MultiBinding>
@@ -64,7 +64,7 @@
                     <Binding Path="AxisEnabledFlags" />
                     <Binding>
                         <Binding.Source>
-                            <gcode:AxisFlags>B</gcode:AxisFlags>
+                            <core:AxisFlags>B</core:AxisFlags>
                         </Binding.Source>
                     </Binding>
                 </MultiBinding>
@@ -78,7 +78,7 @@
                     <Binding Path="AxisEnabledFlags" />
                     <Binding>
                         <Binding.Source>
-                            <gcode:AxisFlags>C</gcode:AxisFlags>
+                            <core:AxisFlags>C</core:AxisFlags>
                         </Binding.Source>
                     </Binding>
                 </MultiBinding>
@@ -92,7 +92,7 @@
                     <Binding Path="AxisEnabledFlags" />
                     <Binding>
                         <Binding.Source>
-                            <gcode:AxisFlags>U</gcode:AxisFlags>
+                            <core:AxisFlags>U</core:AxisFlags>
                         </Binding.Source>
                     </Binding>
                 </MultiBinding>
@@ -106,7 +106,7 @@
                     <Binding Path="AxisEnabledFlags" />
                     <Binding>
                         <Binding.Source>
-                            <gcode:AxisFlags>V</gcode:AxisFlags>
+                            <core:AxisFlags>V</core:AxisFlags>
                         </Binding.Source>
                     </Binding>
                 </MultiBinding>
@@ -120,7 +120,7 @@
                     <Binding Path="AxisEnabledFlags" />
                     <Binding>
                         <Binding.Source>
-                            <gcode:AxisFlags>W</gcode:AxisFlags>
+                            <core:AxisFlags>W</core:AxisFlags>
                         </Binding.Source>
                     </Binding>
                 </MultiBinding>

@@ -2,20 +2,17 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Forms;
 using System.Windows.Input;
+using System.Xml.Linq;
 using CNC.Controls;
-using CNC.Controls.Views;
 using CNC.Core;
 using CNC.Core.Comands;
-using CNC.GCode;
 using ioSenderTouch.Controls;
 using ioSenderTouch.Utility;
 
@@ -70,6 +67,7 @@ namespace ioSenderTouch.ViewModels
         private string _calibrationUnitPerMin;
         private string _calibratioMeasurement;
         private bool _usingInchesCalibration;
+        private Macro _probeZMacro;
         public ICommand ShowView { get; }
         public ICommand SurfacingCommand { get; set; }
         public ICommand CalibrationRunCommand { get; set; }
@@ -306,17 +304,31 @@ namespace ioSenderTouch.ViewModels
             _calibrationTriangle = new CalibrationTriangle();
             _triangleGcode = new GCodeTriangle();
             CalibrationMeasurement = Metric;
+            _grblViewModel.GrblUnitChanged += _grblViewModel_GrblUnitChanged;
+        }
+
+        private void _grblViewModel_GrblUnitChanged(object sender, Measurement e)
+        {
+            if (_grblViewModel.UtilityMacros.Contains(_probeZMacro))
+            {
+                _grblViewModel.UtilityMacros.Remove(_probeZMacro);
+                BuildProbeMacro();
+            }
         }
 
         private void BuildProbeMacro()
         {
-            _grblViewModel.UtilityMacros.Add(new Macro
+            var unit = _grblViewModel.IsMetric ? "G21" : "G20";
+            var distance = _grblViewModel.IsMetric ? "15" : ".5";
+            var command = $"{unit}G91F100\nG38.3F100Z-{distance}\nG10L20P0Z0.000\nG0Z5.000";
+            _probeZMacro = new Macro
             {
                 Name = "Quick Z Probe",
-                Code = "G91F100\nG38.3F100Z-15\nG10L20P0Z0.000\nG0Z5.000",
+                Code = command,
                 Id = 1,
                 ConfirmOnExecute = true,
-            });
+            };
+            _grblViewModel.UtilityMacros.Add(_probeZMacro);
         }
 
         private void Settings_OnConfigFileLoaded(object sender, EventArgs e)

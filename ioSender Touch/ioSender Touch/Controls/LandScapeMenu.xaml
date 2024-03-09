@@ -19,12 +19,13 @@
             <controls:GrblStateToColorConverter x:Key="StateColorConverter" />
             <controls:BoolToVisibleConverter x:Key="BoolVisibleConverter" />
             <controls:BoolToNotVisibleConverter x:Key="BoolNotVisibleConverter" />
+            <controls:GrblConnectionToColorConverter x:Key="GrblConnectionToColorConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
         <Grid  Name="Panel" Margin="0,0,5,0" HorizontalAlignment="Stretch" VerticalAlignment="Center">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="160"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="200"></ColumnDefinition>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -32,14 +33,21 @@
             <Label Name="VerisonLabel"  Grid.Column="0" HorizontalContentAlignment="Left"  VerticalContentAlignment="Center"></Label>
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Label  Name ="ConnectionLabel" Content="{Binding IsConnected}" FontSize="20" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
-                <Label Name ="ConnectionColorLabel" Background="{Binding ConnectionColor}" Width="25" Height="25" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
-                <Label  Name = "GRBLState" Content="GRBL State:"  FontSize=" 20" HorizontalContentAlignment="Center"  VerticalAlignment="Center"/>
-                <Label  Name = "StateLabel" Content="{Binding GrblCurentState}"  FontSize=" 20" HorizontalContentAlignment="Center" VerticalAlignment="Center" />
-                <Label Name ="StateColorLabel" Background="{Binding Path =GrblState, Converter={StaticResource StateColorConverter}}" Width="25" Height="25" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
-                <Label  Name="JogDistanceLabel" Content="Jog Distance:"  BorderThickness="1" FontSize="20" HorizontalContentAlignment="Center"  VerticalAlignment="Center" Margin="20,0,0,0"/>
-                <Label  Name="JogDistance" Content="{Binding JogStep}"  BorderThickness="1" FontSize="20"  VerticalAlignment="Center"  HorizontalContentAlignment="Center"/>
-                <Label  Name="JogFeedLabel" Content="Jog Feed:"  BorderThickness="1" FontSize="20" HorizontalContentAlignment="Center"  VerticalAlignment="Center" Margin="20,0,0,0"/>
-                <Label  Name="JogFeed" Content="{Binding JogRate}"  BorderThickness="1" FontSize="20"  VerticalAlignment="Center"  HorizontalContentAlignment="Center"/>
+                <Ellipse Name ="ConnectionColorLabel" Fill="{Binding Path =Connected, Converter={StaticResource GrblConnectionToColorConverter}}" Width="25" Height="25" VerticalAlignment="Center"/>
+               
+                <Label  Name = "GRBLState"  Content="{Binding GrblCurentState}"   ContentStringFormat="GRBL State: {0}" FontSize=" 20" Width="175" HorizontalContentAlignment="Center"  VerticalAlignment="Center"/>
+                
+                <Ellipse Name ="StateColorLabel" Fill="{Binding Path =GrblState, Converter={StaticResource StateColorConverter}}" Width="25" Height="25" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+                <Label  Name="JogDistanceLabel" Content="{Binding MeasurementUnit}" ContentStringFormat="Jog Distance {0}:"  BorderThickness="1"
+                        FontSize="20" HorizontalContentAlignment="Center"  VerticalAlignment="Center" Margin="20,0,0,0"/>
+                <Label  Name="JogDistance" Content="{Binding JogStep}" Width="65" HorizontalAlignment="Left" BorderThickness="1" 
+                        FontSize="20"  VerticalAlignment="Center"  Visibility="{Binding Connected, Converter = {StaticResource BoolVisibleConverter}}"  HorizontalContentAlignment="Left"/>
+
+                <Label  Name="JogFeedLabel"  Content="{Binding MeasurementUnit}" ContentStringFormat="Jog Feed {0}:" 
+                        BorderThickness="1" FontSize="20" HorizontalContentAlignment="Right"  VerticalAlignment="Center" Margin="20,0,0,0"/>
+                <Label  Name="JogFeed" Content="{Binding JogRate}" Width="60" BorderThickness="1" FontSize="20" 
+                        VerticalAlignment="Center"  HorizontalAlignment="Left" Visibility="{Binding Connected, Converter = {StaticResource BoolVisibleConverter}}" HorizontalContentAlignment="Left"/>
 
                 <Label  Name="WCSLabel" Content="WCS:"  BorderThickness="1" FontSize="20" HorizontalContentAlignment="Center"  VerticalAlignment="Center" Margin="20,0,0,0"/>
                 <Label  Name="WCS" Content="{Binding WorkCoordinateSystem}"  BorderThickness="1" FontSize="20"  VerticalAlignment="Center"  HorizontalContentAlignment="Center"/>

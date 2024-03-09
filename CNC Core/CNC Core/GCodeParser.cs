@@ -44,10 +44,9 @@ using System.IO;
 using System.Windows;
 using System.Windows.Media.Media3D;
 using System.Xml.Serialization;
-using CNC.Core;
 using System.Text;
 
-namespace CNC.GCode
+namespace CNC.Core
 {
     public class GCodeParser : Machine
     {
@@ -990,37 +989,37 @@ namespace CNC.GCode
                                     Decimals = Math.Max(Decimals, val.Length - val.IndexOf('.') - 1);
                                 }
                                 wordFlag = WordFlags.X;
-                                axisWords |= GCode.AxisFlags.X;
+                                axisWords |= AxisFlags.X;
                                 gcValues.X = Math.Round(value, Decimals);
                                 break;
 
                             case 'Y':
                                 wordFlag = WordFlags.Y;
-                                axisWords |= GCode.AxisFlags.Y;
+                                axisWords |= AxisFlags.Y;
                                 gcValues.Y = Math.Round(value, Decimals);
                                 break;
 
                             case 'Z':
                                 wordFlag = WordFlags.Z;
-                                axisWords |= GCode.AxisFlags.Z;
+                                axisWords |= AxisFlags.Z;
                                 gcValues.Z = Math.Round(value, Decimals);
                                 break;
 
                             case 'A':
                                 wordFlag = WordFlags.A;
-                                axisWords |= GCode.AxisFlags.A;
+                                axisWords |= AxisFlags.A;
                                 gcValues.A = Math.Round(value, Decimals);
                                 break;
 
                             case 'B':
                                 wordFlag = WordFlags.B;
-                                axisWords |= GCode.AxisFlags.B;
+                                axisWords |= AxisFlags.B;
                                 gcValues.B = Math.Round(value, Decimals);
                                 break;
 
                             case 'C':
                                 wordFlag = WordFlags.C;
-                                axisWords |= GCode.AxisFlags.C;
+                                axisWords |= AxisFlags.C;
                                 gcValues.C = Math.Round(value, Decimals);
                                 break;
 
@@ -1028,13 +1027,13 @@ namespace CNC.GCode
                                 if (remapU2A)
                                 {
                                     wordFlag = WordFlags.A;
-                                    axisWords |= GCode.AxisFlags.A;
+                                    axisWords |= AxisFlags.A;
                                     gcValues.A = Math.Round(value, Decimals);
                                 }
                                 else
                                 {
                                     wordFlag = WordFlags.U;
-                                    axisWords |= GCode.AxisFlags.U;
+                                    axisWords |= AxisFlags.U;
                                     gcValues.U = Math.Round(value, Decimals);
                                 }
                                 break;
@@ -1043,13 +1042,13 @@ namespace CNC.GCode
                                 if (remapV2B)
                                 {
                                     wordFlag = WordFlags.B;
-                                    axisWords |= GCode.AxisFlags.B;
+                                    axisWords |= AxisFlags.B;
                                     gcValues.B = Math.Round(value, Decimals);
                                 }
                                 else
                                 {
                                     wordFlag = WordFlags.V;
-                                    axisWords |= GCode.AxisFlags.V;
+                                    axisWords |= AxisFlags.V;
                                     gcValues.W = Math.Round(value, Decimals);
                                 }
                                 break;
@@ -1058,13 +1057,13 @@ namespace CNC.GCode
                                 if (remapW2C)
                                 {
                                     wordFlag = WordFlags.C;
-                                    axisWords |= GCode.AxisFlags.C;
+                                    axisWords |= AxisFlags.C;
                                     gcValues.C = Math.Round(value, Decimals);
                                 }
                                 else
                                 {
                                     wordFlag = WordFlags.W;
-                                    axisWords |= GCode.AxisFlags.W;
+                                    axisWords |= AxisFlags.W;
                                     gcValues.W = Math.Round(value, Decimals);
                                 }
                                 break;
@@ -1635,7 +1634,7 @@ namespace CNC.GCode
                         break;
 
                     case MotionMode.G5:
-                        if (Plane.Plane != GCode.Plane.XY)
+                        if (Plane.Plane != Core.Plane.XY)
                             throw new GCodeException(LibStrings.FindResource("ParserPlaneNotXY"));
                         if (!(wordFlags.HasFlag(WordFlags.P) && wordFlags.HasFlag(WordFlags.Q)))
                             throw new GCodeException(LibStrings.FindResource("ParserNoPandorQ"));
@@ -1670,7 +1669,7 @@ namespace CNC.GCode
                         break;
 
                     case MotionMode.G5_1:
-                        if (Plane.Plane != GCode.Plane.XY)
+                        if (Plane.Plane != Core.Plane.XY)
                             throw new GCodeException(LibStrings.FindResource("ParserPlaneNotXY"));
                         if (!(wordFlags.HasFlag(WordFlags.I) && wordFlags.HasFlag(WordFlags.J)))
                             throw new GCodeException(LibStrings.FindResource("ParserNoIandorJ"));
@@ -1728,7 +1727,7 @@ namespace CNC.GCode
                             ThreadingFlags optFlags = ThreadingFlags.None;
                             double[] optValues = new double[5];
 
-                            if(Plane.Plane != GCode.Plane.XZ)
+                            if(Plane.Plane != Core.Plane.XZ)
                                 throw new GCodeException(LibStrings.FindResource("ParserPlaneNotZX"));
 
                             if (axisWords != AxisFlags.Z)

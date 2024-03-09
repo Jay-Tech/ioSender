@@ -42,10 +42,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Controls;
-using System.Windows.Forms.VisualStyles;
 using System.Windows.Input;
 using System.Xml.Serialization;
-using CNC.GCode;
+
 
 namespace CNC.Core
 {

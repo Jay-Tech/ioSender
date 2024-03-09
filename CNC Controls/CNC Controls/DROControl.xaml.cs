@@ -45,7 +45,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using CNC.Core;
-using CNC.GCode;
 
 namespace CNC.Controls
 {
@@ -239,11 +238,16 @@ namespace CNC.Controls
         {
             if (axis == "ALL")
             {
-                var s = GrblInfo.AxisFlags.ToIndices().Aggregate("G90G10L20P0", (current, i) => current + GrblInfo.AxisIndexToLetter(i) + "{0}");
+                var s = GrblInfo.AxisFlags.ToIndices().Aggregate("G90G10L20P0",
+                    (current, i) => current + GrblInfo.AxisIndexToLetter(i) + "{0}");
                 (DataContext as GrblViewModel)?.ExecuteCommand(string.Format(s, position.ToInvariantString("F3")));
             }
             else
+            {
+                var comand = $"G10L20P0{axis}{position.ToInvariantString("F3")}";
                 (DataContext as GrblViewModel)?.ExecuteCommand($"G10L20P0{axis}{position.ToInvariantString("F3")}");
+            }
+               
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

@@ -37,14 +37,23 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
 
+using System;
+
 namespace CNC.Core
 {
+    public enum Measurement
+    {
+        Metric,
+        Imperial,
+    }
     public class MeasureViewModel : ViewModelBase
     {
+       
+        public event EventHandler<Measurement> GrblUnitChanged;
         bool _isMetric = true;
 
         public const double MM_PER_INCH = 25.4d;
-
+       
         public bool IsMetric
         {
             get { return _isMetric; }
@@ -59,6 +68,7 @@ namespace CNC.Core
                     OnPropertyChanged("Format");
                     OnPropertyChanged("FormatSigned");
                     OnPropertyChanged();
+                    GrblUnitChanged?.Invoke(this, value? Measurement.Metric: Measurement.Imperial );
                 }
             }
         }

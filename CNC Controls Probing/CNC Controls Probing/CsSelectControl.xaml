@@ -15,7 +15,8 @@
         <StackPanel Orientation="Vertical" Margin="2,3,0,0">
             <DockPanel>
                 <RadioButton x:Uid="set_coord" Content="Set coordinate system:" IsChecked="{Binding Path=CoordinateMode, Mode=TwoWay, Converter={StaticResource EnumToCheckedConverter}, ConverterParameter=G10}" VerticalAlignment="Center"/>
-                <ComboBox x:Name="cbxOffset" Margin="3,0" DisplayMemberPath="Code" SelectedValuePath="Id" ItemsSource="{Binding Path=CoordinateSystems}" SelectedValue="{Binding Path=CoordinateSystem, Mode=TwoWay}" HorizontalAlignment="Right" VerticalAlignment="Center" Width="55" Height="22"/>
+                <ComboBox x:Name="cbxOffset" Margin="3,0" DisplayMemberPath="Code" SelectedValuePath="Id" ItemsSource="{Binding Path=CoordinateSystems}" 
+                          SelectedValue="{Binding Path=CoordinateSystem, Mode=TwoWay}" HorizontalAlignment="Right" VerticalAlignment="Center" Width="70" Height="22"/>
             </DockPanel>
             <DockPanel Margin="0,2,0,0" Width="Auto" Height="30">
                 <RadioButton x:Uid="btn_setG92" Content="Set offset (G92)" IsChecked="{Binding Path=CoordinateMode, Mode=TwoWay, Converter={StaticResource EnumToCheckedConverter}, ConverterParameter=G92}" VerticalAlignment="Center"/>

@@ -46,7 +46,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using CNC.Core.Comands;
-using CNC.GCode;
+using CNC.Core;
 using Color = System.Windows.Media.Color;
 
 namespace CNC.Core
@@ -55,6 +55,7 @@ namespace CNC.Core
     {
         public event EventHandler OnShutDown;
         public event EventHandler GrblInitialized;
+       
         private string _tool, _message, _WPos, _MPos, _wco, _wcs, _a, _fs, _ov, _pn, _sc, _sd, _fans, _d, _gc, _h, _thcv, _thcs;
         private string _mdiCommand, _fileName;
         private string[] _rtState = new string[3];
@@ -76,7 +77,7 @@ namespace CNC.Core
         private HomedState _homedState = HomedState.Unknown;
         private GrblEncoderMode _encoder_ovr = GrblEncoderMode.Unknown;
         private StreamingState _streamingState;
-        public SpindleState _spindleStatePrev = GCode.SpindleState.Off;
+        public SpindleState _spindleStatePrev = Core.SpindleState.Off;
 
         private Thread pollThread = null;
 
@@ -101,6 +102,7 @@ namespace CNC.Core
         private bool _hasAtc;
         private bool _isIndividualHomingEnabled;
         private bool _displayMenuBar;
+        private string _measurementUnit = "mm";
 
         public delegate void GrblResetHandler();
 
@@ -123,6 +125,17 @@ namespace CNC.Core
             {
                 if (value == _alarmConText) return;
                 _alarmConText = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string MeasurementUnit
+        {
+            get => _measurementUnit;
+            set
+            {
+                if (value == _measurementUnit) return;
+                _measurementUnit = value;
                 OnPropertyChanged();
             }
         }
@@ -165,7 +178,9 @@ namespace CNC.Core
             set
             {
                 IsConnected = _connected ? "Online" : "Offline";
+                if (value == _connected) return;
                 _connected = value;
+                OnPropertyChanged();
             }
         }
         public string IsConnected
@@ -212,9 +227,8 @@ namespace CNC.Core
         public GrblViewModel()
         {
             _a = _pn = _fs = _sc = _tool = string.Empty;
-
             Clear();
-          
+
             Keyboard = new KeypressHandler(this);
             Keyboard.LoadMappings("KeyMap0");
             MDICommand = new ActionCommand<string>(ExecuteMDI);
@@ -237,7 +251,7 @@ namespace CNC.Core
             ToolOffset.PropertyChanged += ToolOffset_PropertyChanged;
 
             //TODO new command linking  
-           
+
             ShutDownCommand = new Command(SetShutDown);
 
             ClearAlarmCommand = new Command(_ =>
@@ -263,7 +277,7 @@ namespace CNC.Core
             ResetCommand = new Command(SetResetCommand);
             SetDefaults();
             Connected = false;
-            
+            SetToolCommand();
         }
 
 
@@ -450,8 +464,8 @@ namespace CNC.Core
 
         private void SpindleState_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            _rpmDisplay = _spindleStatePrev == GCode.SpindleState.Off ? _rpmInput : _rpm;
-            if (!(SpindleState.Value.HasFlag(GCode.SpindleState.Off | GCode.SpindleState.CW) || SpindleState.Value.HasFlag(GCode.SpindleState.Off | GCode.SpindleState.CCW)))
+            _rpmDisplay = _spindleStatePrev == Core.SpindleState.Off ? _rpmInput : _rpm;
+            if (!(SpindleState.Value.HasFlag(Core.SpindleState.Off | Core.SpindleState.CW) || SpindleState.Value.HasFlag(Core.SpindleState.Off | Core.SpindleState.CCW)))
             {
                 OnPropertyChanged(nameof(SpindleState));
                 OnPropertyChanged(nameof(RPM));
@@ -700,29 +714,32 @@ namespace CNC.Core
             {
                 if (_isJobRunning == value) return;
                 _isJobRunning = value;
-                SetToolCommand(value);
+                SetToolCommand();
                 OnPropertyChanged();
             }
         }
 
         public ObservableCollection<Macro> UtilityMacros { get; set; } = new ObservableCollection<Macro>();
-        private void SetToolCommand(bool isJobRunning)
+        private void SetToolCommand()
         {
-            GrblCommand.ToolChange = isJobRunning ? "T{0}M6" : "M61Q{0}";
+            GrblCommand.ToolChange = _isJobRunning ? "T{0}M6" : "M61Q{0}";
         }
 
         public bool IsProbing { get { return _isProbing; } set { _isProbing = value; OnPropertyChanged(); } }
         public bool ProgramEnd { get { return _pgmEnd; } set { _pgmEnd = value; if (_pgmEnd) OnPropertyChanged(); } }
         public int GrblError { get { return _grblState.Error; } set { _grblState.Error = value; OnPropertyChanged(); } }
-        public StreamingState StreamingState { get { return _streamingState; }
+        public StreamingState StreamingState
+        {
+            get { return _streamingState; }
             set
             {
                 if (_streamingState != value)
                 {
-                    _streamingState = value; 
+                    _streamingState = value;
                     OnPropertyChanged();
                 }
-            } }
+            }
+        }
         public string WorkCoordinateSystem { get { return _wcs; } private set { _wcs = value; OnPropertyChanged(); } }
         public string ToolNumber { get { return _toolNumber; } private set { _toolNumber = value; OnPropertyChanged(); } }
         public Position MachinePosition { get; private set; } = new Position();
@@ -744,7 +761,7 @@ namespace CNC.Core
         public Position ToolOffset { get; private set; } = new Position();
         public Position ProbePosition { get; private set; } = new Position();
         public bool IsProbeSuccess { get { return _isProbeSuccess; } private set { _isProbeSuccess = value; OnPropertyChanged(); } }
-        public EnumFlags<SpindleState> SpindleState { get; private set; } = new EnumFlags<SpindleState>(GCode.SpindleState.Off);
+        public EnumFlags<SpindleState> SpindleState { get; private set; } = new EnumFlags<SpindleState>(Core.SpindleState.Off);
         public EnumFlags<Signals> Signals { get; private set; } = new EnumFlags<Signals>(Core.Signals.Off);
         public EnumFlags<Signals> OptionalSignals { get; set; } = new EnumFlags<Signals>(Core.Signals.Off);
         public EnumFlags<AxisFlags> AxisScaled { get; private set; } = new EnumFlags<AxisFlags>(AxisFlags.None);
@@ -949,7 +966,7 @@ namespace CNC.Core
                     else if (!IsGrblHAL && (_a == "S" || _a == "C")) // Hack for legacy Grbl no informing about spindle going off
                     {
                         _a = "";
-                        SpindleState.Value = GCode.SpindleState.Off;
+                        SpindleState.Value = Core.SpindleState.Off;
                     }
 
                     if (double.IsNaN(ActualRPM))
@@ -1302,14 +1319,14 @@ namespace CNC.Core
                         if (_a == "")
                         {
                             Mist = Flood = IsToolChanging = false;
-                            SpindleState.Value = GCode.SpindleState.Off;
+                            SpindleState.Value = Core.SpindleState.Off;
                         }
                         else
                         {
                             Mist = value.Contains("M");
                             Flood = value.Contains("F");
                             IsToolChanging = value.Contains("T");
-                            SpindleState.Value = value.Contains("S") ? GCode.SpindleState.CW : (value.Contains("C") ? GCode.SpindleState.CCW : GCode.SpindleState.Off);
+                            SpindleState.Value = value.Contains("S") ? Core.SpindleState.CW : (value.Contains("C") ? Core.SpindleState.CCW : Core.SpindleState.Off);
                         }
                     }
                     break;
@@ -1564,6 +1581,15 @@ namespace CNC.Core
             {
 
             }
+
+            if (data.Contains("|MPG:1"))
+            {
+
+            }
+            if (data.Contains("|MPG:0"))
+            {
+
+            }
             if (data.First() == '<')
             {
                 stateChanged = ParseStatus(data);
@@ -1755,8 +1781,8 @@ namespace CNC.Core
                         Poller.SetState(PollingInterval);
                     }
                 }
-                
-                
+
+
             }
             else if (_grblState.State != GrblStates.Jog)
             {
@@ -1834,7 +1860,7 @@ namespace CNC.Core
                 GrblParserState.Get(true);
             }
 
-            GrblCommand.ToolChange = GrblInfo.ManualToolChange ? "M61Q{0}" : "T{0}";
+            GrblCommand.ToolChange = _isJobRunning ? "T{0}" : "M61Q{0}";
             if (!Poller.IsEnabled)
                 Poller.SetState(PollingInterval);
             Task.Factory.StartNew(DelayClearAlarm);
@@ -1849,14 +1875,36 @@ namespace CNC.Core
 
         public void SettingsLoaded()
         {
+            MeasurementUnit = GrblSettings.GetInteger(GrblSetting.ReportInches) != 1? "mm":"in";
             var result = GrblSettings.Get(grblHALSetting.HomingEnable).Value;
-            var bitValue =(byte)int.Parse(result);
+            var bitValue = (byte)int.Parse(result);
             IsIndividualHomingEnabled = ((bitValue & 0x02) == 0x02);
+            if (double.TryParse(GrblSettings.Get(grblHALSetting.MaxTravelBase).Value, out var x))
+            {
+                MaxDistanceX = x;
+            }
+
+            if (double.TryParse(GrblSettings.Get(grblHALSetting.MaxTravelYBase).Value, out var y))
+            {
+                MaxDistanceY = y;
+            }
+
+            if (double.TryParse(GrblSettings.Get(grblHALSetting.MaxTravelZBase).Value, out var z))
+            {
+                MaxDistanceZ = z;
+            }
+
         }
+
+        public Double MaxDistanceZ { get; set; }
+
+        public Double MaxDistanceY { get; set; }
+
+        public Double MaxDistanceX { get; set; }
 
         public void LoadComplete()
         {
-            GrblInitialized?.Invoke(this,null);
+            GrblInitialized?.Invoke(this, null);
         }
     }
 }

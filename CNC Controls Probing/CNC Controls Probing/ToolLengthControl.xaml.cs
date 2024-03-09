@@ -40,7 +40,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 using System.Windows;
 using System.Windows.Controls;
 using CNC.Core;
-using CNC.GCode;
 
 namespace CNC.Controls.Probing
 {
@@ -74,7 +73,7 @@ namespace CNC.Controls.Probing
 
             if (!probing.ValidateInput(true))
                 return;
-
+            
             //if (probing.ProbeFixture && !probing.Grbl.AxisHomed.Value.HasFlag(AxisFlags.X | AxisFlags.Y | AxisFlags.Z))
             //{
             //    MessageBox.Show((string)FindResource("InitFailed"), "Probing");
@@ -86,7 +85,7 @@ namespace CNC.Controls.Probing
 
             if (!probing.Program.Init(AppConfig.Settings.Probing.CheckProbeStatus || !probing.ProbeFixture))
                 return;
-
+            probing.Program.AddUnit();
             probing.Program.Add($"G91F{probing.ProbeFeedRate.ToInvariantString()}");
 
             if (probing.ProbeFixture)

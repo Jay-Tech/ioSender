@@ -40,7 +40,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 using System;
 using System.Collections.Generic;
 using CNC.Core;
-using CNC.GCode;
 using RP.Math;
 
 namespace CNC.Controls

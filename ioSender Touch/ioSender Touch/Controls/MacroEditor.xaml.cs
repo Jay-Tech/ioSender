@@ -53,7 +53,7 @@ namespace ioSenderTouch.Controls
     /// </summary>
     public partial class MacroEditor : UserControl
     {
-        private CNC.GCode.Macro addMacro = null;
+        private Macro addMacro = null;
         private MacroData _macroData;
         private VirtualKeyBoard _keyBoard;
 
@@ -211,7 +211,7 @@ namespace ioSenderTouch.Controls
                 foreach (var macro in _macroData.Macros)
                     id = Math.Max(id, macro.Id);
 
-                addMacro = new CNC.GCode.Macro
+                addMacro = new Macro
                 {
                     Id = id + 1,
                     Name = cbxMacro.Text
@@ -237,16 +237,16 @@ namespace ioSenderTouch.Controls
     public class MacroData : ViewModelBase
     {
         private string _text = string.Empty, _name = string.Empty;
-        private CNC.GCode.Macro _macro, _lastMacro = null;
-        private ObservableCollection<CNC.GCode.Macro> _macros;
+        private Macro _macro, _lastMacro = null;
+        private ObservableCollection<Macro> _macros;
 
-        public ObservableCollection<CNC.GCode.Macro> Macros
+        public ObservableCollection<Macro> Macros
         {
             get { return _macros; }
             set { _macros = value; OnPropertyChanged(); }
         }
 
-        public CNC.GCode.Macro Macro
+        public Macro Macro
         {
             get { return _macro; }
             set
@@ -265,7 +265,7 @@ namespace ioSenderTouch.Controls
             }
         }
 
-        public CNC.GCode.Macro LastMacro
+        public Macro LastMacro
         {
             get { return _lastMacro; }
         }

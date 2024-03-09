@@ -1,8 +1,6 @@
 
 using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Resources;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -64,6 +62,7 @@ namespace ioSenderTouch
 
             if (_model.HasATC)
             {
+                //todo fix ToolView
                // _toolView = new ToolView(_model);
             }
         }
@@ -106,7 +105,7 @@ namespace ioSenderTouch
             {
                 _model.HasProbing = true;
                 _probeView = new ProbingView(_model);
-                _probeView.Activate(true, ViewType.Probing);
+                _probeView.Activate(true);
 
             }
             return true;
@@ -194,14 +193,15 @@ namespace ioSenderTouch
 
             controls.Add(new BasicConfigControl());
             controls.Add(new ConfigControl());
-            if (AppConfig.Settings.Jog.Mode != JogConfig.JogMode.Keypad)
+
+            if (AppConfig.Settings.JogMetric.Mode != JogConfig.JogMode.Keypad)
             {
-                controls.Add(new JogUiConfigControl());
+                controls.Add(new JogUiConfigControl(_model));
             }
 
-            if (AppConfig.Settings.Jog.Mode != JogConfig.JogMode.UI)
+            if (AppConfig.Settings.JogMetric.Mode != JogConfig.JogMode.UI)
             {
-                controls.Add(new JogConfigControl());
+                controls.Add(new JogConfigControl(_model));
             }
             controls.Add(new StripGCodeConfigControl());
             controls.Add(new AppUiSettings());

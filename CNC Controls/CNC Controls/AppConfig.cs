@@ -46,8 +46,7 @@ using System.Windows.Media;
 using System.Threading;
 using System.Windows.Media.Media3D;
 using CNC.Core;
-using CNC.GCode;
-using static CNC.GCode.GCodeParser;
+using static CNC.Core.GCodeParser;
 using System.Collections.Generic;
 
 namespace CNC.Controls
@@ -321,7 +320,7 @@ namespace CNC.Controls
     [Serializable]
     public class Macros : ViewModelBase
     {
-        public ObservableCollection<CNC.GCode.Macro> Macro { get; private set; } = new ObservableCollection<CNC.GCode.Macro>();
+        public ObservableCollection<Macro> Macro { get; private set; } = new ObservableCollection<Macro>();
     }
 
     [Serializable]
@@ -353,8 +352,9 @@ namespace CNC.Controls
         public CommandIgnoreState IgnoreM7 { get { return _ignoreM7; } set { _ignoreM7 = value; OnPropertyChanged(); } }
         public CommandIgnoreState IgnoreM8 { get { return _ignoreM8; } set { _ignoreM8 = value; OnPropertyChanged(); } }
         public CommandIgnoreState IgnoreG61G64 { get { return _ignoreG61G64; } set { _ignoreG61G64 = value; OnPropertyChanged(); } }
-        public ObservableCollection<CNC.GCode.Macro> Macros { get; set; } = new ObservableCollection<CNC.GCode.Macro>();
-        public JogConfig Jog { get; set; } = new JogConfig();
+        public ObservableCollection<Macro> Macros { get; set; } = new ObservableCollection<Macro>();
+        public JogConfig JogMetric { get; set; } = new JogConfig();
+        public JogConfig JogImperial { get; set; } = new JogConfig();
         public JogUIConfig JogUiMetric { get; set; } = new JogUIConfig(new int[4] { 5, 100, 500, 1000 }, new double[4] { .01d, .1d, 1d, 10d });
         public JogUIConfig JogUiImperial { get; set; } = new JogUIConfig(new int[4] { 5, 10, 50, 100 }, new double[4] { .001d, .01d, .1d, 1d });
 
@@ -395,8 +395,9 @@ namespace CNC.Controls
             }
         }
 
-        public ObservableCollection<CNC.GCode.Macro> Macros { get { return Base == null ? null : Base.Macros; } }
-        public JogConfig Jog { get { return Base == null ? null : Base.Jog; } }
+        public ObservableCollection<Macro> Macros { get { return Base == null ? null : Base.Macros; } }
+        public JogConfig JogMetric { get { return Base == null ? null : Base.JogMetric; } }
+        public JogConfig JogImperial { get { return Base == null ? null : Base.JogMetric; } }
         public JogUIConfig JogUiMetric { get { return Base == null ? null : Base.JogUiMetric; } }
         public JogUIConfig JogUiImperial { get { return Base == null ? null : Base.JogUiImperial; } }
 
@@ -571,7 +572,7 @@ namespace CNC.Controls
             }
 
             if (jogMode != -1)
-                Base.Jog.Mode = (JogConfig.JogMode)jogMode;
+                Base.JogMetric.Mode = (JogConfig.JogMode)jogMode;
 
             if (!string.IsNullOrEmpty(port))
                 selectPort = false;
@@ -674,16 +675,7 @@ namespace CNC.Controls
                 }
 
                 // ...if so show dialog for wait for it to stop polling and relinquish control.
-                if (MPGactive == true)
-                {
-                    MPGPending await = new MPGPending(model);
-                    await.ShowDialog();
-                    if (await.Cancelled)
-                    {
-                        Comms.com.Close(); //!!
-                        status = 2;
-                    }
-                }
+               
 
                 model.IsReady = true;
             }

@@ -43,7 +43,7 @@
             <StackPanel Name="MainStackPanel"  Orientation="Horizontal" Margin="0,0,0,0" >
                 <controls:MDIControl Grid.Row="2" x:Name="MdiControl" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Width="380" Height="Auto" Margin="5,0,0,5"/>
                 <controls:DROControl x:Name="DRO" Width="290" HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="3,3,0,5"  VerticalContentAlignment="Stretch"/>
-                <local:JogControlT x:Name="jogControl" Width="395" Margin="3,3,0,5" Height="Auto" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" />
+                <local:JogControl x:Name="jogControl" Width="390" Margin="3,3,0,5" Height="Auto" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" />
             </StackPanel>
         </Border>
         <Border Name="LeftBorder" BorderBrush="Black" BorderThickness="1" Width="Auto" DockPanel.Dock="Left">
@@ -59,7 +59,8 @@
                         <Button  Name="btnShowConsole" Content="Console" Click="ButtonBase_OnClick"   Visibility="{Binding Path=IsFileLoaded, Converter= {StaticResource IsVisibleConverter}}"></Button>
                     </StackPanel>
                     <controls:ConsoleControl Grid.Row="1" Name="ConsoleControl" HorizontalAlignment="Stretch"   VerticalAlignment="Stretch" Margin="2,5,0,5" />
-                    <controls:GCodeListControl  ShowScrollBar="True" Grid.Row="1" Name ="CodeListControl"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" Margin="2,5,0,10" Visibility="{Binding Path=IsFileLoaded, Converter= {StaticResource IsVisibleConverter}}"></controls:GCodeListControl>
+                    <controls:GCodeListControl  ShowScrollBar="True" Grid.Row="1" Name ="CodeListControl" 
+                                                HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" Margin="2,5,0,10" Visibility="{Binding Path=IsFileLoaded, Converter= {StaticResource IsVisibleConverter}}"></controls:GCodeListControl>
                 </Grid>
             </Expander>
         </Border>

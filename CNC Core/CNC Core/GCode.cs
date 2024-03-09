@@ -42,9 +42,8 @@ using System.Xml.Serialization;
 using System.Collections.Generic;
 using System.Management;
 using System.Windows.Media.Media3D;
-using CNC.Core;
 
-namespace CNC.GCode
+namespace CNC.Core
 {
 
     public enum Dialect

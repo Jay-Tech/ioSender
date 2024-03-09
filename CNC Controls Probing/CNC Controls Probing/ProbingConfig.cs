@@ -42,6 +42,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
+using CNC.Core;
 
 namespace CNC.Controls.Probing
 {
@@ -171,24 +172,49 @@ namespace CNC.Controls.Probing
 
             if (Profiles.Count == 0)
             {
-                Profiles.Add(new ProbingProfile
+                if (Grbl.GrblViewModel.IsMetric)
                 {
-                    Id = id++,
-                    Name = "<Default>",
-                    RapidsFeedRate = 0d,
-                    ProbeFeedRate = 100d,
-                    LatchFeedRate = 25d,
-                    ProbeDistance = 10d,
-                    LatchDistance = .5d,
-                    ProbeDiameter = 2d,
-                    XYClearance = 5d,
-                    Offset = 5d,
-                    ProbeOffsetX = 0d,
-                    ProbeOffsetY = 0d,
-                    Depth = 3d,
-                    TouchPlateHeight = 1d,
-                    FixtureHeight = 1d
-                });
+                    Profiles.Add(new ProbingProfile
+                    {
+                        Id = id++,
+                        Name = "<Default>",
+                        RapidsFeedRate = 0d,
+                        ProbeFeedRate = 100d,
+                        LatchFeedRate = 25d,
+                        ProbeDistance = 10d,
+                        LatchDistance = .5d,
+                        ProbeDiameter = 2d,
+                        XYClearance = 5d,
+                        Offset = 5d,
+                        ProbeOffsetX = 0d,
+                        ProbeOffsetY = 0d,
+                        Depth = 3d,
+                        TouchPlateHeight = 1d,
+                        FixtureHeight = 1d
+                    });
+                }
+                else
+                {
+                    Profiles.Add(new ProbingProfile
+                    {
+                        Id = id++,
+                        Name = "<Default>",
+                        RapidsFeedRate = 0d,
+                        ProbeFeedRate = 100d/25.4,
+                        LatchFeedRate = 25d/25.4,
+                        ProbeDistance = .5d,
+                        LatchDistance = .02d,
+                        ProbeDiameter = 2d/25.4,
+                        XYClearance = .25d,
+                        Offset = .25d,
+                        ProbeOffsetX = 0d,
+                        ProbeOffsetY = 0d,
+                        Depth = .25d,
+                        TouchPlateHeight = 0d,
+                        FixtureHeight = 0d
+                    });
+                }
+                
             }
         }
     }

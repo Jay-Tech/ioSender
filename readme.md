@@ -36,8 +36,23 @@ Portrait Orientation
 ![Home Screen](media/PortraitFlyout.png)
 
 ---
+V1.1.0 Changes UI Cleanup 
+![Home Screen](media/V1.0.1_HomeScreen.jpg)
 
-### Priority issues and work
+Controller  Layout Front
+![Wireless Controller](media/GameControllerFront.jpg)
+
+Controller Layout Front
+![Wireless Controller](media/GamePadBack.jpg)
+
+### Priority issues and work V1.1.0 Beta Ingross
+Added Metric or Imperial Unit support through out the App(Testing on going)
+Added wireless game support such as Xbox controller(Testing on going)  -May add configuable buttons latter on
+Working on Tool table support in Application 
+Contuined UI refinement and code cleanup
+
+
+### Priority issues and work V1.0.0
 ~~Reset button and logic needs to be added~~ (8/26/23 Implemented needs more testing)
 <br>
 ~~Virtual keyboard support for probing ui (8/26/23 Implemented)~~

@@ -313,6 +313,25 @@ namespace CNC.Controls
         }
     }
 
+    public class GrblConnectionToColorConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            Brush result = Brushes.White;
+
+            if (!(value is bool b)) return result;
+            result = b ? new SolidColorBrush(Colors.Green) : new SolidColorBrush(Colors.Red);
+
+
+            return result;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public class IsHomingEnabledConverter : IMultiValueConverter
     {
         public object Convert(object[] value, Type targetType, object parameter, CultureInfo culture)

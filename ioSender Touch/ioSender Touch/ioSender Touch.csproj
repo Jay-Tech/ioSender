@@ -134,8 +134,8 @@
     <Compile Include="Controls\CalibrationControl.xaml.cs">
       <DependentUpon>CalibrationControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\JogCoontrolT.xaml.cs">
-      <DependentUpon>JogCoontrolT.xaml</DependentUpon>
+    <Compile Include="Controls\JogControl.xaml.cs">
+      <DependentUpon>JogControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\LandScapeMenu.xaml.cs">
       <DependentUpon>LandScapeMenu.xaml</DependentUpon>
@@ -173,7 +173,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\JogCoontrolT.xaml">
+    <Page Include="Controls\JogControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

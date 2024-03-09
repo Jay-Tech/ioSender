@@ -102,6 +102,7 @@ namespace CNC.Core
         private bool _hasAtc;
         private bool _isIndividualHomingEnabled;
         private bool _displayMenuBar;
+        private string _measurementUnit;
 
         public delegate void GrblResetHandler();
 
@@ -127,7 +128,18 @@ namespace CNC.Core
                 OnPropertyChanged();
             }
         }
-        
+
+        public string MeasurementUnit
+        {
+            get => _measurementUnit;
+            set
+            {
+                if (value == _measurementUnit) return;
+                _measurementUnit = value;
+                OnPropertyChanged();
+            }
+        }
+
         public bool HasATC
         {
             get => _hasAtc;
@@ -166,7 +178,9 @@ namespace CNC.Core
             set
             {
                 IsConnected = _connected ? "Online" : "Offline";
+                if (value == _connected) return;
                 _connected = value;
+                OnPropertyChanged();
             }
         }
         public string IsConnected
@@ -1861,6 +1875,7 @@ namespace CNC.Core
 
         public void SettingsLoaded()
         {
+            MeasurementUnit = GrblSettings.GetInteger(GrblSetting.ReportInches) != 1? "mm":"in";
             var result = GrblSettings.Get(grblHALSetting.HomingEnable).Value;
             var bitValue = (byte)int.Parse(result);
             IsIndividualHomingEnabled = ((bitValue & 0x02) == 0x02);

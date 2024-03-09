@@ -34,7 +34,7 @@ namespace ioSenderTouch
             BaseWindowTitle = Title;
             AppConfig.Settings.OnConfigFileLoaded += Settings_OnConfigFileLoaded;
 
-            if (SystemInformation.ScreenOrientation ==ScreenOrientation.Angle90)
+            if (SystemInformation.ScreenOrientation == ScreenOrientation.Angle90 || SystemInformation.ScreenOrientation == ScreenOrientation.Angle270)
             {
                 _homeViewPortrait = new HomeViewPortrait(_viewModel);
                 DockPanel.SetDock(_homeViewPortrait, Dock.Left);

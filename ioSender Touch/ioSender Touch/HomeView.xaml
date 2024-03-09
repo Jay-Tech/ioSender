@@ -6,7 +6,7 @@
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:controls="clr-namespace:CNC.Controls;assembly=CNC.Controls.WPF"
              xmlns:local="clr-namespace:ioSenderTouch.Controls"
-             xmlns:core="clr-namespace:CNC.Core;assembly=CNC.Core"
+             xmlns:core="clr-namespace:CNC.Core;assembly=CNC.Core" d:DesignHeight="1080" d:DesignWidth="1920"
              d:DataContext="{d:DesignInstance Type=core:GrblViewModel, IsDesignTimeCreatable=True}"
              mc:Ignorable="d"
              Focusable="True">
@@ -54,8 +54,8 @@
                 <controls:WorkParametersControlTouch x:Name="workParametersControl"  Margin="3,3,0,5"
                                                      Height="Auto"  VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
 
-                <controls:FeedControl  x:Name="feedControl"  HorizontalAlignment="Center" VerticalAlignment="Stretch"  Margin="3,3,0,5" Width="260" Height="Auto" />
-                <local:JogControlT x:Name="jogControl" Margin="3,3,0,5" Height="Auto" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" />
+                <controls:FeedControl  x:Name="feedControl"  HorizontalAlignment="Center"  VerticalAlignment="Stretch"  Margin="3,3,0,5" Width="260" Height="Auto" />
+                <local:JogControlT x:Name="jogControl" Margin="3,3,0,5" Height="Auto" HorizontalAlignment="Stretch" Width="395" VerticalAlignment="Stretch" />
                 <controls:SpindleControl x:Name="spindleControl" HorizontalAlignment="Stretch" Margin="3,3,3,5" Width="262"  VerticalAlignment="Stretch"/>
             </StackPanel>
         </Border>

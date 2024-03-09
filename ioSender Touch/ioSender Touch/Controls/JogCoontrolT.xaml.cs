@@ -43,12 +43,10 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
 using CNC.Controls;
 using CNC.Controls.Utility;
 using CNC.Core;
-using CNC.Core.Comands;
 
 namespace ioSenderTouch.Controls
 {
@@ -192,18 +190,18 @@ namespace ioSenderTouch.Controls
         public JogControlT()
         {
             InitializeComponent();
-            Focusable = true;
-            Loaded += JogControlT_Loaded;
+            AppConfig.Settings.OnConfigFileLoaded += Settings_OnConfigFileLoaded;
         }
-        private void JogControlT_Loaded(object sender, RoutedEventArgs e)
+
+        private void Settings_OnConfigFileLoaded(object sender, EventArgs e)
         {
             _grblViewModel = Grbl.GrblViewModel;
             _grblViewModel.GrblUnitChanged += GrblViewModelGrblUnitChanged;
-            DataContext = _grblViewModel;
-            JogStep = JogStep.Step2;
-            JogFeed = JogFeed.Feed2;
+            JogStep = JogStep.Step3;
+            JogFeed = JogFeed.Feed3;
             SetUpControl();
         }
+
         private void GrblViewModelGrblUnitChanged(object sender, Measurement e)
         {
             SetUpControl();
@@ -218,87 +216,68 @@ namespace ioSenderTouch.Controls
             _grblViewModel.JogStep = Distance;
         }
 
-        private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(GrblViewModel.MachinePosition) ||
-                e.PropertyName == nameof(GrblViewModel.GrblState))
-            {
-                if (_grblViewModel.GrblState.State != GrblStates.Jog)
-                    jogAxis = -1;
-            }
-        }
-
         private void SetUpControl()
         {
-            if (DataContext is GrblViewModel viewModel)
+            mode = _grblViewModel.IsMetric ? "G21" : "G20";
+            _feedRate = _grblViewModel.IsMetric ? AppConfig.Settings.JogUiMetric.Feedrate : AppConfig.Settings.JogUiImperial.Feedrate;
+            _distance = _grblViewModel.IsMetric ? AppConfig.Settings.JogUiMetric.Distance : AppConfig.Settings.JogUiImperial.Distance;
+            Feedrate3 = _feedRate[3];
+            Feedrate2 = _feedRate[2];
+            Feedrate1 = _feedRate[1];
+            Feedrate0 = _feedRate[0];
+            Distance3 = _distance[3];
+            Distance2 = _distance[2];
+            Distance1 = _distance[1];
+            Distance0 = _distance[0];
+            _grblViewModel.JogRate = FeedRate;
+            _grblViewModel.JogStep = Distance;
+            if (!keyboardMappingsOk)
             {
-                mode = GrblSettings.GetInteger(GrblSetting.ReportInches) == 0 ? "G21" : "G20";
-                softLimits = !(GrblInfo.IsGrblHAL && GrblSettings.GetInteger(grblHALSetting.SoftLimitJogging) == 1) && GrblSettings.GetInteger(GrblSetting.SoftLimitsEnable) == 1;
-                limitSwitchesClearance = GrblSettings.GetDouble(GrblSetting.HomingPulloff);
-                _feedRate = viewModel.IsMetric ? AppConfig.Settings.JogUiMetric.Feedrate : AppConfig.Settings.JogUiImperial.Feedrate;
-                _distance = viewModel.IsMetric ? AppConfig.Settings.JogUiMetric.Distance : AppConfig.Settings.JogUiImperial.Distance;
-
-                Feedrate3 = _feedRate[3];
-                Feedrate2 = _feedRate[2];
-                Feedrate1 = _feedRate[1];
-                Feedrate0 = _feedRate[0];
-
-                Distance3 = _distance[3];
-                Distance2 = _distance[2];
-                Distance1 = _distance[1];
-                Distance0 = _distance[0];
-                viewModel.JogRate = FeedRate;
-                viewModel.JogStep = Distance;
-                if (!keyboardMappingsOk)
-                {
-                    if (!GrblInfo.HasFirmwareJog || AppConfig.Settings.JogMetric.LinkStepJogToUI)
-                        if (softLimits)
-                            _grblViewModel.PropertyChanged += Model_PropertyChanged;
-
+                if (!GrblInfo.HasFirmwareJog || AppConfig.Settings.JogMetric.LinkStepJogToUI)
                     keyboard = _grblViewModel.Keyboard;
+                if (keyboard == null) return;
 
-                    keyboardMappingsOk = true;
+                keyboardMappingsOk = true;
 
-                    if (AppConfig.Settings.JogMetric.Mode == JogConfig.JogMode.UI)
-                    {
-                        keyboard.AddHandler(Key.PageUp, ModifierKeys.None, CursorJogZplus, false);
-                        keyboard.AddHandler(Key.PageDown, ModifierKeys.None, CursorJogZminus, false);
-                        keyboard.AddHandler(Key.Left, ModifierKeys.None, CursorJogXminus, false);
-                        keyboard.AddHandler(Key.Up, ModifierKeys.None, CursorJogYplus, false);
-                        keyboard.AddHandler(Key.Right, ModifierKeys.None, CursorJogXplus, false);
-                        keyboard.AddHandler(Key.Down, ModifierKeys.None, CursorJogYminus, false);
-                    }
+                if (AppConfig.Settings.JogMetric.Mode == JogConfig.JogMode.UI)
+                {
+                    keyboard.AddHandler(Key.PageUp, ModifierKeys.None, CursorJogZplus, false);
+                    keyboard.AddHandler(Key.PageDown, ModifierKeys.None, CursorJogZminus, false);
+                    keyboard.AddHandler(Key.Left, ModifierKeys.None, CursorJogXminus, false);
+                    keyboard.AddHandler(Key.Up, ModifierKeys.None, CursorJogYplus, false);
+                    keyboard.AddHandler(Key.Right, ModifierKeys.None, CursorJogXplus, false);
+                    keyboard.AddHandler(Key.Down, ModifierKeys.None, CursorJogYminus, false);
+                }
 
-                    keyboard.AddHandler(xplus, ModifierKeys.Control | ModifierKeys.Shift, KeyJogXplus, false);
-                    keyboard.AddHandler(xminus, ModifierKeys.Control | ModifierKeys.Shift, KeyJogXminus, false);
-                    keyboard.AddHandler(yplus, ModifierKeys.Control | ModifierKeys.Shift, KeyJogYplus, false);
-                    keyboard.AddHandler(yminus, ModifierKeys.Control | ModifierKeys.Shift, KeyJogYminus, false);
-                    keyboard.AddHandler(zplus, ModifierKeys.Control | ModifierKeys.Shift, KeyJogZplus, false);
-                    keyboard.AddHandler(zminus, ModifierKeys.Control | ModifierKeys.Shift, KeyJogZminus, false);
-                    if (GrblInfo.AxisFlags.HasFlag(AxisFlags.A))
-                    {
-                        keyboard.AddHandler(aplus, ModifierKeys.Control | ModifierKeys.Shift, KeyJogAplus, false);
-                        keyboard.AddHandler(aminus, ModifierKeys.Control | ModifierKeys.Shift, KeyJogAminus, false);
-                    }
+                keyboard.AddHandler(xplus, ModifierKeys.Control | ModifierKeys.Shift, KeyJogXplus, false);
+                keyboard.AddHandler(xminus, ModifierKeys.Control | ModifierKeys.Shift, KeyJogXminus, false);
+                keyboard.AddHandler(yplus, ModifierKeys.Control | ModifierKeys.Shift, KeyJogYplus, false);
+                keyboard.AddHandler(yminus, ModifierKeys.Control | ModifierKeys.Shift, KeyJogYminus, false);
+                keyboard.AddHandler(zplus, ModifierKeys.Control | ModifierKeys.Shift, KeyJogZplus, false);
+                keyboard.AddHandler(zminus, ModifierKeys.Control | ModifierKeys.Shift, KeyJogZminus, false);
+                if (GrblInfo.AxisFlags.HasFlag(AxisFlags.A))
+                {
+                    keyboard.AddHandler(aplus, ModifierKeys.Control | ModifierKeys.Shift, KeyJogAplus, false);
+                    keyboard.AddHandler(aminus, ModifierKeys.Control | ModifierKeys.Shift, KeyJogAminus, false);
+                }
 
-                    if (AppConfig.Settings.JogMetric.Mode != JogConfig.JogMode.Keypad)
-                    {
-                        keyboard.AddHandler(Key.End, ModifierKeys.None, EndJog, false);
+                if (AppConfig.Settings.JogMetric.Mode != JogConfig.JogMode.Keypad)
+                {
+                    keyboard.AddHandler(Key.End, ModifierKeys.None, EndJog, false);
 
-                        keyboard.AddHandler(Key.NumPad0, ModifierKeys.Control, JogStep0);
-                        keyboard.AddHandler(Key.NumPad1, ModifierKeys.Control, JogStep1);
-                        keyboard.AddHandler(Key.NumPad2, ModifierKeys.Control, JogStep2);
-                        keyboard.AddHandler(Key.NumPad3, ModifierKeys.Control, JogStep3);
-                        keyboard.AddHandler(Key.NumPad4, ModifierKeys.Control, JogFeed0);
-                        keyboard.AddHandler(Key.NumPad5, ModifierKeys.Control, JogFeed1);
-                        keyboard.AddHandler(Key.NumPad6, ModifierKeys.Control, JogFeed2);
-                        keyboard.AddHandler(Key.NumPad7, ModifierKeys.Control, JogFeed3);
+                    keyboard.AddHandler(Key.NumPad0, ModifierKeys.Control, JogStep0);
+                    keyboard.AddHandler(Key.NumPad1, ModifierKeys.Control, JogStep1);
+                    keyboard.AddHandler(Key.NumPad2, ModifierKeys.Control, JogStep2);
+                    keyboard.AddHandler(Key.NumPad3, ModifierKeys.Control, JogStep3);
+                    keyboard.AddHandler(Key.NumPad4, ModifierKeys.Control, JogFeed0);
+                    keyboard.AddHandler(Key.NumPad5, ModifierKeys.Control, JogFeed1);
+                    keyboard.AddHandler(Key.NumPad6, ModifierKeys.Control, JogFeed2);
+                    keyboard.AddHandler(Key.NumPad7, ModifierKeys.Control, JogFeed3);
 
-                        keyboard.AddHandler(Key.NumPad2, ModifierKeys.None, FeedDec);
-                        keyboard.AddHandler(Key.NumPad4, ModifierKeys.None, StepDec);
-                        keyboard.AddHandler(Key.NumPad6, ModifierKeys.None, StepInc);
-                        keyboard.AddHandler(Key.NumPad8, ModifierKeys.None, FeedInc);
-                    }
+                    keyboard.AddHandler(Key.NumPad2, ModifierKeys.None, FeedDec);
+                    keyboard.AddHandler(Key.NumPad4, ModifierKeys.None, StepDec);
+                    keyboard.AddHandler(Key.NumPad6, ModifierKeys.None, StepInc);
+                    keyboard.AddHandler(Key.NumPad8, ModifierKeys.None, FeedInc);
                 }
             }
         }
@@ -515,7 +494,7 @@ namespace ioSenderTouch.Controls
         }
         private void JogCommand(string cmd)
         {
-            GrblViewModel model = DataContext as GrblViewModel;
+
             if (cmd == "stop")
                 cmd = ((char)GrblConstants.CMD_JOG_CANCEL).ToString();
             else
@@ -530,8 +509,8 @@ namespace ioSenderTouch.Controls
 
                     if (axis != jogAxis)
                     {
-                        if (model != null)
-                            position = jogDataDistance + model.MachinePosition.Values[axis];
+                        if (_grblViewModel != null)
+                            position = jogDataDistance + _grblViewModel.MachinePosition.Values[axis];
                     }
                     else
                         position += jogDataDistance;

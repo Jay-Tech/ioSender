@@ -27,7 +27,8 @@
         <controls:GrblStateToIsJoggingConverter x:Key ="IsJoggingConverter"/>
         <controls:AxisLetterToJogPlusConverter x:Key="JogPlusConverter"/>
         <controls:AxisLetterToJogMinusConverter x:Key="JogMinusConverter"/>
-        <controls:JogDistanceConverter x:Key ="JogDistanceConverter"/>
+        <controls:JogRateConverter x:Key="JogRateConverter"/>
+        <controls:JogDistanceConverter x:Key="JogDistanceConverter"/>
     </UserControl.Resources>
     <Grid>
         <Grid.IsEnabled>
@@ -44,12 +45,19 @@
                 </Grid.RowDefinitions>
                 <StackPanel Name="PanelDistance" Orientation="Horizontal" HorizontalAlignment="Stretch"  >
                     <Label Content="Distance" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></Label>
-                    <!--<Button Name="ButtonDis0" BorderThickness="2" BorderBrush="{Binding JogStep, Converter={StaticResource JogDistanceConverter}}"   Width="68"  Tag="3"
+                    <Button Name="ButtonDis0" BorderThickness="2" Content="{Binding Path=Distance3, RelativeSource={RelativeSource AncestorType=UserControl}}"   
+                            Width="68"  Tag="3"  BorderBrush="{Binding JogStep,RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource JogDistanceConverter}, ConverterParameter=Step3}"
                              HorizontalAlignment="Stretch" Margin="0,0,3,0" VerticalAlignment="Stretch" Click="distance_Click"/>
-                    <Button Width="68"  Tag="2" Content="{Binding Path=Distance2, RelativeSource={RelativeSource AncestorType=UserControl}}" HorizontalAlignment="Stretch" Margin="0,0,3,0" VerticalAlignment="Stretch" Click="distance_Click"/>
-                    <Button Width="68"  Tag="1" Content="{Binding Path=Distance1, RelativeSource={RelativeSource AncestorType=UserControl}}" HorizontalAlignment="Stretch" Margin="0,0,3,0" VerticalAlignment="Stretch" Click="distance_Click"/>
-                    <Button Width="68"  Tag="0" Content="{Binding Path=Distance0, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch" Click="distance_Click"/>-->
-                    <!--<Label Content="{Binding Path=Unit}" Height="20" FontSize="12" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>-->
+                    <Button Width="68"  Tag="2" Content="{Binding Path=Distance2, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                            HorizontalAlignment="Stretch" Margin="0,0,3,0" VerticalAlignment="Stretch" Click="distance_Click"
+                            BorderBrush="{Binding JogStep,RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource JogDistanceConverter}, ConverterParameter=Step2}"/>
+                    <Button Width="68"  Tag="1" Content="{Binding Path=Distance1, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                            HorizontalAlignment="Stretch" Margin="0,0,3,0" VerticalAlignment="Stretch" Click="distance_Click"
+                            BorderBrush="{Binding JogStep,RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource JogDistanceConverter}, ConverterParameter=Step1}"/>
+                    <Button Width="68"  Tag="0" Content="{Binding Path=Distance0, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
+                            HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch" Click="distance_Click"
+                            BorderBrush="{Binding JogStep,RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource JogDistanceConverter}, ConverterParameter=Step0}"/>
+                    <Label Content="{Binding Path=Unit}" Height="20" FontSize="12" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                 </StackPanel>
 
                 <Grid Margin="0,0,0,0" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="Auto" Width="Auto">
@@ -90,10 +98,19 @@
                     <Border Grid.Column="1" x:Uid="grp_jogFeedrate"  Margin="5,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="Auto"  Width="Auto">
                         <StackPanel Name="PanelFeedRate" HorizontalAlignment="Stretch" Orientation="Vertical"  VerticalAlignment="Stretch" Height="Auto"  Width="Auto">
                             <Label Content="{Binding FeedrateUnit}" ContentStringFormat="Feed {0}"  Margin="0,0,0,0" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalAlignment="Stretch"></Label>
-                            <!--<Button Height="45" Tag="3" Content="{Binding Path=Feedrate3, RelativeSource={RelativeSource AncestorType=UserControl}}"   HorizontalAlignment="Stretch" Margin="0,3,0,0" VerticalAlignment="Stretch" Click="feedrate_Click"/>
-                            <Button Height="45" Tag="2" Content="{Binding Path=Feedrate2, RelativeSource={RelativeSource AncestorType=UserControl}}"  HorizontalAlignment="Stretch" Margin="0,3,0,0" VerticalAlignment="Stretch" Click="feedrate_Click"/>
-                            <Button Height="45" Tag="1" Content="{Binding Path=Feedrate1, RelativeSource={RelativeSource AncestorType=UserControl}}" HorizontalAlignment="Stretch" Margin="0,3,0,0" VerticalAlignment="Stretch" Click="feedrate_Click"/>
-                            <Button Name="ButtonFR0" Height="45" Tag="0" Content="{Binding Path=Feedrate0, RelativeSource={RelativeSource AncestorType=UserControl}}"  HorizontalAlignment="Stretch" Margin="0,3,0,0" VerticalAlignment="Stretch" Click="feedrate_Click"/>-->
+                            <Button Height="43" Tag="3" Content="{Binding Path=Feedrate3, RelativeSource={RelativeSource AncestorType=UserControl}}"   
+                                    BorderBrush="{Binding JogFeed,RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource JogRateConverter}, ConverterParameter=Feed3}"
+                                    HorizontalAlignment="Stretch" Margin="0,3,0,0" VerticalAlignment="Stretch" Click="feedrate_Click"/>
+                            <Button Height="43" Tag="2" Content="{Binding Path=Feedrate2, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                    HorizontalAlignment="Stretch" Margin="0,3,0,0" VerticalAlignment="Stretch" Click="feedrate_Click"
+                                    BorderBrush="{Binding JogFeed,RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource JogRateConverter}, ConverterParameter=Feed2}"/>
+                            <Button Name="frbtn1" Height="43" Tag="1" Content="{Binding Path=Feedrate1, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                    BorderBrush="{Binding JogFeed,RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource JogRateConverter}, ConverterParameter=Feed1}" 
+                                    HorizontalAlignment="Stretch" Margin="0,3,0,0" VerticalAlignment="Stretch" Click="feedrate_Click"/>
+                            <Button Name="ButtonFR0" Height="43" Tag="0" Content="{Binding Path=Feedrate0, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                    HorizontalAlignment="Stretch" Margin="0,3,0,0" VerticalAlignment="Stretch" Click="feedrate_Click"
+                                    BorderBrush="{Binding JogFeed,RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource JogRateConverter}, ConverterParameter=Feed0}"/>
+                            
                             <!--<Label Content="{Binding Path=FeedrateUnit}" Height="20" FontSize="12" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>-->
                         </StackPanel>
                     </Border>

@@ -296,6 +296,7 @@ namespace CNC.Controls.Probing
             return res == true;
         }
 
+    
         public void AddProbingAction(AxisFlags axis, bool negative)
         {
             var axisLetter = axis.ToString();
@@ -312,6 +313,11 @@ namespace CNC.Controls.Probing
             probing.IsSuccess = true;
             probing.Positions.Add(new Position(probing.StartPosition));
             probing.Positions.Add(new Position(probing.StartPosition));
+        }
+        public void AddUnit()
+        {
+            var command = Grbl.IsMetric ? "G21" : "G20";
+            _program.Add(command);
         }
 
         public void Add(string cmd)

@@ -55,8 +55,8 @@
                         <RowDefinition Height="30"/>
                         <RowDefinition Height="30"/>
                     </Grid.RowDefinitions>
-                    <Controls:NumericField x:Uid="fld_xSize" Grid.Row="0" Label="X size:" Format="{Binding Path=Grbl.Format}" Value="{Binding Path=WorkpieceSizeX, Mode=TwoWay}" Margin="0,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource ErrorStyle}"/>
-                    <Controls:NumericField x:Uid="fld_ySize" Grid.Row="1" Label="Y size:" Format="{Binding Path=Grbl.Format}" Value="{Binding Path=WorkpieceSizeY, Mode=TwoWay}" Margin="0,2,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource ErrorStyle}"/>
+                    <Controls:NumericField x:Uid="fld_xSize" Grid.Row="0" Label="X size:" Unit="{Binding Unit}" Format="{Binding Path=Grbl.Format}" Value="{Binding Path=WorkpieceSizeX, Mode=TwoWay}" Margin="0,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource ErrorStyle}"/>
+                    <Controls:NumericField x:Uid="fld_ySize" Grid.Row="1" Label="Y size:" Unit="{Binding Unit}" Format="{Binding Path=Grbl.Format}" Value="{Binding Path=WorkpieceSizeY, Mode=TwoWay}" Margin="0,2,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{StaticResource ErrorStyle}"/>
                     <CheckBox x:Uid="lbl_lock" Content="Lock" Grid.RowSpan="2" IsChecked="{Binding Path=WorkpiecLockXY, Mode=TwoWay}" ToolTip="Unlock and set X or Y size to 0 to probe in one direction only." Margin="170,4,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="100"/>
                 </Grid>
             </GroupBox>

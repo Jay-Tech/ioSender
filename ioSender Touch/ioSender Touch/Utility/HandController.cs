@@ -10,6 +10,7 @@ using Windows.Gaming.Input;
 using System.Collections;
 using System.Text;
 using System.Windows.Markup;
+using CNC.Controls.Utility;
 
 
 namespace ioSenderTouch.Utility

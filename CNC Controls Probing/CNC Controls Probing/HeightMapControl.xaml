@@ -20,12 +20,12 @@
             <GroupBox x:Uid="grp_probeArea" Header="Area to probe" Height="Auto" HorizontalAlignment="Left">
                 <StackPanel Margin="5,5,0,0">
                     <StackPanel Orientation="Horizontal">
-                        <Controls:NumericField Label="X:" ColonAt="20" Value="{Binding Path=HeightMap.MinX, Mode=TwoWay}" Format="-###0.0##"/>
-                        <Controls:NumericField x:Uid="lbl_width" Label="W:" ColonAt="25" Value="{Binding Path=HeightMap.Width, Mode=TwoWay}" Format="-###0.0##"/>
+                        <Controls:NumericField Unit="{Binding Unit}" Label="X:" ColonAt="20" Value="{Binding Path=HeightMap.MinX, Mode=TwoWay}" Format="-###0.0##"/>
+                        <Controls:NumericField x:Uid="lbl_width" Label="W:" ColonAt="25" Unit="{Binding Unit}" Value="{Binding Path=HeightMap.Width, Mode=TwoWay}" Format="-###0.0##"/>
                     </StackPanel>
                     <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
-                        <Controls:NumericField Label="Y:" ColonAt="20" Value="{Binding Path=HeightMap.MinY, Mode=TwoWay}" Format="-###0.0##"/>
-                        <Controls:NumericField x:Uid="lbl_height" Label="H:" ColonAt="25" Value="{Binding Path=HeightMap.Height, Mode=TwoWay}" Format="-###0.0##"/>
+                        <Controls:NumericField Unit="{Binding Unit}" Label="Y:" ColonAt="20" Value="{Binding Path=HeightMap.MinY, Mode=TwoWay}" Format="-###0.0##"/>
+                        <Controls:NumericField x:Uid="lbl_height" Label="H:"  ColonAt="25" Unit="{Binding Unit}" Value="{Binding Path=HeightMap.Height, Mode=TwoWay}" Format="-###0.0##"/>
                     </StackPanel>
                     <Button x:Uid="btn_fromLimits" Content="Set from program limits" IsEnabled="{Binding Path=Grbl.IsFileLoaded}" Margin="5,5,0,0" Padding="5,0" HorizontalAlignment="Left" VerticalAlignment="Top" Click="limits_Click"/>
                 </StackPanel>
@@ -36,8 +36,8 @@
                         <RowDefinition Height="30"/>
                         <RowDefinition Height="30"/>
                     </Grid.RowDefinitions>
-                    <Controls:NumericField Grid.Row="0" Label="X:" Value="{Binding Path=HeightMap.GridSizeX, Mode=TwoWay}" ColonAt="25" Margin="0,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                    <Controls:NumericField Grid.Row="1" Label="Y:" Value="{Binding Path=HeightMap.GridSizeY, Mode=TwoWay}" ColonAt="25" Margin="0,2,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <Controls:NumericField Unit="{Binding Unit}" Grid.Row="0" Label="X:" Value="{Binding Path=HeightMap.GridSizeX, Mode=TwoWay}" ColonAt="25" Margin="0,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <Controls:NumericField Unit="{Binding Unit}" Grid.Row="1" Label="Y:" Value="{Binding Path=HeightMap.GridSizeY, Mode=TwoWay}" ColonAt="25" Margin="0,2,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                     <CheckBox x:Uid="lbl_lock" Content="Lock" Grid.RowSpan="2" IsChecked="{Binding Path=HeightMap.GridSizeLockXY, Mode=TwoWay}" Margin="125,4,0,0" VerticalAlignment="Center"/>
                 </Grid>
             </GroupBox>

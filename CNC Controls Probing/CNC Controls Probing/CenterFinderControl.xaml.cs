@@ -140,7 +140,10 @@ namespace CNC.Controls.Probing
             }
 
             if (pass == probing.Passes)
+            {
+                probing.Program.AddUnit();
                 probing.Program.Add(string.Format("G91F{0}", probing.ProbeFeedRate.ToInvariantString()));
+            }
 
             if (preview)
                 probing.StartPosition.Zero();
@@ -149,7 +152,6 @@ namespace CNC.Controls.Probing
             var XYClearance = probing.XYClearance + probing.ProbeDiameter / 2d;
 
             rapidto.Z -= probing.Depth;
-
             switch (probing.ProbeCenter)
             {
                 case Center.Inside:

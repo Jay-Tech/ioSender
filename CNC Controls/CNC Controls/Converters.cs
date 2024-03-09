@@ -46,6 +46,7 @@ using System.Text;
 using System.Windows;
 using System.Collections.Generic;
 using System.Windows.Controls;
+using CNC.Controls.Utility;
 using CNC.Core;
 
 namespace CNC.Controls
@@ -398,16 +399,21 @@ namespace CNC.Controls
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             Brush result = System.Windows.SystemColors.ControlBrush;
-            if (!(value is double v)) return Brushes.Transparent;
-            if (!(parameter is double p)) return Brushes.Transparent;
-            if (v == p)
+            if (value is JogStep state)
             {
-                result = SecondaryHue ?? Brushes.WhiteSmoke;
+                if (parameter == null) return Brushes.Transparent;
+                var p = (JogStep)Enum.Parse(typeof(JogStep), parameter.ToString(), true);
+                if (state == p)
+                {
+                    result = SecondaryHue ?? Brushes.WhiteSmoke;
+                }
+                else
+                {
+                    result = Brushes.Transparent;
+                }
+
             }
-            else
-            {
-                result = Brushes.Transparent;
-            }
+
             return result;
         }
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -422,16 +428,21 @@ namespace CNC.Controls
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             Brush result = System.Windows.SystemColors.ControlBrush;
-            if (!(value is double v)) return Brushes.Transparent;
-            if (!(parameter is double p)) return Brushes.Transparent;
-            if (v == p)
+            if (value is JogFeed state)
             {
-                result = SecondaryHue ?? Brushes.WhiteSmoke;
+                if (parameter == null) return Brushes.Transparent;
+                var p =(JogFeed) Enum.Parse(typeof(JogFeed), parameter.ToString(),true);
+                if (state == p)
+                {
+                    result = SecondaryHue ?? Brushes.WhiteSmoke;
+                }
+                else
+                {
+                    result = Brushes.Transparent;
+                }
+
             }
-            else
-            {
-                result = Brushes.Transparent;
-            }
+
             return result;
         }
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

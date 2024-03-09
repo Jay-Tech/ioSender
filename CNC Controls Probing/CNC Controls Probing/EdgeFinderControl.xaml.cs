@@ -92,7 +92,7 @@ namespace CNC.Controls.Probing
 
             if (!probing.ValidateInput(probing.ProbeEdge == Edge.Z))
                 return;
-
+            
             if (probing.ProbeEdge == Edge.None)
             {
                 MessageBox.Show((string)FindResource("SelectType"), "Edge finder", MessageBoxButton.OK, MessageBoxImage.Exclamation);
@@ -111,7 +111,7 @@ namespace CNC.Controls.Probing
                 probing.StartPosition.Zero();
 
             var XYClearance = probing.XYClearance + probing.ProbeDiameter / 2d;
-
+            probing.Program.AddUnit();
             probing.Program.Add(string.Format("G91F{0}", probing.ProbeFeedRate.ToInvariantString()));
 
             switch (probing.ProbeEdge)

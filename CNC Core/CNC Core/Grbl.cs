@@ -1049,6 +1049,7 @@ namespace CNC.Core
         internal static void OnSettingsLoaded(GrblViewModel model)
         {
             model.IsMetric = GrblSettings.GetInteger(GrblSetting.ReportInches) != 1;
+
             model.Keyboard.IsContinuousJoggingEnabled = IsGrblHAL;
             model.Keyboard.SoftLimits = GrblSettings.GetInteger(GrblSetting.SoftLimitsEnable) == 1;
             model.Keyboard.LimitSwitchesClearance = GrblSettings.GetDouble(GrblSetting.HomingPulloff);

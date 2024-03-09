@@ -105,22 +105,39 @@ namespace CNC.Controls.Probing
         private ProbingProfile _profile = new ProbingProfile();
         private CancellationToken cancellationToken = new CancellationToken();
 
+        public string Unit
+        {
+            get => _unit;
+            set
+            {
+                if (value == _unit) return;
+                _unit = value;
+                OnPropertyChanged();
+            }
+        }
+
         public Program Program;
+        private string _unit;
 
         public ProbingViewModel (GrblViewModel grblmodel, ProbingProfiles profile)
         {
             Grbl = grblmodel;
-
-//            Execute = new ActionCommand<bool>(ExecuteProgram);
-
+            _grblmodel = grblmodel;
+            _grblmodel.GrblUnitChanged += _grblmodel_GrblUnitChnaged1; ;
             Program = new Program(this);
-
             Profiles = profile.Profiles;
             Profile = Profiles[0];
-
+            Unit = _grblmodel.IsMetric ? "mm" : "in";
             HeightMap.PropertyChanged += HeightMap_PropertyChanged;
             Measurement.PropertyChanged += Measurement_PropertyChanged;
         }
+
+        private void _grblmodel_GrblUnitChnaged1(object sender, Core.Measurement e)
+        {
+            Unit = e == Core.Measurement.Metric ? "mm" : "in";
+        }
+
+      
 
         private void Measurement_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
@@ -133,8 +150,6 @@ namespace CNC.Controls.Probing
             if (e.PropertyName == nameof(HeightMapViewModel.HasHeightMap))
                 HeightMap.CanApply = HeightMap.HasHeightMap && !HeightMapApplied && Grbl.IsFileLoaded;
         }
-
-//        private ICommand Execute { get;  set; }
 
         public bool RemoveLastPosition()
         {

@@ -74,9 +74,9 @@ namespace CNC.Controls.Probing
 
             if (!probing.ValidateInput(true))
                 return;
-
+          
             origin = new Position(probing.Grbl.MachinePosition, probing.Grbl.UnitFactor);
-
+          
             if (!probing.WaitForIdle(string.Format("G90G0X{0}Y{1}", probing.HeightMap.MinX.ToInvariantString(), probing.HeightMap.MinY.ToInvariantString())))
                 return;
 
@@ -89,7 +89,7 @@ namespace CNC.Controls.Probing
             probing.HeightMap.BoundaryPoints = null;
             probing.HeightMap.MapPoints = null;
             probing.HeightMap.MeshGeometry = null;
-
+            probing.Program.AddUnit();
             probing.Program.Add(string.Format("G91F{0}", probing.ProbeFeedRate.ToInvariantString()));
             probing.Message = string.Empty;
 

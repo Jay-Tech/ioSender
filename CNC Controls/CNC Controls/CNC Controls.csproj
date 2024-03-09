@@ -258,6 +258,7 @@
       <DependentUpon>TrinamicView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UIUtils.cs" />
+    <Compile Include="Utility\ControlEnums.cs" />
     <Compile Include="ViewModels\JogConfigControlViewModel.cs" />
     <Compile Include="ViewModels\UIJoggingViewModel.cs" />
     <Compile Include="ViewModels\VirtualKeyboardViewModel.cs" />

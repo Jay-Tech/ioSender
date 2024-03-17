@@ -76,35 +76,33 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0"  HorizontalAlignment="Stretch" Width="Auto" Height="Auto"  VerticalAlignment="Stretch" Margin="2" >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                            </Grid.RowDefinitions>
 
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="Auto" Width="Auto">
-                            <Button  HorizontalAlignment="Right" materialDesign:ButtonAssist.CornerRadius="25 0 0 25" VerticalAlignment="Stretch" Content="X-" Style="{StaticResource JogButtonStyle}" Click="Button_Click"/>
-                        </StackPanel>
-
-                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Height="Auto" Width="Auto" HorizontalAlignment="Stretch">
-                            <Button Content="Y+"  materialDesign:ButtonAssist.CornerRadius="25 25 0 0" Style="{StaticResource JogButtonStyle}" Click="Button_Click" >
-                            </Button>
-                            <Button  Tag="stop" Style="{StaticResource JogButtonStyle}"  Margin="0,5" Click="Button_Click">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" materialDesign:ButtonAssist.CornerRadius="25 25 25,25" Visibility="{Binding AAxisEnabled, Converter={StaticResource IsVisibleConverter}}" VerticalAlignment="Stretch" Content="A-" Style="{StaticResource JogButtonStyle}" Click="Button_Click"/>
+                            <Button Grid.Column="1" Grid.Row="0" Content="Y+"  materialDesign:ButtonAssist.CornerRadius="25 25 0 0" Style="{StaticResource JogButtonStyle}" Click="Button_Click" ></Button>
+                            <Button Grid.Column="2" Grid.Row="0"  HorizontalAlignment="Right" materialDesign:ButtonAssist.CornerRadius="25 25 25,25" VerticalAlignment="Stretch" Content="A+" Visibility="{Binding AAxisEnabled, Converter={StaticResource IsVisibleConverter}}"  Style="{StaticResource JogButtonStyle}" Click="Button_Click"/>
+                            <Button Grid.Column="3" Grid.Row="0" materialDesign:ButtonAssist.CornerRadius="25 25 0 0" Content="Z+" Style="{StaticResource JogButtonStyle}" HorizontalAlignment="Center" Click="Button_Click"/>
+                            <Button Grid.Column="0" Grid.Row="1"  HorizontalAlignment="Right" materialDesign:ButtonAssist.CornerRadius="25 0 0 25" VerticalAlignment="Stretch" Content="X-" Style="{StaticResource JogButtonStyle}" Click="Button_Click"/>
+                            <Button  Grid.Column="1" Grid.Row="1"  Tag="stop" Style="{StaticResource JogButtonStyle}"  Margin="0,5" Click="Button_Click">
                                 <Button.Content>
                                     <materialDesign:PackIcon Height="28"  Width="40" Kind="StopCircle" HorizontalAlignment="Center" VerticalAlignment="Center"  />
                                 </Button.Content>
                             </Button>
-                            <Button materialDesign:ButtonAssist.CornerRadius="0 0 25 25" Content="Y-" Style="{StaticResource JogButtonStyle}" Click="Button_Click"/>
-                        </StackPanel>
-                        <StackPanel Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="Auto" Width="Auto">
-                            <Button materialDesign:ButtonAssist.CornerRadius="0 25 25 0" Content="X+" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource JogButtonStyle}" Click="Button_Click"/>
-                        </StackPanel>
-
-                        <StackPanel Grid.Column="3" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Stretch"  Height="Auto" >
-                            <Button materialDesign:ButtonAssist.CornerRadius="25 25 0 0" Content="Z+" Style="{StaticResource JogButtonStyle}" HorizontalAlignment="Center" Click="Button_Click"/>
-                            <Button materialDesign:ButtonAssist.CornerRadius="0 0 25 25" Content="Z-" Style="{StaticResource JogButtonStyle}" HorizontalAlignment="Center" Margin="0,65,0,0" VerticalAlignment="Top" Click="Button_Click"/>
-                        </StackPanel>
+                            <Button Grid.Column="2" Grid.Row="1"  materialDesign:ButtonAssist.CornerRadius="0 25 25 0" Content="X+" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource JogButtonStyle}" Click="Button_Click"/>
+                            <Button Grid.Column="1" Grid.Row="2" materialDesign:ButtonAssist.CornerRadius="0 0 25 25" Content="Y-" Style="{StaticResource JogButtonStyle}" Click="Button_Click"/>
+                            <Button Grid.Column="3" Grid.Row="2" materialDesign:ButtonAssist.CornerRadius="0 0 25 25" Content="Z-" Style="{StaticResource JogButtonStyle}" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Top" Click="Button_Click"/> 
+                        </Grid>
                     </Grid>
                     <Border Grid.Column="1" x:Uid="grp_jogFeedrate"  Margin="5,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="Auto"  Width="Auto">
                         <StackPanel Name="PanelFeedRate" HorizontalAlignment="Stretch" Orientation="Vertical"  VerticalAlignment="Stretch" Height="Auto"  Width="Auto">

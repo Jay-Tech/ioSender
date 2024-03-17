@@ -103,6 +103,7 @@ namespace CNC.Core
         private bool _isIndividualHomingEnabled;
         private bool _displayMenuBar;
         private string _measurementUnit = "mm";
+        private bool _aAxisEnbaled;
 
         public delegate void GrblResetHandler();
 
@@ -863,11 +864,25 @@ namespace CNC.Core
                 }
                 else
                 {
+                    AAxisEnabled = (GrblInfo.AxisFlags & AxisFlags.A) != 0;
                     if (has_wco)
                         MachinePosition.Set(WorkPosition + WorkPositionOffset);
                     else if (WorkPosition.IsSet(GrblInfo.AxisFlags))
                         Position.Set(WorkPosition);
                 }
+            }
+        }
+        public bool AAxisEnabled
+        {
+            get { return _aAxisEnbaled;}
+            set
+            {
+                if (_aAxisEnbaled != value)
+                {
+                    _aAxisEnbaled = value;
+                }
+                OnPropertyChanged();
+                
             }
         }
         public int ScrollPosition { get { return _scrollpos; } set { _scrollpos = value; OnPropertyChanged(); } }

@@ -15,7 +15,7 @@ namespace ioSenderTouch
 {
     public partial class MainWindow : Window
     {
-        private const string Version = "1.1.0";
+        private const string Version = "1.1.1b";
         private const string App_Name = "IO Sender Touch";
 
         private readonly GrblViewModel _viewModel;

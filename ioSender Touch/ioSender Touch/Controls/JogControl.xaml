@@ -15,8 +15,8 @@
              FocusVisualStyle="{x:Null}">
     <UserControl.Resources>
         <Style x:Key="JogButtonStyle" TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedAccentButton}">
-            <Setter Property="Width" Value="55"/>
-            <Setter Property="Height" Value="55"/>
+            <Setter Property="Width" Value="60"/>
+            <Setter Property="Height" Value="60"/>
             <Setter Property="Focusable" Value="False"/>
             <Setter Property="BorderBrush" Value="Black"></Setter>
             <Setter Property="BorderThickness" Value="1"></Setter>
@@ -84,7 +84,7 @@
 
                         </Grid.ColumnDefinitions>
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="Auto" Width="Auto">
-                            <Button  materialDesign:ButtonAssist.CornerRadius="25 0 0 25" VerticalAlignment="Stretch" Content="X-" Style="{StaticResource JogButtonStyle}" Click="Button_Click"/>
+                            <Button  HorizontalAlignment="Right" materialDesign:ButtonAssist.CornerRadius="25 0 0 25" VerticalAlignment="Stretch" Content="X-" Style="{StaticResource JogButtonStyle}" Click="Button_Click"/>
                         </StackPanel>
 
                         <StackPanel Grid.Column="1" VerticalAlignment="Center" Height="Auto" Width="Auto" HorizontalAlignment="Stretch">
@@ -92,13 +92,13 @@
                             </Button>
                             <Button  Tag="stop" Style="{StaticResource JogButtonStyle}"  Margin="0,5" Click="Button_Click">
                                 <Button.Content>
-                                    <Image Source= "/Resources/Symbols_Stop_32xLG.png"/>
+                                    <materialDesign:PackIcon Height="28"  Width="40" Kind="StopCircle" HorizontalAlignment="Center" VerticalAlignment="Center"  />
                                 </Button.Content>
                             </Button>
                             <Button materialDesign:ButtonAssist.CornerRadius="0 0 25 25" Content="Y-" Style="{StaticResource JogButtonStyle}" Click="Button_Click"/>
                         </StackPanel>
                         <StackPanel Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="Auto" Width="Auto">
-                            <Button materialDesign:ButtonAssist.CornerRadius="0 25 25 0" Content="X+" VerticalAlignment="Center" Style="{StaticResource JogButtonStyle}" Click="Button_Click"/>
+                            <Button materialDesign:ButtonAssist.CornerRadius="0 25 25 0" Content="X+" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource JogButtonStyle}" Click="Button_Click"/>
                         </StackPanel>
 
                         <StackPanel Grid.Column="3" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Stretch"  Height="Auto" >
@@ -121,7 +121,7 @@
                             <Button Name="ButtonFR0" Height="43" Tag="0" Content="{Binding Path=Feedrate0, RelativeSource={RelativeSource AncestorType=UserControl}}" 
                                     HorizontalAlignment="Stretch" Margin="0,3,0,0" VerticalAlignment="Stretch" Click="feedrate_Click"
                                     BorderBrush="{Binding JogFeed,RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource JogRateConverter}, ConverterParameter=Feed0}"/>
-                            
+
                             <!--<Label Content="{Binding Path=FeedrateUnit}" Height="20" FontSize="12" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>-->
                         </StackPanel>
                     </Border>

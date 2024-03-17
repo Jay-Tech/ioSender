@@ -24,10 +24,7 @@
 
     <!--<GroupBox x:Uid="grp_dro" x:Name="grpDRO"  Header="DRO"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Style="{DynamicResource MaterialDesignGroupBox }"  Visibility="{Binding AAxisEnabled, Converter={StaticResource BoolToNotVisibleConverter}}">-->
 
-    <Border  HorizontalAlignment="Stretch" BorderThickness="1" Padding="0,0,0,5" CornerRadius="4" BorderBrush="{DynamicResource PrimaryHueMidBrush }" VerticalAlignment="Stretch" Width="Auto" >
-
-
-
+    <Border  HorizontalAlignment="Stretch" BorderThickness="1" Padding="0,0,0,5" CornerRadius="0" BorderBrush="{DynamicResource PrimaryHueMidBrush }" VerticalAlignment="Stretch" Width="Auto" >
 
         <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,0" Width="Auto" >
             
@@ -39,9 +36,10 @@
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="50"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
             <TextBlock Height="36"  Text="DRO" HorizontalAlignment="Stretch" Padding="5,10,0,10" Focusable="False"  VerticalAlignment="Stretch" 
-                        Background="{DynamicResource PrimaryHueMidBrush}"  Visibility="{Binding AAxisEnabled, Converter={StaticResource BoolToNotVisibleConverter}}"></TextBlock>
+                       Style="{DynamicResource MaterialDesignTitleTextBlock}" Foreground="{DynamicResource PrimaryHueMidForegroundBrush}" Background="{DynamicResource PrimaryHueMidBrush}"  Visibility="{Binding AAxisEnabled, Converter={StaticResource BoolToNotVisibleConverter}}"></TextBlock>
             <DockPanel  Grid.Row="1" Margin="0,5,0,5">
                 <Label  Margin ="3,0,3,0" BorderThickness="1"  BorderBrush="Black" Width ="10" 
                         Background="{Binding Path=HomedState, Converter={StaticResource HomedStateConverter}}"
@@ -63,7 +61,7 @@
                                    Value="{Binding Path=Position.A, Mode=TwoWay}"
                                    IsScaled="{Binding Path=AxisScaled[(core:AxisFlags)A], Mode=OneWay}"  Width="Auto" Height="Auto" VerticalAlignment="Stretch"/>
             <Button Grid.Row="6" x:Uid="btn_zeroAll" x:Name="btnZeroAll" Content="Zero all" IsEnabled="{Binding Path=IsJobRunning, Converter={StaticResource BooleanConverter}}" 
-                    Focusable="False"  HorizontalAlignment="Stretch" Margin="2,6,2,0" Height="Auto" Click="btnZeroAll_Click" VerticalAlignment="Stretch"/>
+                    Focusable="False"  HorizontalAlignment="Stretch" Margin="2,6,2,5" Height="Auto" Click="btnZeroAll_Click" VerticalAlignment="Stretch"/>
 
         </Grid>
     </Border>

@@ -40,7 +40,7 @@
             </Grid.RowDefinitions>
             <TextBlock Height="36"  Text="DRO" HorizontalAlignment="Stretch" Padding="5,10,0,10" Focusable="False"  VerticalAlignment="Stretch" 
                        Style="{DynamicResource MaterialDesignTitleTextBlock}" Foreground="{DynamicResource PrimaryHueMidForegroundBrush}" Background="{DynamicResource PrimaryHueMidBrush}"  Visibility="{Binding AAxisEnabled, Converter={StaticResource BoolToNotVisibleConverter}}"></TextBlock>
-            <DockPanel  Grid.Row="1" Margin="0,5,0,5">
+            <DockPanel  Grid.Row="1" Margin="0,10,0,5">
                 <Label  Margin ="3,0,3,0" BorderThickness="1"  BorderBrush="Black" Width ="10" 
                         Background="{Binding Path=HomedState, Converter={StaticResource HomedStateConverter}}"
                            Content="{Binding Path=LabelName}"/>
@@ -56,12 +56,12 @@
             <local:DROBaseControl  Grid.Row="4" x:Name="axisZ" Label="Z" Style="{StaticResource ZAxisVisibleStyle}"
                                    Value="{Binding Path=Position.Z, Mode=TwoWay}"  MPos="{Binding Path = MachinePosition.Z, StringFormat={}{0:F3}}"
                                    IsScaled="{Binding Path=AxisScaled[(core:AxisFlags)Z], Mode=OneWay}"  Width="Auto" Height="Auto" VerticalAlignment="Stretch"/>
-            <local:DROBaseControl  Grid.Row="5" x:Name="axisA" Label="{Binding Path=AxisLetter.A, Mode=OneWay}"  MPos="{Binding Path = MachinePosition.A, StringFormat={}{0:F3}S}"
+            <local:DROBaseControl  Grid.Row="5" x:Name="axisA" Label="{Binding Path=AxisLetter.A, Mode=OneWay}"  MPos="{Binding Path = MachinePosition.A, StringFormat={}{0:F3}}"
                                    Style="{StaticResource AAxisVisibleStyle}"
-                                   Value="{Binding Path=Position.A, Mode=TwoWay}"
+                                   Value="{Binding Path=Position.A, Mode=TwoWay}" 
                                    IsScaled="{Binding Path=AxisScaled[(core:AxisFlags)A], Mode=OneWay}"  Width="Auto" Height="Auto" VerticalAlignment="Stretch"/>
             <Button Grid.Row="6" x:Uid="btn_zeroAll" x:Name="btnZeroAll" Content="Zero all" IsEnabled="{Binding Path=IsJobRunning, Converter={StaticResource BooleanConverter}}" 
-                    Focusable="False"  HorizontalAlignment="Stretch" Margin="2,6,2,5" Height="Auto" Click="btnZeroAll_Click" VerticalAlignment="Stretch"/>
+                    Focusable="False"  HorizontalAlignment="Stretch" Margin="2,10,2,5" Height="Auto" Click="btnZeroAll_Click" VerticalAlignment="Stretch"/>
 
         </Grid>
     </Border>

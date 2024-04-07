@@ -60,10 +60,9 @@ namespace ioSenderTouch
                 _sdView = new SDCardView(_model);
             }
 
-            if (_model.HasATC)
+            if (_model.HasToolTable)
             {
-                //todo fix ToolView
-               // _toolView = new ToolView(_model);
+                _toolView = new ToolView(_model);
             }
         }
 

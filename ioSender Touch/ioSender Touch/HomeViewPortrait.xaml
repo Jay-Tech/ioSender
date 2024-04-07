@@ -34,7 +34,7 @@
                 <Button Content="SD Card" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Button_ClickSDView" Visibility="{Binding  Path= HasSDCard,Converter={StaticResource IsVisibleConverter}}"  Width="140" Margin="1,0,1,0" ></Button>
                 <Button Content="Offset" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Button_Click_4" Width="140" Margin="1,0,1,0" ></Button>
                 <Button Content="Utility" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Button_Click_Utility" Width="140" Margin="1,0,1,0" ></Button>
-                <Button Content="Tools" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Button_Click_Tools"  Visibility="{Binding  Path= HasATC,Converter={StaticResource IsVisibleConverter}}" Width="140" Margin="1,0,1,0" ></Button>
+                <Button Content="Tools" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Button_Click_Tools"  Visibility="{Binding  Path= HasToolTable,Converter={StaticResource IsVisibleConverter}}" Width="140" Margin="1,0,1,0" ></Button>
                 <Button Content="Grbl Settings" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Button_Click" Width="140" Margin="1,0,1,0"  ></Button>
                 <Button Content="App Settings" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Button_Click_3" Width="140" Margin="1,0,1,0" ></Button>
             </StackPanel>

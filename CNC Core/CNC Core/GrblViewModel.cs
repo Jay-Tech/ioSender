@@ -104,6 +104,8 @@ namespace CNC.Core
         private bool _displayMenuBar;
         private string _measurementUnit = "mm";
         private bool _aAxisEnbaled;
+        private bool _hasToolTable;
+   
 
         public delegate void GrblResetHandler();
 
@@ -1916,6 +1918,17 @@ namespace CNC.Core
         public Double MaxDistanceY { get; set; }
 
         public Double MaxDistanceX { get; set; }
+
+        public bool HasToolTable
+        {
+            get => _hasToolTable;
+            set
+            {
+                if (value == _hasToolTable) return;
+                _hasToolTable = value;
+                OnPropertyChanged();
+            }
+        }
 
         public void LoadComplete()
         {

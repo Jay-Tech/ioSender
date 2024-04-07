@@ -1222,7 +1222,9 @@ namespace CNC.Core
                                 Grbl.GrblViewModel.ClearPosition();
                         }
                         if (s.Length > 4)
-                            NumTools = int.Parse(s[4], CultureInfo.InvariantCulture);
+                            
+                         NumTools = int.Parse(s[4], CultureInfo.InvariantCulture);
+                        if (Grbl.GrblViewModel != null) Grbl.GrblViewModel.HasToolTable = NumTools > 0;
                         break;
 
                     case "AXS":

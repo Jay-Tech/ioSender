@@ -40,7 +40,7 @@
                 <Button Content="Utility" IsEnabled="{Binding IsJobRunning, Converter={StaticResource InvertBooleanConverter}}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Button_Click_Utility" 
                         Width="140" Margin="1,0,1,0" ></Button>
                 <Button Content="Tools" IsEnabled="{Binding IsJobRunning, Converter={StaticResource InvertBooleanConverter}}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Button_Click_Tools" 
-                        Visibility="{Binding  Path= HasATC,Converter={StaticResource IsVisibleConverter}}" Width="140" Margin="1,0,1,0" ></Button>
+                        Visibility="{Binding  Path= HasToolTable,Converter={StaticResource IsVisibleConverter}}" Width="140" Margin="1,0,1,0" ></Button>
                 <Button Content="Grbl Settings" IsEnabled="{Binding IsJobRunning, Converter={StaticResource InvertBooleanConverter}}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Button_Click"
                         Width="140" Margin="1,0,1,0"  ></Button>
                 <Button Content="App Settings" IsEnabled="{Binding IsJobRunning,  Converter={StaticResource InvertBooleanConverter}}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Button_Click_3"

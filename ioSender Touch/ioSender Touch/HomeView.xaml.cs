@@ -1,9 +1,14 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Interop;
+using System.Windows.Media;
+using System.Windows.Media.Media3D;
 using CNC.Controls;
 using CNC.Controls.Probing;
 using CNC.Controls.Viewer;
@@ -13,13 +18,14 @@ using ioSenderTouch.Controls;
 using ioSenderTouch.Utility;
 using ioSenderTouch.Views;
 using ConfigControl = CNC.Controls.Probing.ConfigControl;
+using Matrix = System.Windows.Media.Matrix;
 
 namespace ioSenderTouch
 {
-    
+
     public partial class HomeView : UserControl
     {
-        
+
 
         private bool? initOK = null;
         private bool isBooted = false;
@@ -34,9 +40,9 @@ namespace ioSenderTouch
         private SDCardView _sdView;
         private ToolView _toolView;
         private readonly UtilityView _utilityView;
-        
 
-        public ICommand ChangeView { get;}
+
+        public ICommand ChangeView { get; }
 
         public UIElement Content { get; set; }
         public HomeView(GrblViewModel model)
@@ -50,7 +56,7 @@ namespace ioSenderTouch
             _grblAppSettings = new AppConfigView(_model);
             _offsetView = new OffsetView(_model);
             _utilityView = new UtilityView(_model);
-            CenterView.Content  = _renderView;
+            CenterView.Content = _renderView;
             AppConfig.Settings.OnConfigFileLoaded += AppConfiguationLoaded;
             AppConfig.Settings.SetupAndOpen(_model, Application.Current.Dispatcher);
             InitSystem();
@@ -62,8 +68,22 @@ namespace ioSenderTouch
             {
                 HandleChangeView(x);
             });
-
-
+            Visual visual = Application.Current.MainWindow;
+            Matrix matrix = default;
+            var source = PresentationSource.FromVisual(visual);
+            if (source != null)
+            {
+                if (source.CompositionTarget != null)
+                    matrix = source.CompositionTarget.TransformToDevice;
+            }
+            else
+            {
+                using (var src = new HwndSource(new HwndSourceParameters()))
+                {
+                    if (src.CompositionTarget != null)
+                        matrix = src.CompositionTarget.TransformToDevice;
+                }
+            }
         }
 
         private void HandleChangeView(object x)
@@ -103,10 +123,9 @@ namespace ioSenderTouch
             {
                 _sdView = new SDCardView(_model);
             }
-
-            if (_model.HasATC)
+            if (_model.HasToolTable)
             {
-                //_toolView = new ToolView(_model);
+                _toolView = new ToolView(_model);
             }
             if (GrblInfo.HasProbe && GrblSettings.ReportProbeCoordinates)
             {
@@ -234,7 +253,7 @@ namespace ioSenderTouch
                 controls.Add(new JogConfigControl(_model));
             }
             controls.Add(new StripGCodeConfigControl());
-         
+
             if (AppConfig.Settings.GCodeViewer.IsEnabled)
             {
                 controls.Add(new CNC.Controls.Viewer.ConfigControl());

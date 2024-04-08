@@ -45,10 +45,11 @@ Controller  Layout Front
 Controller Layout Front
 ![Wireless Controller](media/GamePadBack.jpg)
 
-### Priority issues and work V1.1.0 Beta Ingross
-Added Metric or Imperial Unit support through out the App(Testing on going)
+### Priority issues and work V1.0.1 Beta 
+~~Added Metric or Imperial Unit support through out the App~~ v1.0.1.1b release(Testing on going)
 Added wireless game support such as Xbox controller(Testing on going)  -May add configuable buttons latter on
-Working on Tool table support in Application 
+~~Working on Tool table support in Application~~ v1.0.1.2b release
+additional screen resolution support  early testing v1.0.1.3A release
 Contuined UI refinement and code cleanup
 
 

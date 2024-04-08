@@ -3,37 +3,38 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
-using System.Windows.Media;
+using System.Windows.Input;
 using System.Windows.Threading;
 using CNC.Controls;
 using CNC.Core;
 using ioSenderTouch.Controls;
 using MaterialDesignThemes.Wpf;
+using Color = System.Windows.Media.Color;
+
 
 
 namespace ioSenderTouch
 {
     public partial class MainWindow : Window
     {
-        private const string Version = "1.0.1.2b";
+        private const string Version = "1.0.1.3a";
         private const string App_Name = "IO Sender Touch";
 
         private readonly GrblViewModel _viewModel;
         private readonly HomeView _homeView;
         private readonly HomeViewPortrait _homeViewPortrait;
         private bool _shown;
+        private bool _windowStyle;
         public string BaseWindowTitle { get; set; }
         public MainWindow()
         {
-            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config"+Path.DirectorySeparatorChar);
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config" + Path.DirectorySeparatorChar);
             CNC.Core.Resources.Path = path;
             InitializeComponent();
-           
             Title = string.Format(Title, Version);
             _viewModel = DataContext as GrblViewModel ?? new GrblViewModel();
             BaseWindowTitle = Title;
             AppConfig.Settings.OnConfigFileLoaded += Settings_OnConfigFileLoaded;
-
             if (SystemInformation.ScreenOrientation == ScreenOrientation.Angle90 || SystemInformation.ScreenOrientation == ScreenOrientation.Angle270)
             {
                 _homeViewPortrait = new HomeViewPortrait(_viewModel);
@@ -54,11 +55,12 @@ namespace ioSenderTouch
                         Content = $"{App_Name} {Version}"
                     }
                 };
-                MenuBorder.Child =menu;
+                MenuBorder.Child = menu;
                 MenuBorder.DataContext = _viewModel;
             }
             _viewModel.OnShutDown += _viewModel_OnShutDown;
         }
+
 
         protected override void OnContentRendered(EventArgs e)
         {
@@ -69,7 +71,7 @@ namespace ioSenderTouch
             _viewModel.LoadComplete();
         }
 
-        private  void SetPrimaryColor(Color color)
+        private void SetPrimaryColor(Color color)
         {
             try
             {
@@ -86,11 +88,22 @@ namespace ioSenderTouch
         private void Settings_OnConfigFileLoaded(object sender, EventArgs e)
         {
             _viewModel.DisplayMenuBar = AppConfig.Settings.AppUiSettings.EnableToolBar;
-            WindowStyle = WindowStyle.None;
-            ResizeMode = ResizeMode.NoResize;
-            WindowState = WindowState.Maximized;
+            CheckAndSetScale();
             var color = AppConfig.Settings.AppUiSettings.UIColor;
             SetPrimaryColor(color);
+            Left = 0;
+            Top = 0;
+        }
+        private void CheckAndSetScale()
+        {
+            _windowStyle = !AppConfig.Settings.AppUiSettings.EnableToolBar;
+            var width = AppConfig.Settings.AppUiSettings.Width;
+            var height = AppConfig.Settings.AppUiSettings.Height;
+            var dpi = DPIProvider.GetDpiScale();
+            var h = height / dpi.DpiX;
+            var w = width / dpi.DpiY;
+            Width = w;
+            Height = h;
         }
 
         private void _viewModel_OnShutDown(object sender, EventArgs e)
@@ -112,6 +125,65 @@ namespace ioSenderTouch
                     GCode.File.Load(AppConfig.Settings.FileName);
                 }));
             }
+        }
+
+        private void MenuBorder_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (_windowStyle) return;
+            if (WindowState == WindowState.Maximized)
+            {
+                WindowState = WindowState.Normal;
+            }
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
+        }
+        // Dynamic Resize
+
+        public static readonly DependencyProperty ScaleValueProperty = DependencyProperty.Register("ScaleValue", typeof(double), 
+            typeof(MainWindow), new UIPropertyMetadata(1.0, new PropertyChangedCallback(OnScaleValueChanged), new CoerceValueCallback(OnCoerceScaleValue)));
+
+        private static object OnCoerceScaleValue(DependencyObject o, object value)
+        {
+            MainWindow mainWindow = o as MainWindow;
+            if (mainWindow != null)
+                return mainWindow.OnCoerceScaleValue((double)value);
+            else return value;
+        }
+
+        private static void OnScaleValueChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+        {
+            MainWindow mainWindow = o as MainWindow;
+            if (mainWindow != null)
+                mainWindow.OnScaleValueChanged((double)e.OldValue, (double)e.NewValue);
+        }
+
+        protected virtual double OnCoerceScaleValue(double value)
+        {
+            if (double.IsNaN(value))
+                return 1.0f;
+
+            value = Math.Max(0.1, value);
+            return value;
+        }
+
+        protected virtual void OnScaleValueChanged(double oldValue, double newValue) { }
+
+        public double ScaleValue
+        {
+            get => (double)GetValue(ScaleValueProperty);
+            set => SetValue(ScaleValueProperty, value);
+        }
+
+        private void MainGrid_SizeChanged(object sender, EventArgs e) => CalculateScale();
+
+        private void CalculateScale()
+        {
+            double yScale = ActualHeight / 1080;
+            double xScale = ActualWidth / 1920;
+            double value = Math.Min(xScale, yScale);
+            ScaleValue = (double)OnCoerceScaleValue(AppMainWindow, value);
         }
     }
 }

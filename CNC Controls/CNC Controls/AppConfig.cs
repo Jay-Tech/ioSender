@@ -254,6 +254,9 @@ namespace CNC.Controls
         private bool _enableToolBar;
         private bool _enableStopLightTheme;
         private Color _uIColor;
+        private int _width = 1920;
+        private int _height = 1080;
+       
 
 
         public bool EnableToolBar
@@ -266,6 +269,27 @@ namespace CNC.Controls
                 OnPropertyChanged();
             }
         }
+        public int Width
+        {
+            get => _width;
+            set
+            {
+                if (value == _width) return;
+                _width = value;
+                OnPropertyChanged();
+            }
+        }
+        public int Height
+        {
+            get => _height;
+            set
+            {
+                if (value == _height) return;
+                _height = value;
+                OnPropertyChanged();
+            }
+        }
+       
 
         public bool EnableStopLightTheme
         {

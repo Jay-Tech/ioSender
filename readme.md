@@ -47,11 +47,15 @@ Controller Layout Front
 
 ### Priority issues and work V1.0.1 Beta 
 ~~Added Metric or Imperial Unit support through out the App~~ v1.0.1.1b release(Testing on going)
+<br>
 Added wireless game support such as Xbox controller(Testing on going)  -May add configuable buttons latter on
+<br>
 ~~Working on Tool table support in Application~~ v1.0.1.2b release
-additional screen resolution support  early testing v1.0.1.3A release
+<br>
+Support additional screen resolution  early testing v1.0.1.3A release
+<br>
 Contuined UI refinement and code cleanup
-
+<br>
 
 ### Priority issues and work V1.0.0
 ~~Reset button and logic needs to be added~~ (8/26/23 Implemented needs more testing)

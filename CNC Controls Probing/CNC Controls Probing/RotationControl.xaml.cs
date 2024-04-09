@@ -136,7 +136,6 @@ namespace CNC.Controls.Probing
                 probing.StartPosition.Zero();
 
             var XYClearance = probing.XYClearance + probing.ProbeRadius;
-            probing.Program.AddUnit();
             probing.Program.Add(string.Format("G91F{0}", probing.ProbeFeedRate.ToInvariantString()));
 
             switch (probing.ProbeEdge)

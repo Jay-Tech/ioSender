@@ -85,7 +85,6 @@ namespace CNC.Controls.Probing
 
             if (!probing.Program.Init(AppConfig.Settings.Probing.CheckProbeStatus || !probing.ProbeFixture))
                 return;
-            probing.Program.AddUnit();
             probing.Program.Add($"G91F{probing.ProbeFeedRate.ToInvariantString()}");
 
             if (probing.ProbeFixture)

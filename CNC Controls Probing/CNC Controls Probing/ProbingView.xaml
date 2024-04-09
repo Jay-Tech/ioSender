@@ -134,11 +134,18 @@
                     <local:HeightMapControl HorizontalAlignment="Left" VerticalAlignment="Top" Height="480" Margin="0,0,0,0"/>
                 </TabItem>
             </TabControl>
-            <TextBlock Grid.Row="1" TextWrapping="Wrap" Height="53" Margin="3,2,0,0" Width="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Top">
-            <Run Text="{Binding Path=Instructions, Mode=OneWay}"/>
-            <LineBreak/>
-            <Run x:Uid="txt_warning" Text="Warning! Use with care - incorrect parameters may damage your probe!" Foreground="Red" FontWeight="Bold"/>
-            </TextBlock>
+            <Grid Grid.Row="1" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" TextWrapping="Wrap" Height="53" Margin="3,2,0,0" Width="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                    <Run Text="{Binding Path=Instructions, Mode=OneWay}"/>
+                    <LineBreak/>
+                    <Run x:Uid="txt_warning" Text="Warning! Use with care - incorrect parameters may damage your probe!" Foreground="Red" FontWeight="Bold"/>
+                </TextBlock>
+                <Button Grid.Column="1" Command="{Binding OpenMacroDialog}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="40" Width="150" Margin="0,0,5,0" Content=" Macro Input"></Button>
+            </Grid>
         </Grid>
     </Grid>
 </UserControl>

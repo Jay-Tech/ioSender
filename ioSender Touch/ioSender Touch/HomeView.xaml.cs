@@ -167,13 +167,13 @@ namespace ioSenderTouch
                 GCodeSender.EnablePolling(true);
             }
 
-            if (GrblInfo.HasProbe && GrblSettings.ReportProbeCoordinates)
-            {
-                _model.HasProbing = true;
-                _probeView = new ProbingView(_model);
-                _probeView.Activate(true);
+            //if (GrblInfo.HasProbe && GrblSettings.ReportProbeCoordinates)
+            //{
+            //    _model.HasProbing = true;
+            //    _probeView = new ProbingView(_model);
+            //    _probeView.Activate(true);
 
-            }
+            //}
             return true;
         }
 

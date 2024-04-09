@@ -81,6 +81,10 @@
     <Reference Include="HelixToolkit.Wpf, Version=2.24.0.0, Culture=neutral, PublicKeyToken=52aa3500039caf0d, processorArchitecture=MSIL">
       <HintPath>..\..\ioSender Touch\packages\HelixToolkit.Wpf.2.24.0\lib\net462\HelixToolkit.Wpf.dll</HintPath>
     </Reference>
+    <Reference Include="MaterialDesignThemes.Wpf, Version=4.10.0.0, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ioSender Touch\packages\MaterialDesignThemes.4.10.0-ci317\lib\net462\MaterialDesignThemes.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\ioSender Touch\packages\Microsoft.Bcl.AsyncInterfaces.8.0.0-preview.6.23329.7\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -153,6 +157,10 @@
       <DependentUpon>ProbeVerify.xaml</DependentUpon>
     </Compile>
     <Compile Include="ProbingConfig.cs" />
+    <Compile Include="ProbingDialog.xaml.cs">
+      <DependentUpon>ProbingDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProbingMacroCommands.cs" />
     <Compile Include="ProbingView.xaml.cs">
       <DependentUpon>ProbingView.xaml</DependentUpon>
     </Compile>
@@ -206,6 +214,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ProbeVerify.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ProbingDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

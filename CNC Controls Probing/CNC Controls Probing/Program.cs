@@ -104,7 +104,8 @@ namespace CNC.Controls.Probing
 
                 case nameof(GrblViewModel.Signals):
                     var model = sender as GrblViewModel;
-                    if (model.Signals.Value.HasFlag(Signals.CycleStart)) {
+                    if (model.Signals.Value.HasFlag(Signals.CycleStart))
+                    {
                         if (probing.IsPaused && probeOnCycleStart)
                         {
                             probeOnCycleStart = false;
@@ -287,7 +288,7 @@ namespace CNC.Controls.Probing
             }
 
             probing.StartPosition.Set(probing.Grbl.MachinePosition);
-            if(probing.Grbl.UnitFactor != 1d)
+            if (probing.Grbl.UnitFactor != 1d)
                 probing.StartPosition.Scale(probing.Grbl.UnitFactor);
 
             hasPause = probeOnCycleStart = false;
@@ -296,7 +297,7 @@ namespace CNC.Controls.Probing
             return res == true;
         }
 
-    
+
         public void AddProbingAction(AxisFlags axis, bool negative)
         {
             var axisLetter = axis.ToString();
@@ -316,8 +317,8 @@ namespace CNC.Controls.Probing
         }
         public void AddUnit()
         {
-            var command = Grbl.IsMetric ? "G21" : "G20";
-            _program.Add(command);
+            //var command = Grbl.IsMetric ? "G21" : "G20";
+            //_program.Add(command);
         }
 
         public void Add(string cmd)
@@ -350,7 +351,7 @@ namespace CNC.Controls.Probing
         {
             IsCancelled = true;
             Comms.com.WriteByte(GrblInfo.IsGrblHAL ? GrblConstants.CMD_STOP : GrblConstants.CMD_RESET);
-            if(!_isComplete)
+            if (!_isComplete)
                 ResponseReceived("cancel");
         }
 
@@ -365,7 +366,7 @@ namespace CNC.Controls.Probing
                 isRunning = Grbl.IsJobRunning = false;
                 Comms.com.WriteCommand(probing.DistanceMode == DistanceMode.Absolute ? "G90" : "G91");
             }
-            if(!_isComplete || probing.IsSuccess)
+            if (!_isComplete || probing.IsSuccess)
                 probing.Message = message;
             _isComplete = true;
         }
@@ -394,24 +395,24 @@ namespace CNC.Controls.Probing
 
                     Grbl.OnCommandResponseReceived += ResponseReceived;
                     Grbl.PropertyChanged += Grbl_PropertyChanged;
-                    if(hasPause)
+                    if (hasPause)
                         probing.PropertyChanged += Probing_PropertyChanged;
                 }
 
                 Grbl.IsJobRunning = true;
-
+                InsertCustomCommands();
                 if (probing.Message == string.Empty)
                     probing.Message = LibStrings.FindResource("Probing");
 
                 cmd_response = string.Empty;
                 Comms.com.WriteCommand(_program[step]);
-               // Grbl.ExecuteCommand(_program[step]);
+                // Grbl.ExecuteCommand(_program[step]);
 
                 while (!_isComplete)
                 {
                     EventUtils.DoEvents();
 
-                    if(cmd_response != string.Empty)
+                    if (cmd_response != string.Empty)
                     {
                         response = cmd_response;
                         cmd_response = string.Empty;
@@ -451,7 +452,7 @@ namespace CNC.Controls.Probing
                                     //    response = "probe!";
                                     //else
                                     Comms.com.WriteCommand(_program[step]);
-                                        //Grbl.ExecuteCommand(_program[step]);
+                                    //Grbl.ExecuteCommand(_program[step]);
                                 }
                             }
                         }
@@ -474,6 +475,14 @@ namespace CNC.Controls.Probing
             return probing.IsSuccess;
         }
 
+        private void InsertCustomCommands()
+        {
+            //if (probing.PreMacroCommandList.Length > 0)
+            //    _program.InsertRange(0, probing.PreMacroCommandList);
+            //if (probing.PostMacroCommandList.Length > 0)
+            //    _program.AddRange(probing.PostMacroCommandList);
+        }
+
         public bool ProbeZ(double x, double y)
         {
             probing.WaitForIdle();
@@ -488,9 +497,9 @@ namespace CNC.Controls.Probing
             return probing.Program.Execute(true);
         }
 
-    private void ResponseReceived(string response)
+        private void ResponseReceived(string response)
         {
-            if(cmd_response != "cancel")
+            if (cmd_response != "cancel")
                 cmd_response = response;
         }
 

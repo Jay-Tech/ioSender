@@ -141,7 +141,6 @@ namespace CNC.Controls.Probing
 
             if (pass == probing.Passes)
             {
-                probing.Program.AddUnit();
                 probing.Program.Add(string.Format("G91F{0}", probing.ProbeFeedRate.ToInvariantString()));
             }
 

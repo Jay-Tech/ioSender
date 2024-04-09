@@ -315,11 +315,11 @@ namespace CNC.Controls.Probing
             probing.Positions.Add(new Position(probing.StartPosition));
             probing.Positions.Add(new Position(probing.StartPosition));
         }
-        public void AddUnit()
-        {
-            //var command = Grbl.IsMetric ? "G21" : "G20";
-            //_program.Add(command);
-        }
+        //public void AddUnit()
+        //{
+        //    var command = Grbl.IsMetric ? "G21" : "G20";
+        //    _program.Add(command);
+        //}
 
         public void Add(string cmd)
         {

@@ -67,6 +67,7 @@ namespace CNC.Controls.Probing
 
     public class Program
     {
+        public Action<bool> OnProbeCompleted;
         private GrblViewModel Grbl = null;
         private List<string> _program = new List<string>();
         ProbingViewModel probing;
@@ -83,6 +84,35 @@ namespace CNC.Controls.Probing
         {
             Grbl = model.Grbl;
             probing = model;
+            OnProbeCompleted = ProbeCompleted;
+        }
+
+        private void InsertCustomPreCommands()
+        {
+            if (probing.PreMacroCommandList.Length > 0)
+                _program.InsertRange(0, probing.PreMacroCommandList);
+            if (probing.PostMacroCommandList.Length > 0)
+                _program.AddRange(probing.PostMacroCommandList);
+        }
+        private void ProbeCompleted(bool b)
+        {
+            if (b)
+            {
+               // CustomPostProbingCommands();
+                if (probing.ActiveMacroCommand(out var command))
+                {
+                    if (command.IsSingleUse)
+                    {
+                        probing.ClearMacroCommandControl();
+                    }
+                }
+            }
+        }
+        //TODO another option let each probe type call back on a good probe and then run post Gcode as a macro 
+        private void CustomPostProbingCommands()
+        {
+            if (string.IsNullOrEmpty(probing.PostMacroCommands)) return;
+            Grbl.ExecuteMacro(probing.PostMacroCommands);
         }
 
         public bool IsCancelled { get; set; }
@@ -141,6 +171,7 @@ namespace CNC.Controls.Probing
                     Grbl.ResponseLog.Add("PM:paused");
             }
         }
+     
 
         public void Clear()
         {
@@ -397,7 +428,7 @@ namespace CNC.Controls.Probing
                     if(hasPause)
                         probing.PropertyChanged += Probing_PropertyChanged;
                 }
-
+                InsertCustomPreCommands();
                 Grbl.IsJobRunning = true;
 
                 if (probing.Message == string.Empty)

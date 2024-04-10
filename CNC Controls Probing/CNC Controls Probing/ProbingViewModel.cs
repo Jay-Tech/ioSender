@@ -44,7 +44,9 @@ using System.Collections.ObjectModel;
 using CNC.Core;
 using CNC.GCode;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 
 namespace CNC.Controls.Probing
 {
@@ -105,15 +107,98 @@ namespace CNC.Controls.Probing
         private ProbingType _probingType = ProbingType.None;
         private ProbingProfile _profile;
         private CancellationToken cancellationToken = new CancellationToken();
+        private bool _singleUseChecked;
+        private string _postMacroCommands;
+        private string _preMacroCommands;
 
         public Program Program;
+        private ObservableCollection<ProbingMacroCommand> _probingMacroCommands;
+        private ProbingMacroCommand _probeMacroCommandSelectedItem;
+        private string _macroCommandName;
+        private readonly ProbingMacroCommands _probeMacroCommands;
+        public ICommand OpenMacroDialog { get; }
+        public ICommand DeleteCommand { get; }
+        public ICommand AddCommand { get; }
+        public ICommand ClearButtonCommand { get; }
+        public string[] PostMacroCommandList { get; set; } = { };
+
+        public string[] PreMacroCommandList { get; set; } = { };
+
+        public ObservableCollection<ProbingMacroCommand> ProbingMacroCommandCollection
+        {
+            get => _probingMacroCommands;
+            set
+            {
+                if (Equals(value, _probingMacroCommands)) return;
+                _probingMacroCommands = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string MacroCommandName
+        {
+            get => _macroCommandName;
+            set
+            {
+                if (value == _macroCommandName) return;
+                _macroCommandName = value;
+                OnPropertyChanged();
+            }
+        }
+        public ProbingMacroCommand ProbeMacroCommandSelectedItem
+        {
+            get => _probeMacroCommandSelectedItem;
+            set
+            {
+                if (value == _probeMacroCommandSelectedItem) return;
+                _probeMacroCommandSelectedItem = value;
+                IndexUpdated();
+                OnPropertyChanged();
+            }
+        }
+
+
+        public bool SingleUseChecked
+        {
+            get => _singleUseChecked;
+            set
+            {
+                if (value == _singleUseChecked) return;
+                _singleUseChecked = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string PostMacroCommands
+        {
+            get => _postMacroCommands;
+            set
+            {
+                if (value == _postMacroCommands) return;
+                _postMacroCommands = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string PreMacroCommands
+        {
+            get => _preMacroCommands;
+            set
+            {
+                if (value == _preMacroCommands) return;
+                _preMacroCommands = value;
+                OnPropertyChanged();
+            }
+        }
 
         public ProbingViewModel (GrblViewModel grblmodel, ProbingProfiles profile)
         {
             Grbl = grblmodel;
 
-//            Execute = new ActionCommand<bool>(ExecuteProgram);
-
+            //            Execute = new ActionCommand<bool>(ExecuteProgram);
+            _probeMacroCommands = new ProbingMacroCommands();
+            _probeMacroCommands.Load();
+            ProbingMacroCommandCollection = new ObservableCollection<ProbingMacroCommand>(_probeMacroCommands.ProbingMacroCommandsCollection);
             Program = new Program(this);
 
             Profiles = profile.Profiles;
@@ -121,8 +206,107 @@ namespace CNC.Controls.Probing
 
             HeightMap.PropertyChanged += HeightMap_PropertyChanged;
             Measurement.PropertyChanged += Measurement_PropertyChanged;
+            OpenMacroDialog = new Command(HandleOpenDialog);
+            DeleteCommand = new Command(HandleDeleteCommand);
+            AddCommand = new Command(AddCommandHandler);
+            ClearButtonCommand = new Command(ClearButtonHandler);
+
         }
 
+               private void HandleOpenDialog(object obj)
+        {
+            var dialog = new ProbeCommandDialog(this)
+            {
+
+                Owner = Application.Current.MainWindow,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner
+            };
+            if (dialog.ShowDialog() != true) return;
+             BuildPostMacroCommandStrings();
+
+        }
+        private void BuildPostMacroCommandStrings()
+        {
+            if (!string.IsNullOrEmpty(PreMacroCommands))
+            {
+                PreMacroCommandList = PreMacroCommands.Split(new[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            }
+            if (!string.IsNullOrEmpty(PostMacroCommands))
+            {
+                PostMacroCommandList = PostMacroCommands.Split(new[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            }
+        }
+        private void ClearButtonHandler(object obj)
+        {
+            ClearMacroCommandControl();
+        }
+
+        public void ClearMacroCommandControl()
+        {
+            ProbeMacroCommandSelectedItem = null;
+            PreMacroCommands = string.Empty;
+            PostMacroCommands = string.Empty;
+            MacroCommandName = string.Empty;
+            SingleUseChecked = false;
+            PreMacroCommandList = new string[] { };
+            PostMacroCommandList = new string[] { };
+        }
+
+        private void IndexUpdated()
+        {
+
+            if (ProbeMacroCommandSelectedItem != null)
+            {
+                MacroCommandName = ProbeMacroCommandSelectedItem.CommandName;
+                SingleUseChecked = ProbeMacroCommandSelectedItem.IsSingleUse;
+                PostMacroCommands = ProbeMacroCommandSelectedItem.PostCommand;
+                PreMacroCommands = ProbeMacroCommandSelectedItem.PreCommand;
+                BuildPostMacroCommandStrings();
+            }
+            else
+            {
+                ClearMacroCommandControl();
+            }
+        }
+        private void HandleDeleteCommand(object obj)
+        {
+            if(ProbeMacroCommandSelectedItem == null) return;
+            var found = ProbingMacroCommandCollection.First(x => x.CommandName == ProbeMacroCommandSelectedItem.CommandName);
+            if (found != null)
+                ProbingMacroCommandCollection.Remove(found);
+            _probeMacroCommands.ProbingMacroCommandsCollection = ProbingMacroCommandCollection.ToList();
+            _probeMacroCommands.Save();
+        }
+        private void AddCommandHandler(object obj)
+        {
+
+            if (string.IsNullOrEmpty(MacroCommandName))
+                MacroCommandName = $"MC_{new Random().Next(0, 1000)}";
+            if (ProbingMacroCommandCollection.Any(x => x.CommandName == MacroCommandName))
+            {
+                foreach (var item in ProbingMacroCommandCollection)
+                {
+                    if (item.CommandName != MacroCommandName) continue;
+                    item.IsSingleUse = SingleUseChecked;
+                    item.PostCommand = PostMacroCommands;
+                    item.PreCommand = PreMacroCommands;
+                }
+            }
+            else
+            {
+                var commandItem = new ProbingMacroCommand(MacroCommandName, PreMacroCommands, PostMacroCommands, SingleUseChecked);
+                ProbingMacroCommandCollection.Add(commandItem);
+            }
+
+            _probeMacroCommands.ProbingMacroCommandsCollection = ProbingMacroCommandCollection.ToList();
+            _probeMacroCommands.Save();
+        }
+
+        public bool ActiveMacroCommand(out ProbingMacroCommand command)
+        {
+            command = ProbeMacroCommandSelectedItem;
+            return ProbeMacroCommandSelectedItem != null;
+        }
         private void Measurement_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             var m = sender as Measurement;
@@ -135,8 +319,8 @@ namespace CNC.Controls.Probing
                 HeightMap.CanApply = HeightMap.HasHeightMap && !HeightMapApplied && Grbl.IsFileLoaded;
         }
 
-//        private ICommand Execute { get;  set; }
-
+        //        private ICommand Execute { get;  set; }
+ 
         public bool RemoveLastPosition()
         {
             bool ok;
@@ -645,5 +829,6 @@ namespace CNC.Controls.Probing
         }
         public double WorkpieceHeight { get { return _workpieceHeight; } set { _workpieceHeight = value; OnPropertyChanged(); } }
 
+      
     }
 }

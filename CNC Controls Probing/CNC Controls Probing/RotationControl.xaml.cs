@@ -326,6 +326,10 @@ namespace CNC.Controls.Probing
                 probing.Grbl.ExecuteCommand(GrblConstants.CMD_GETPARSERSTATE);
 
             probing.Grbl.IsJobRunning = false;
+            if (probing.CanApplyTransform)
+            {
+                probing.Program.OnProbeCompleted?.Invoke(true);
+            }
         }
 
         private void PreviewOnCompleted()

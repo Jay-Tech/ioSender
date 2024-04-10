@@ -182,6 +182,11 @@ namespace CNC.Controls.Probing
             }
 
             probing.Program.End((string)FindResource(ok ? "ProbingCompleted" : "ProbingFailed"));
+            if (ok)
+            {
+                probing.Program.OnProbeCompleted.Invoke(ok); 
+            }
+           
         }
 
         private void clearToolOffset_Click(object sender, RoutedEventArgs e)

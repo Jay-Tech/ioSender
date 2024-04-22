@@ -1,23 +1,31 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Interop;
+using System.Windows.Media;
+using System.Windows.Media.Media3D;
 using CNC.Controls;
 using CNC.Controls.Probing;
 using CNC.Controls.Viewer;
 using CNC.Core;
+using CNC.Core.Comands;
 using ioSenderTouch.Controls;
+using ioSenderTouch.Utility;
 using ioSenderTouch.Views;
 using ConfigControl = CNC.Controls.Probing.ConfigControl;
+using Matrix = System.Windows.Media.Matrix;
 
 namespace ioSenderTouch
 {
-    
+
     public partial class HomeView : UserControl
     {
-        
+
 
         private bool? initOK = null;
         private bool isBooted = false;
@@ -34,6 +42,9 @@ namespace ioSenderTouch
         private readonly UtilityView _utilityView;
 
 
+        public ICommand ChangeView { get; }
+
+        public UIElement Content { get; set; }
         public HomeView(GrblViewModel model)
         {
             _model = model;
@@ -45,13 +56,65 @@ namespace ioSenderTouch
             _grblAppSettings = new AppConfigView(_model);
             _offsetView = new OffsetView(_model);
             _utilityView = new UtilityView(_model);
-            FillBorder.Child = _renderView;
+            CenterView.Content = _renderView;
             AppConfig.Settings.OnConfigFileLoaded += AppConfiguationLoaded;
             AppConfig.Settings.SetupAndOpen(_model, Application.Current.Dispatcher);
             InitSystem();
             BuildOptionalUi();
             GCode.File.FileLoaded += File_FileLoaded;
-          
+            var gamepad = new HandController(_model);
+
+            ChangeView = new Command(x =>
+            {
+                HandleChangeView(x);
+            });
+            Visual visual = Application.Current.MainWindow;
+            Matrix matrix = default;
+            var source = PresentationSource.FromVisual(visual);
+            if (source != null)
+            {
+                if (source.CompositionTarget != null)
+                    matrix = source.CompositionTarget.TransformToDevice;
+            }
+            else
+            {
+                using (var src = new HwndSource(new HwndSourceParameters()))
+                {
+                    if (src.CompositionTarget != null)
+                        matrix = src.CompositionTarget.TransformToDevice;
+                }
+            }
+        }
+
+        private void HandleChangeView(object x)
+        {
+            switch (x.ToString())
+            {
+                case "offsetView":
+                    CenterView.Content = _offsetView;
+                    break;
+                case "sdcardView":
+                    CenterView.Content = _sdView;
+                    break;
+                case "grblsettingsView":
+                    CenterView.Content = _grblSettingView;
+                    break;
+                case "appsettingsView":
+                    CenterView.Content = _grblAppSettings;
+                    break;
+                case "probeView":
+                    CenterView.Content = _probeView;
+                    break;
+                case "utilityView":
+                    CenterView.Content = _utilityView;
+                    break;
+                case "toolView":
+                    CenterView.Content = _toolView;
+                    break;
+                case "renderView":
+                    CenterView.Content = _renderView;
+                    break;
+            }
         }
 
         private void BuildOptionalUi()
@@ -60,16 +123,15 @@ namespace ioSenderTouch
             {
                 _sdView = new SDCardView(_model);
             }
-
-            if (_model.HasATC)
+            if (_model.HasToolTable)
             {
-                //_toolView = new ToolView(_model);
+                _toolView = new ToolView(_model);
             }
             if (GrblInfo.HasProbe && GrblSettings.ReportProbeCoordinates)
             {
                 _model.HasProbing = true;
                 _probeView = new ProbingView(_model);
-                _probeView.Activate(true, ViewType.Probing);
+                _probeView.Activate(true);
 
             }
         }
@@ -105,16 +167,6 @@ namespace ioSenderTouch
                 GCodeSender.EnablePolling(true);
             }
 
-            GrblCommand.ToolChange = GrblInfo.ManualToolChange ? "M61Q{0}" : "T{0}";
-
-
-            if (GrblInfo.HasProbe && GrblSettings.ReportProbeCoordinates)
-            {
-                _model.HasProbing = true;
-                _probeView = new ProbingView(_model);
-                _probeView.Activate(true, ViewType.Probing);
-
-            }
             return true;
         }
 
@@ -141,40 +193,40 @@ namespace ioSenderTouch
 
         private void Button_ClickSDView(object sender, RoutedEventArgs e)
         {
-            FillBorder.Child = _sdView;
+            CenterView.Content = _sdView;
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            FillBorder.Child = _grblSettingView;
+            CenterView.Content = _grblSettingView;
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            FillBorder.Child = _probeView;
+            CenterView.Content = _probeView;
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            FillBorder.Child = _renderView;
+            CenterView.Content = _renderView;
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            FillBorder.Child = _grblAppSettings;
+            CenterView.Content = _grblAppSettings;
         }
 
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
-            FillBorder.Child = _offsetView;
+            CenterView.Content = _offsetView;
         }
 
         private void Button_Click_Utility(object sender, RoutedEventArgs e)
         {
-            FillBorder.Child = _utilityView;
+            CenterView.Content = _utilityView;
         }
         private void Button_Click_Tools(object sender, RoutedEventArgs e)
         {
-            FillBorder.Child = _toolView;
+            CenterView.Content = _toolView;
         }
 
         private void AppConfiguationLoaded(object sender, EventArgs e)
@@ -184,17 +236,17 @@ namespace ioSenderTouch
 
             controls.Add(new BasicConfigControl());
             controls.Add(new ConfigControl());
-            if (AppConfig.Settings.Jog.Mode != JogConfig.JogMode.Keypad)
+            if (AppConfig.Settings.JogMetric.Mode != JogConfig.JogMode.Keypad)
             {
-                controls.Add(new JogUiConfigControl());
+                controls.Add(new JogUiConfigControl(_model));
             }
             controls.Add(new AppUiSettings());
-            if (AppConfig.Settings.Jog.Mode != JogConfig.JogMode.UI)
+            if (AppConfig.Settings.JogMetric.Mode != JogConfig.JogMode.UI)
             {
-                controls.Add(new JogConfigControl());
+                controls.Add(new JogConfigControl(_model));
             }
             controls.Add(new StripGCodeConfigControl());
-         
+
             if (AppConfig.Settings.GCodeViewer.IsEnabled)
             {
                 controls.Add(new CNC.Controls.Viewer.ConfigControl());

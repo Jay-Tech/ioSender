@@ -83,10 +83,10 @@ namespace CNC.Controls
             }
         }
 
-        public static readonly DependencyProperty MacrosProperty = DependencyProperty.Register(nameof(MacroExecuteControl.Macros), typeof(ObservableCollection<CNC.GCode.Macro>), typeof(MacroExecuteControl), new PropertyMetadata(new PropertyChangedCallback(OnMacrosChanged)));
-        public ObservableCollection<CNC.GCode.Macro> Macros
+        public static readonly DependencyProperty MacrosProperty = DependencyProperty.Register(nameof(MacroExecuteControl.Macros), typeof(ObservableCollection<Macro>), typeof(MacroExecuteControl), new PropertyMetadata(new PropertyChangedCallback(OnMacrosChanged)));
+        public ObservableCollection<Macro> Macros
         {
-            get { return (ObservableCollection<CNC.GCode.Macro>)GetValue(MacrosProperty); }
+            get { return (ObservableCollection<Macro>)GetValue(MacrosProperty); }
             set { SetValue(MacrosProperty, value); }
         }
 
@@ -101,7 +101,7 @@ namespace CNC.Controls
         }
         private void Macros_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            IsMessageVisible = (sender as ObservableCollection<CNC.GCode.Macro>).Count == 0 ? Visibility.Visible : Visibility.Hidden;
+            IsMessageVisible = (sender as ObservableCollection<Macro>).Count == 0 ? Visibility.Visible : Visibility.Hidden;
         }
 
         public static readonly DependencyProperty IsMessageVisibleProperty = DependencyProperty.Register(nameof(IsMessageVisible), typeof(Visibility), typeof(MacroExecuteControl), new PropertyMetadata(Visibility.Visible));
@@ -113,7 +113,7 @@ namespace CNC.Controls
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            CNC.GCode.Macro macro = Macros.FirstOrDefault(o => o.Id == (int)(sender as Button).Tag);
+            Macro macro = Macros.FirstOrDefault(o => o.Id == (int)(sender as Button).Tag);
             if (macro != null && (!macro.ConfirmOnExecute || MessageBox.Show(string.Format((string)FindResource("RunMacro"), macro.Name), "ioSender", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes))
                 (DataContext as GrblViewModel).ExecuteMacro(macro.Code);
         }

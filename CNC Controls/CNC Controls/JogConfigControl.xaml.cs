@@ -39,6 +39,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 using System.Windows;
 using System.Windows.Controls;
+using CNC.Controls.ViewModels;
+using CNC.Core;
 
 namespace CNC.Controls
 {
@@ -47,16 +49,12 @@ namespace CNC.Controls
     /// </summary>
     public partial class JogConfigControl : UserControl
     {
-        public JogConfigControl()
+        public JogConfigControl(GrblViewModel grblViewModel)
         {
             InitializeComponent();
+            DataContext = new JogConfigControlViewModel(grblViewModel);
         }
 
-        public static readonly DependencyProperty IsGrblProperty = DependencyProperty.Register(nameof(IsGrbl), typeof(bool), typeof(JogConfigControl), new PropertyMetadata(false));
-        public bool IsGrbl
-        {
-            get { return (bool)GetValue(IsGrblProperty); }
-            set { SetValue(IsGrblProperty, value); }
-        }
     }
+    
 }

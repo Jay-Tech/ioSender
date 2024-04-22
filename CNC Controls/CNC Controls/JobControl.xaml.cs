@@ -47,7 +47,6 @@ using System.Windows.Input;
 using System.Threading;
 using System.Windows.Media;
 using CNC.Core;
-using CNC.GCode;
 
 namespace CNC.Controls
 {
@@ -132,7 +131,6 @@ namespace CNC.Controls
             for (int i = 0; i < streamingHandlers.Length; i++)
                 streamingHandlers[i].Handler = (StreamingHandler)i;
             AppConfig.Settings.OnConfigFileLoaded += Settings_OnConfigFileLoaded;
-            Loaded += JobControl_Loaded;
         }
 
         private void Settings_OnConfigFileLoaded(object sender, EventArgs e)
@@ -144,57 +142,55 @@ namespace CNC.Controls
                 btnHold.Background = Brushes.Yellow;
                 btnStop.Background = Brushes.DarkRed;
             }
+
+            ProcessKeyMappings();
         }
 
-        private void JobControl_Loaded(object sender, RoutedEventArgs e)
+        private void ProcessKeyMappings()
         {
             serialSize = Math.Min(AppConfig.Settings.Base.MaxBufferSize, (int)(GrblInfo.SerialBufferSize * 0.9f));
             GCode.File.Parser.Dialect = GrblInfo.IsGrblHAL ? Dialect.GrblHAL : Dialect.Grbl;
             GCode.File.Parser.ExpressionsSupported = GrblInfo.ExpressionsSupported;
             model = Grbl.GrblViewModel;
-            if (!System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
+            AppConfig.Settings.Base.PropertyChanged += Base_PropertyChanged;
+
+            if (!keyboardMappingsOk && DataContext is GrblViewModel)
             {
-                AppConfig.Settings.Base.PropertyChanged += Base_PropertyChanged;
+                KeypressHandler keyboard = model.Keyboard;
 
-                if (!keyboardMappingsOk && DataContext is GrblViewModel)
-                {
-                    KeypressHandler keyboard = model.Keyboard;
+                keyboardMappingsOk = true;
 
-                    keyboardMappingsOk = true;
+                var parent = UIUtils.TryFindParent<UserControl>(this);
 
-                    var parent = UIUtils.TryFindParent<UserControl>(this);
+                keyboard.AddHandler(Key.R, ModifierKeys.Alt, StartJob, parent);
+                keyboard.AddHandler(Key.S, ModifierKeys.Alt, StopJob, parent);
+                keyboard.AddHandler(Key.H, ModifierKeys.Control, Home, parent);
+                keyboard.AddHandler(Key.U, ModifierKeys.Control, Unlock);
+                keyboard.AddHandler(Key.R, ModifierKeys.Shift | ModifierKeys.Control, Reset);
+                keyboard.AddHandler(Key.Space, ModifierKeys.None, FeedHold, parent);
+                keyboard.AddHandler(Key.F1, ModifierKeys.None, FnKeyHandler);
+                keyboard.AddHandler(Key.F2, ModifierKeys.None, FnKeyHandler);
+                keyboard.AddHandler(Key.F3, ModifierKeys.None, FnKeyHandler);
+                keyboard.AddHandler(Key.F4, ModifierKeys.None, FnKeyHandler);
+                keyboard.AddHandler(Key.F5, ModifierKeys.None, FnKeyHandler);
+                keyboard.AddHandler(Key.F6, ModifierKeys.None, FnKeyHandler);
+                keyboard.AddHandler(Key.F7, ModifierKeys.None, FnKeyHandler);
+                keyboard.AddHandler(Key.F8, ModifierKeys.None, FnKeyHandler);
+                keyboard.AddHandler(Key.F9, ModifierKeys.None, FnKeyHandler);
+                keyboard.AddHandler(Key.F10, ModifierKeys.None, FnKeyHandler);
+                keyboard.AddHandler(Key.F11, ModifierKeys.None, FnKeyHandler);
+                keyboard.AddHandler(Key.F12, ModifierKeys.None, FnKeyHandler);
 
-                    keyboard.AddHandler(Key.R, ModifierKeys.Alt, StartJob, parent);
-                    keyboard.AddHandler(Key.S, ModifierKeys.Alt, StopJob, parent);
-                    keyboard.AddHandler(Key.H, ModifierKeys.Control, Home, parent);
-                    keyboard.AddHandler(Key.U, ModifierKeys.Control, Unlock);
-                    keyboard.AddHandler(Key.R, ModifierKeys.Shift | ModifierKeys.Control, Reset);
-                    keyboard.AddHandler(Key.Space, ModifierKeys.None, FeedHold, parent);
-                    keyboard.AddHandler(Key.F1, ModifierKeys.None, FnKeyHandler);
-                    keyboard.AddHandler(Key.F2, ModifierKeys.None, FnKeyHandler);
-                    keyboard.AddHandler(Key.F3, ModifierKeys.None, FnKeyHandler);
-                    keyboard.AddHandler(Key.F4, ModifierKeys.None, FnKeyHandler);
-                    keyboard.AddHandler(Key.F5, ModifierKeys.None, FnKeyHandler);
-                    keyboard.AddHandler(Key.F6, ModifierKeys.None, FnKeyHandler);
-                    keyboard.AddHandler(Key.F7, ModifierKeys.None, FnKeyHandler);
-                    keyboard.AddHandler(Key.F8, ModifierKeys.None, FnKeyHandler);
-                    keyboard.AddHandler(Key.F9, ModifierKeys.None, FnKeyHandler);
-                    keyboard.AddHandler(Key.F10, ModifierKeys.None, FnKeyHandler);
-                    keyboard.AddHandler(Key.F11, ModifierKeys.None, FnKeyHandler);
-                    keyboard.AddHandler(Key.F12, ModifierKeys.None, FnKeyHandler);
-
-                    keyboard.AddHandler(Key.OemMinus, ModifierKeys.Control, FeedRateDown);
-                    keyboard.AddHandler(Key.OemPlus, ModifierKeys.Control, FeedRateUp);
-                    keyboard.AddHandler(Key.OemMinus, ModifierKeys.Shift | ModifierKeys.Control, FeedRateDownFine);
-                    keyboard.AddHandler(Key.OemPlus, ModifierKeys.Shift | ModifierKeys.Control, FeedRateUpFine);
-                }
-
-                GCodeParser.IgnoreM6 = AppConfig.Settings.Base.IgnoreM6;
-                GCodeParser.IgnoreM7 = AppConfig.Settings.Base.IgnoreM7;
-                GCodeParser.IgnoreM8 = AppConfig.Settings.Base.IgnoreM8;
-
-                useBuffering = AppConfig.Settings.Base.UseBuffering; // && GrblInfo.IsGrblHAL;
+                keyboard.AddHandler(Key.OemMinus, ModifierKeys.Control, FeedRateDown);
+                keyboard.AddHandler(Key.OemPlus, ModifierKeys.Control, FeedRateUp);
+                keyboard.AddHandler(Key.OemMinus, ModifierKeys.Shift | ModifierKeys.Control, FeedRateDownFine);
+                keyboard.AddHandler(Key.OemPlus, ModifierKeys.Shift | ModifierKeys.Control, FeedRateUpFine);
             }
+
+            GCodeParser.IgnoreM6 = AppConfig.Settings.Base.IgnoreM6;
+            GCodeParser.IgnoreM7 = AppConfig.Settings.Base.IgnoreM7;
+            GCodeParser.IgnoreM8 = AppConfig.Settings.Base.IgnoreM8;
+
         }
 
         private void Base_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -203,7 +199,6 @@ namespace CNC.Controls
             GCodeParser.IgnoreM7 = AppConfig.Settings.Base.IgnoreM7;
             GCodeParser.IgnoreM8 = AppConfig.Settings.Base.IgnoreM8;
             GCodeParser.IgnoreG61G64 = AppConfig.Settings.Base.IgnoreG61G64;
-            useBuffering = AppConfig.Settings.Base.UseBuffering;
         }
 
         private void JobControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -304,26 +299,6 @@ namespace CNC.Controls
 
         public bool canJog { get { return grblState.State == GrblStates.Idle || grblState.State == GrblStates.Tool || grblState.State == GrblStates.Jog; } }
         public bool JobPending { get { return GCode.File.IsLoaded && !JobTimer.IsRunning; } }
-
-        public bool Activate(bool activate)
-        {
-            if (activate && !initOK)
-            {
-                initOK = true;
-                serialSize = Math.Min(AppConfig.Settings.Base.MaxBufferSize, (int)(GrblInfo.SerialBufferSize * 0.9f)); // size should be less than hardware handshake HWM
-                GCode.File.Parser.Dialect = GrblInfo.IsGrblHAL ? Dialect.GrblHAL : Dialect.Grbl;
-                GCode.File.Parser.ExpressionsSupported = GrblInfo.ExpressionsSupported;
-
-                if (GrblInfo.HasRTC)
-                    SendCommand("$RTC=" + DateTime.Now.ToLocalTime().ToString("s"));
-            }
-
-            EnablePolling(activate);
-
-            isActive = activate;
-
-            return isActive;
-        }
 
         public void EnablePolling(bool enable)
         {
@@ -1071,8 +1046,6 @@ namespace CNC.Controls
                 if (job.ACKPending > 0)
                     job.ACKPending--;
 
-                if (!job.IsSDFile && (job.IsChecking || (string)GCode.File.Data.Rows[job.PendingLine]["Sent"] == "*"))
-                    job.serialUsed = Math.Max(0, job.serialUsed - (int)GCode.File.Data.Rows[job.PendingLine]["Length"]);
                 bool isError = response.StartsWith("error");
 
                 if (!(job.IsSDFile || job.IsChecking))
@@ -1150,7 +1123,7 @@ namespace CNC.Controls
             while (job.NextRow != null)
             {
 
-                string line = (string)job.NextRow["Data"]; ;
+                var line = (string)job.NextRow["Data"];
 
                 // Send comment lines as empty comment
                 if ((bool)job.NextRow["IsComment"])
@@ -1159,37 +1132,33 @@ namespace CNC.Controls
                     job.NextRow["Length"] = line.Length + 1;
                 }
 
-                if (job.serialUsed < (serialSize - (int)job.NextRow["Length"]))
+                if (GCode.File.Commands.Count > 0)
                 {
-
-                    if (GCode.File.Commands.Count > 0)
-                        Comms.com.WriteCommand(GCode.File.Commands.Dequeue());
-                    else
-                    {
-                        job.CurrentRow = job.NextRow;
-
-                        if (!job.IsChecking)
-                            job.CurrentRow["Sent"] = "*";
-
-                        if (line == "%")
-                        {
-                            if (!(job.Started = !job.Started))
-                                job.PgmEndLine = job.CurrLine;
-                        }
-                        else if ((bool)job.CurrentRow["ProgramEnd"])
-                            job.PgmEndLine = job.CurrLine;
-                        job.NextRow = job.PgmEndLine == job.CurrLine ? null : GCode.File.Data.Rows[++job.CurrLine];
-                        //            ParseBlock(line + "\r");
-                        job.serialUsed += (int)job.CurrentRow["Length"];
-                        Comms.com.WriteString(line + '\r');
-                    }
-                    job.ACKPending++;
-
-                    if (!useBuffering)
-                        break;
+                    Comms.com.WriteCommand(GCode.File.Commands.Dequeue());
                 }
+
                 else
+                {
+                    job.CurrentRow = job.NextRow;
+
+                    if (!job.IsChecking)
+                        job.CurrentRow["Sent"] = "*";
+
+                    if (line == "%")
+                    {
+                        if (!(job.Started = !job.Started))
+                            job.PgmEndLine = job.CurrLine;
+                    }
+                    else if ((bool)job.CurrentRow["ProgramEnd"])
+                        job.PgmEndLine = job.CurrLine;
+
+                    job.NextRow = job.PgmEndLine == job.CurrLine ? null : GCode.File.Data.Rows[++job.CurrLine];
+                    if (string.IsNullOrEmpty(line)) continue;
+                    Comms.com.WriteString(line + '\r');
+                    job.ACKPending++;
                     break;
+
+                }
             }
         }
     }

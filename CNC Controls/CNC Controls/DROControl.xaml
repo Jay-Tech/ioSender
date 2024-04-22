@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CNC.Controls"
-             xmlns:gcode="clr-namespace:CNC.GCode;assembly=CNC.Core"
+             xmlns:core="clr-namespace:CNC.Core;assembly=CNC.Core"
              mc:Ignorable="d"
              Loaded="DRO_Loaded" Width="305">
     <UserControl.Resources>
@@ -16,57 +16,54 @@
                     <local:LatheModeToStringConverter x:Key="LatheModeConverter" />
                     <local:LogicalNotConverter x:Key="BooleanConverter" />
                     <local:BoolToVisibleConverter x:Key="IsVisibleConverter" />
+                    <local:BoolToNotVisibleConverter x:Key="BoolToNotVisibleConverter"></local:BoolToNotVisibleConverter>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <GroupBox x:Uid="grp_dro" x:Name="grpDRO" Header="DRO" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" >
-        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,0" Width="Auto" >
-            <Grid.RowDefinitions>
-                <RowDefinition Height="50"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="50*"></RowDefinition>
-                <RowDefinition Height="50*"></RowDefinition>
-                <RowDefinition Height="50*"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="50"></RowDefinition>
-            </Grid.RowDefinitions>
 
-            <DockPanel  Grid.Row="0" Margin="0,0,0,3">
-                <Label Grid.Row="0" Margin ="3,5,3,5" BorderThickness="1"  BorderBrush="Black" 
-                           Width ="10" Background="{Binding Path=HomedState, Converter={StaticResource HomedStateConverter}}"
+    <!--<GroupBox x:Uid="grp_dro" x:Name="grpDRO"  Header="DRO"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Style="{DynamicResource MaterialDesignGroupBox }"  Visibility="{Binding AAxisEnabled, Converter={StaticResource BoolToNotVisibleConverter}}">-->
+
+    <Border  HorizontalAlignment="Stretch" BorderThickness="1" Padding="0,0,0,5" CornerRadius="0" BorderBrush="{DynamicResource PrimaryHueMidBrush }" VerticalAlignment="Stretch" Width="Auto" >
+
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,0" Width="Auto" >
+            
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="50"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="50"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <TextBlock Height="36"  Text="DRO" HorizontalAlignment="Stretch" Padding="5,10,0,10" Focusable="False"  VerticalAlignment="Stretch" 
+                       Style="{DynamicResource MaterialDesignTitleTextBlock}" Foreground="{DynamicResource PrimaryHueMidForegroundBrush}" Background="{DynamicResource PrimaryHueMidBrush}"  Visibility="{Binding AAxisEnabled, Converter={StaticResource BoolToNotVisibleConverter}}"></TextBlock>
+            <DockPanel  Grid.Row="1" Margin="0,10,0,5">
+                <Label  Margin ="3,0,3,0" BorderThickness="1"  BorderBrush="Black" Width ="10" 
+                        Background="{Binding Path=HomedState, Converter={StaticResource HomedStateConverter}}"
                            Content="{Binding Path=LabelName}"/>
-                <Button Grid.Row="0" Content="Home All"  Width="Auto" Height="Auto" Click="Button_Click" IsEnabled="{Binding Path=IsJobRunning, Converter={StaticResource BooleanConverter}}"
-                                               VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,3,3,5"></Button>
+                <Button  Content="Home All"  Width="Auto" Height="Auto" Click="Button_Click" IsEnabled="{Binding Path=IsJobRunning, Converter={StaticResource BooleanConverter}}"
+                                               VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="2,0,3,0"></Button>
             </DockPanel>
-            <!--<DockPanel Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" LastChildFill="True">
-                <Label Width="10" VerticalAlignment="Stretch" HorizontalAlignment="Right" Background="{Binding Path=HomedState, Converter={StaticResource HomedStateConverter}}" DockPanel.Dock="Right"></Label>
-                <Button   Content="Home All"  Height="Auto" Click="Button_Click" IsEnabled="{Binding Path=IsJobRunning, Converter={StaticResource BooleanConverter}}"
-                          VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Button>
-            </DockPanel>-->
-            <!--<Label Grid.Row="1" x:Name="lblXMode" Content="{Binding Path=LatheMode, Mode=OneWay, Converter={StaticResource LatheModeConverter}}"
-                   Visibility="{Binding Path=LatheModeEnabled, Mode=OneWay, Converter={StaticResource IsVisibleConverter}}" 
-                   HorizontalContentAlignment="Right" />-->
             <local:DROBaseControl Grid.Row="2" x:Name="axisX" Label="X" Margin="0,1,0,1"
                 Value="{Binding Path=Position.X, Mode=TwoWay}" MPos="{Binding Path = MachinePosition.X, StringFormat={}{0:F3}}"
-                IsScaled="{Binding Path=AxisScaled[(gcode:AxisFlags)X], Mode=OneWay}" Width="Auto" Height="Auto" VerticalAlignment="Stretch"
-            />
+                IsScaled="{Binding Path=AxisScaled[(core:AxisFlags)X], Mode=OneWay}" Width="Auto" Height="Auto" VerticalAlignment="Stretch"/>
             <local:DROBaseControl  Grid.Row="3" x:Name="axisY" Label="Y" Style="{StaticResource YAxisVisibleStyle}"
                                    Value="{Binding Path=Position.Y, Mode=TwoWay}"  MPos="{Binding Path = MachinePosition.Y, StringFormat={}{0:F3}}"
-                                   IsScaled="{Binding Path=AxisScaled[(gcode:AxisFlags)Y], Mode=OneWay}"  Width="Auto" Height="Auto" VerticalAlignment="Stretch" 
-            />
+                                   IsScaled="{Binding Path=AxisScaled[(core:AxisFlags)Y], Mode=OneWay}"  Width="Auto" Height="Auto" VerticalAlignment="Stretch" />
             <local:DROBaseControl  Grid.Row="4" x:Name="axisZ" Label="Z" Style="{StaticResource ZAxisVisibleStyle}"
                                    Value="{Binding Path=Position.Z, Mode=TwoWay}"  MPos="{Binding Path = MachinePosition.Z, StringFormat={}{0:F3}}"
-                                   IsScaled="{Binding Path=AxisScaled[(gcode:AxisFlags)Z], Mode=OneWay}"  Width="Auto" Height="Auto" VerticalAlignment="Stretch"
-            />
-            <local:DROBaseControl  Grid.Row="5" x:Name="axisA" Label="{Binding Path=AxisLetter.A, Mode=OneWay}"  MPos="{Binding Path = MachinePosition.A, StringFormat={}{0:F3}S}"
+                                   IsScaled="{Binding Path=AxisScaled[(core:AxisFlags)Z], Mode=OneWay}"  Width="Auto" Height="Auto" VerticalAlignment="Stretch"/>
+            <local:DROBaseControl  Grid.Row="5" x:Name="axisA" Label="{Binding Path=AxisLetter.A, Mode=OneWay}"  MPos="{Binding Path = MachinePosition.A, StringFormat={}{0:F3}}"
                                    Style="{StaticResource AAxisVisibleStyle}"
-                                   Value="{Binding Path=Position.A, Mode=TwoWay}"
-                                   IsScaled="{Binding Path=AxisScaled[(gcode:AxisFlags)A], Mode=OneWay}"  Width="Auto" Height="Auto" VerticalAlignment="Stretch"
-            />
+                                   Value="{Binding Path=Position.A, Mode=TwoWay}" 
+                                   IsScaled="{Binding Path=AxisScaled[(core:AxisFlags)A], Mode=OneWay}"  Width="Auto" Height="Auto" VerticalAlignment="Stretch"/>
             <Button Grid.Row="6" x:Uid="btn_zeroAll" x:Name="btnZeroAll" Content="Zero all" IsEnabled="{Binding Path=IsJobRunning, Converter={StaticResource BooleanConverter}}" 
-                    Focusable="False"  HorizontalAlignment="Stretch" Margin="2,5" Height="Auto" Click="btnZeroAll_Click" VerticalAlignment="Stretch"/>
-          
+                    Focusable="False"  HorizontalAlignment="Stretch" Margin="2,10,2,5" Height="Auto" Click="btnZeroAll_Click" VerticalAlignment="Stretch"/>
+
         </Grid>
-    </GroupBox>
+    </Border>
+    <!--</GroupBox>-->
 </UserControl>

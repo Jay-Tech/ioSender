@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:local="clr-namespace:CNC.Controls"
-             xmlns:gcode="clr-namespace:CNC.GCode;assembly=CNC.Core"
+             xmlns:core="clr-namespace:CNC.Core;assembly=CNC.Core"
              mc:Ignorable="d" 
              d:DesignHeight="515" d:DesignWidth="875">
     <UserControl.Resources>
@@ -37,7 +37,7 @@
                             <Binding Source="{StaticResource ProxyElement}" Path="DataContext.AxisEnabledFlags" />
                             <Binding>
                                 <Binding.Source>
-                                    <gcode:AxisFlags>Y</gcode:AxisFlags>
+                                    <core:AxisFlags>Y</core:AxisFlags>
                                 </Binding.Source>
                             </Binding>
                         </MultiBinding>
@@ -49,7 +49,7 @@
                             <Binding Source="{StaticResource ProxyElement}" Path="DataContext.AxisEnabledFlags" />
                             <Binding>
                                 <Binding.Source>
-                                    <gcode:AxisFlags>Z</gcode:AxisFlags>
+                                    <core:AxisFlags>Z</core:AxisFlags>
                                 </Binding.Source>
                             </Binding>
                         </MultiBinding>
@@ -66,7 +66,7 @@
                             <Binding Source="{StaticResource ProxyElement}" Path="DataContext.AxisEnabledFlags" />
                             <Binding>
                                 <Binding.Source>
-                                    <gcode:AxisFlags>A</gcode:AxisFlags>
+                                    <core:AxisFlags>A</core:AxisFlags>
                                 </Binding.Source>
                             </Binding>
                         </MultiBinding>
@@ -83,7 +83,7 @@
                             <Binding Source="{StaticResource ProxyElement}" Path="DataContext.AxisEnabledFlags" />
                             <Binding>
                                 <Binding.Source>
-                                    <gcode:AxisFlags>B</gcode:AxisFlags>
+                                    <core:AxisFlags>B</core:AxisFlags>
                                 </Binding.Source>
                             </Binding>
                         </MultiBinding>
@@ -100,7 +100,7 @@
                             <Binding Source="{StaticResource ProxyElement}" Path="DataContext.AxisEnabledFlags" />
                             <Binding>
                                 <Binding.Source>
-                                    <gcode:AxisFlags>C</gcode:AxisFlags>
+                                    <core:AxisFlags>C</core:AxisFlags>
                                 </Binding.Source>
                             </Binding>
                         </MultiBinding>
@@ -112,7 +112,7 @@
                             <Binding Source="{StaticResource ProxyElement}" Path="DataContext.AxisEnabledFlags" />
                             <Binding>
                                 <Binding.Source>
-                                    <gcode:AxisFlags>U</gcode:AxisFlags>
+                                    <core:AxisFlags>U</core:AxisFlags>
                                 </Binding.Source>
                             </Binding>
                         </MultiBinding>
@@ -124,7 +124,7 @@
                             <Binding Source="{StaticResource ProxyElement}" Path="DataContext.AxisEnabledFlags" />
                             <Binding>
                                 <Binding.Source>
-                                    <gcode:AxisFlags>V</gcode:AxisFlags>
+                                    <core:AxisFlags>V</core:AxisFlags>
                                 </Binding.Source>
                             </Binding>
                         </MultiBinding>
@@ -136,7 +136,7 @@
                             <Binding Source="{StaticResource ProxyElement}" Path="DataContext.AxisEnabledFlags" />
                             <Binding>
                                 <Binding.Source>
-                                    <gcode:AxisFlags>W</gcode:AxisFlags>
+                                    <core:AxisFlags>W</core:AxisFlags>
                                 </Binding.Source>
                             </Binding>
                         </MultiBinding>

@@ -42,7 +42,6 @@ using System.Windows;
 using System.Windows.Controls;
 using CNC.Core;
 using System.Windows.Data;
-using CNC.GCode;
 
 namespace CNC.Controls
 {

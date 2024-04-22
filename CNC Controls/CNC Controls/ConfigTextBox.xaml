@@ -6,7 +6,5 @@
              xmlns:local="clr-namespace:CNC.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="Auto" d:DesignWidth="Auto">
-    <Grid>
-        <TextBox MouseDoubleClick="Control_OnMouseDoubleClick" ></TextBox>
-    </Grid>
+    
 </TextBox>

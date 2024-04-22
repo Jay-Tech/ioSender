@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CNC.Controls"
-             xmlns:gcode="clr-namespace:CNC.GCode;assembly=CNC.Core"
              mc:Ignorable="d" 
              d:DesignHeight="515" d:DesignWidth="875"
              Loaded="TrinamicView_Loaded">
@@ -48,7 +47,7 @@
                     </StackPanel>
                 </GroupBox>
                 <DockPanel>
-                    <local:StatusControl DockPanel.Dock="Left" Margin="0,5,0,0" VerticalAlignment="Bottom"/>
+                    
                     <local:SignalsControl DockPanel.Dock="Right" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
                 </DockPanel>
             </StackPanel>

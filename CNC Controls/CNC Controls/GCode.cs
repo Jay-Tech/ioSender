@@ -38,7 +38,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 using CNC.Core;
-using CNC.GCode;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;

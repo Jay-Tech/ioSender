@@ -44,18 +44,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Globalization;
 using System.IO;
-using System.Data;
 using System.Diagnostics;
-using System.Windows.Media;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading;
 using System.Windows.Threading;
 using System.Windows;
-using CNC.GCode;
-using System.Collections.Concurrent;
-using System.Drawing;
-using System.Threading.Tasks;
 using Color = System.Windows.Media.Color;
 
 namespace CNC.Core
@@ -272,6 +266,8 @@ namespace CNC.Core
         MaxFeedRateBase = 110,
         AccelerationBase = 120,
         MaxTravelBase = 130,
+        MaxTravelYBase = 131,
+        MaxTravelZBase = 132,
         MotorCurrentBase = 140,
         MicroStepsBase = 150,
         StallGuardBase = 200,
@@ -1053,6 +1049,7 @@ namespace CNC.Core
         internal static void OnSettingsLoaded(GrblViewModel model)
         {
             model.IsMetric = GrblSettings.GetInteger(GrblSetting.ReportInches) != 1;
+
             model.Keyboard.IsContinuousJoggingEnabled = IsGrblHAL;
             model.Keyboard.SoftLimits = GrblSettings.GetInteger(GrblSetting.SoftLimitsEnable) == 1;
             model.Keyboard.LimitSwitchesClearance = GrblSettings.GetDouble(GrblSetting.HomingPulloff);
@@ -1225,7 +1222,9 @@ namespace CNC.Core
                                 Grbl.GrblViewModel.ClearPosition();
                         }
                         if (s.Length > 4)
-                            NumTools = int.Parse(s[4], CultureInfo.InvariantCulture);
+                            
+                         NumTools = int.Parse(s[4], CultureInfo.InvariantCulture);
+                        if (Grbl.GrblViewModel != null) Grbl.GrblViewModel.HasToolTable = NumTools > 0;
                         break;
 
                     case "AXS":
@@ -2923,7 +2922,10 @@ namespace CNC.Core
                 Comms.com.WriteByte(RTCommand);
 
             if (RTCommand == GrblConstants.CMD_STATUS_REPORT_ALL)
-                RTCommand = GrblLegacy.ConvertRTCommand(GrblConstants.CMD_STATUS_REPORT);
+            {
+                //RTCommand = GrblLegacy.ConvertRTCommand(GrblConstants.CMD_STATUS_REPORT);
+            }
+               
         }
     }
 

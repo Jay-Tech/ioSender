@@ -85,6 +85,10 @@
             <local:Renderer x:Name="gcodeView"/>
         <local:TextOverlayControl x:Name="textOverlay" HorizontalAlignment="Right" Margin="5,5" VerticalAlignment="Top"/>
             <Label MouseDoubleClick="Control_OnMouseDoubleClick"  Content="Tool Change" Visibility="{Binding IsToolChanging,  Converter={StaticResource IsVisibleConverter}}" FontSize="100" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="Red" Opacity=".5"></Label>
+            <Label MouseDoubleClick="Control_OnMouseDoubleClick"  Content="MPG ACTIVE" Visibility="{Binding IsMPGActive,  Converter={StaticResource IsVisibleConverter}}" FontSize="100" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="Red" Opacity=".5"></Label>
+            <local:TextOverlayControl x:Name="textMPGOverlay" HorizontalAlignment="Right" Margin="5,5" VerticalAlignment="Top"/>
+           
         </Grid>
+
     </DockPanel>
 </UserControl>

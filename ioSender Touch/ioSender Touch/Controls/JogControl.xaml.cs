@@ -43,20 +43,22 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Media;
 using CNC.Controls;
+using CNC.Controls.Utility;
 using CNC.Core;
-using CNC.GCode;
 
 namespace ioSenderTouch.Controls
 {
     /// <summary>
     /// Interaction logic for JogControl.xaml
     /// </summary>
-    public partial class JogControlT : UserControl 
+    public partial class JogControl : UserControl, INotifyPropertyChanged
     {
+
+        private const Key xplus = Key.J, xminus = Key.H, yplus = Key.K, yminus = Key.L, zplus = Key.I,
+            zminus = Key.M, aplus = Key.U, aminus = Key.N;
+
         private string mode = "G21"; // Metric
         private bool softLimits = false;
         private int jogAxis = -1;
@@ -65,115 +67,217 @@ namespace ioSenderTouch.Controls
         private static bool keyboardMappingsOk = false;
         private GrblViewModel _grblViewModel;
         private double[] _distance = new double[4];
-        private double[] _feedRate = new double[4];
+        private int[] _feedRate = new int[4];
 
-        private JogDistanceConverter distanceConvertor = new JogDistanceConverter();
+        private int _feedrate3;
+        private int _feedrate1;
+        private int _feedrate0;
+        private int _feedrate2;
+        private double _distance0;
+        private double _distance1;
+        private double _distance2;
+        private double _distance3;
+        private JogFeed _jogFeed;
+        private JogStep _jogStep;
         public double Distance { get { return _distance[(int)JogStep]; } }
-        public double FeedRate { get { return _feedRate[(int)JobFeed]; } }
-
-        private const Key xplus = Key.J, xminus = Key.H, yplus = Key.K, yminus = Key.L, zplus = Key.I,
-            zminus = Key.M, aplus = Key.U, aminus = Key.N;
-
-        public JogFeed JobFeed { get; set; }
-        public JogStep JogStep { get; set; }
-        public JogControlT()
+        public double FeedRate
+        {
+            get
+            {
+                return _feedRate[(int)JogFeed];
+            }
+        }
+        public JogFeed JogFeed
+        {
+            get => _jogFeed;
+            set
+            {
+                if (value == _jogFeed) return;
+                _jogFeed = value;
+                OnPropertyChanged();
+            }
+        }
+        public JogStep JogStep
+        {
+            get => _jogStep;
+            set
+            {
+                if (value == _jogStep) return;
+                _jogStep = value;
+                OnPropertyChanged();
+            }
+        }
+        public int Feedrate3
+        {
+            get => _feedrate3;
+            set
+            {
+                if (value == _feedrate3) return;
+                _feedrate3 = value;
+                OnPropertyChanged();
+            }
+        }
+        public int Feedrate2
+        {
+            get => _feedrate2;
+            set
+            {
+                if (value == _feedrate2) return;
+                _feedrate2 = value;
+                OnPropertyChanged();
+            }
+        }
+        public int Feedrate1
+        {
+            get => _feedrate1;
+            set
+            {
+                if (value == _feedrate1) return;
+                _feedrate1 = value;
+                OnPropertyChanged();
+            }
+        }
+        public int Feedrate0
+        {
+            get => _feedrate0;
+            set
+            {
+                if (value == _feedrate0) return;
+                _feedrate0 = value;
+                OnPropertyChanged();
+            }
+        }
+        public double Distance0
+        {
+            get => _distance0;
+            set
+            {
+                if (value == _distance0) return;
+                _distance0 = value;
+                OnPropertyChanged();
+            }
+        }
+        public double Distance1
+        {
+            get => _distance1;
+            set
+            {
+                if (value == _distance1) return;
+                _distance1 = value;
+                OnPropertyChanged();
+            }
+        }
+        public double Distance2
+        {
+            get => _distance2;
+            set
+            {
+                if (value == _distance2) return;
+                _distance2 = value;
+                OnPropertyChanged();
+            }
+        }
+        public double Distance3
+        {
+            get => _distance3;
+            set
+            {
+                if (value == _distance3) return;
+                _distance3 = value;
+                OnPropertyChanged();
+            }
+        }
+        public JogControl()
         {
             InitializeComponent();
-            Focusable = true;
-            Loaded += JogControlT_Loaded;
+            AppConfig.Settings.OnConfigFileLoaded += Settings_OnConfigFileLoaded;
         }
 
-        private void JogControlT_Loaded(object sender, RoutedEventArgs e)
+        private void Settings_OnConfigFileLoaded(object sender, EventArgs e)
         {
             _grblViewModel = Grbl.GrblViewModel;
-            DataContext = _grblViewModel;
-            JogStep = JogStep.Step2;
-            JobFeed = JogFeed.Feed2;
+            _grblViewModel.GrblUnitChanged += GrblViewModelGrblUnitChanged;
+            JogStep = JogStep.Step3;
+            JogFeed = JogFeed.Feed3;
             SetUpControl();
         }
+
+        private void GrblViewModelGrblUnitChanged(object sender, Measurement e)
+        {
+            SetUpControl();
+        }
+
         private void SetJogRate()
         {
             _grblViewModel.JogRate = FeedRate;
-
         }
         private void SetJogDistance()
         {
             _grblViewModel.JogStep = Distance;
         }
 
-        private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(GrblViewModel.MachinePosition) ||
-                e.PropertyName == nameof(GrblViewModel.GrblState))
-            {
-                if (_grblViewModel.GrblState.State != GrblStates.Jog)
-                    jogAxis = -1;
-            }
-
-        }
-
         private void SetUpControl()
         {
-            if (DataContext is GrblViewModel viewModel)
+            mode = _grblViewModel.IsMetric ? "G21" : "G20";
+            _feedRate = _grblViewModel.IsMetric ? AppConfig.Settings.JogUiMetric.Feedrate : AppConfig.Settings.JogUiImperial.Feedrate;
+            _distance = _grblViewModel.IsMetric ? AppConfig.Settings.JogUiMetric.Distance : AppConfig.Settings.JogUiImperial.Distance;
+            Feedrate3 = _feedRate[3];
+            Feedrate2 = _feedRate[2];
+            Feedrate1 = _feedRate[1];
+            Feedrate0 = _feedRate[0];
+            Distance3 = _distance[3];
+            Distance2 = _distance[2];
+            Distance1 = _distance[1];
+            Distance0 = _distance[0];
+            _grblViewModel.JogRate = FeedRate;
+            _grblViewModel.JogStep = Distance;
+            if (!keyboardMappingsOk)
             {
-                mode = GrblSettings.GetInteger(GrblSetting.ReportInches) == 0 ? "G21" : "G20";
-                softLimits = !(GrblInfo.IsGrblHAL && GrblSettings.GetInteger(grblHALSetting.SoftLimitJogging) == 1) && GrblSettings.GetInteger(GrblSetting.SoftLimitsEnable) == 1;
-                limitSwitchesClearance = GrblSettings.GetDouble(GrblSetting.HomingPulloff);
-
-
-                SetMetric(mode == "G21");
-                viewModel.JogRate = FeedRate;
-                viewModel.JogStep = Distance;
-                if (!keyboardMappingsOk)
-                {
-                    if (!GrblInfo.HasFirmwareJog || AppConfig.Settings.Jog.LinkStepJogToUI)
-                        if (softLimits)
-                            _grblViewModel.PropertyChanged += Model_PropertyChanged;
-
+                if (!GrblInfo.HasFirmwareJog || AppConfig.Settings.JogMetric.LinkStepJogToUI)
                     keyboard = _grblViewModel.Keyboard;
+                if (keyboard == null) return;
 
-                    keyboardMappingsOk = true;
+                keyboardMappingsOk = true;
 
-                    if (AppConfig.Settings.Jog.Mode == JogConfig.JogMode.UI)
-                    {
-                        keyboard.AddHandler(Key.PageUp, ModifierKeys.None, CursorJogZplus, false);
-                        keyboard.AddHandler(Key.PageDown, ModifierKeys.None, CursorJogZminus, false);
-                        keyboard.AddHandler(Key.Left, ModifierKeys.None, CursorJogXminus, false);
-                        keyboard.AddHandler(Key.Up, ModifierKeys.None, CursorJogYplus, false);
-                        keyboard.AddHandler(Key.Right, ModifierKeys.None, CursorJogXplus, false);
-                        keyboard.AddHandler(Key.Down, ModifierKeys.None, CursorJogYminus, false);
-                    }
+                if (AppConfig.Settings.JogMetric.Mode == JogConfig.JogMode.UI)
+                {
+                    keyboard.AddHandler(Key.PageUp, ModifierKeys.None, CursorJogZplus, false);
+                    keyboard.AddHandler(Key.PageDown, ModifierKeys.None, CursorJogZminus, false);
+                    keyboard.AddHandler(Key.Left, ModifierKeys.None, CursorJogXminus, false);
+                    keyboard.AddHandler(Key.Up, ModifierKeys.None, CursorJogYplus, false);
+                    keyboard.AddHandler(Key.Right, ModifierKeys.None, CursorJogXplus, false);
+                    keyboard.AddHandler(Key.Down, ModifierKeys.None, CursorJogYminus, false);
+                }
 
-                    keyboard.AddHandler(xplus, ModifierKeys.Control | ModifierKeys.Shift, KeyJogXplus, false);
-                    keyboard.AddHandler(xminus, ModifierKeys.Control | ModifierKeys.Shift, KeyJogXminus, false);
-                    keyboard.AddHandler(yplus, ModifierKeys.Control | ModifierKeys.Shift, KeyJogYplus, false);
-                    keyboard.AddHandler(yminus, ModifierKeys.Control | ModifierKeys.Shift, KeyJogYminus, false);
-                    keyboard.AddHandler(zplus, ModifierKeys.Control | ModifierKeys.Shift, KeyJogZplus, false);
-                    keyboard.AddHandler(zminus, ModifierKeys.Control | ModifierKeys.Shift, KeyJogZminus, false);
-                    if (GrblInfo.AxisFlags.HasFlag(AxisFlags.A))
-                    {
-                        keyboard.AddHandler(aplus, ModifierKeys.Control | ModifierKeys.Shift, KeyJogAplus, false);
-                        keyboard.AddHandler(aminus, ModifierKeys.Control | ModifierKeys.Shift, KeyJogAminus, false);
-                    }
+                keyboard.AddHandler(xplus, ModifierKeys.Control | ModifierKeys.Shift, KeyJogXplus, false);
+                keyboard.AddHandler(xminus, ModifierKeys.Control | ModifierKeys.Shift, KeyJogXminus, false);
+                keyboard.AddHandler(yplus, ModifierKeys.Control | ModifierKeys.Shift, KeyJogYplus, false);
+                keyboard.AddHandler(yminus, ModifierKeys.Control | ModifierKeys.Shift, KeyJogYminus, false);
+                keyboard.AddHandler(zplus, ModifierKeys.Control | ModifierKeys.Shift, KeyJogZplus, false);
+                keyboard.AddHandler(zminus, ModifierKeys.Control | ModifierKeys.Shift, KeyJogZminus, false);
+                if (GrblInfo.AxisFlags.HasFlag(AxisFlags.A))
+                {
+                    keyboard.AddHandler(aplus, ModifierKeys.Control | ModifierKeys.Shift, KeyJogAplus, false);
+                    keyboard.AddHandler(aminus, ModifierKeys.Control | ModifierKeys.Shift, KeyJogAminus, false);
+                }
 
-                    if (AppConfig.Settings.Jog.Mode != JogConfig.JogMode.Keypad)
-                    {
-                        keyboard.AddHandler(Key.End, ModifierKeys.None, EndJog, false);
+                if (AppConfig.Settings.JogMetric.Mode != JogConfig.JogMode.Keypad)
+                {
+                    keyboard.AddHandler(Key.End, ModifierKeys.None, EndJog, false);
 
-                        keyboard.AddHandler(Key.NumPad0, ModifierKeys.Control, JogStep0);
-                        keyboard.AddHandler(Key.NumPad1, ModifierKeys.Control, JogStep1);
-                        keyboard.AddHandler(Key.NumPad2, ModifierKeys.Control, JogStep2);
-                        keyboard.AddHandler(Key.NumPad3, ModifierKeys.Control, JogStep3);
-                        keyboard.AddHandler(Key.NumPad4, ModifierKeys.Control, JogFeed0);
-                        keyboard.AddHandler(Key.NumPad5, ModifierKeys.Control, JogFeed1);
-                        keyboard.AddHandler(Key.NumPad6, ModifierKeys.Control, JogFeed2);
-                        keyboard.AddHandler(Key.NumPad7, ModifierKeys.Control, JogFeed3);
+                    keyboard.AddHandler(Key.NumPad0, ModifierKeys.Control, JogStep0);
+                    keyboard.AddHandler(Key.NumPad1, ModifierKeys.Control, JogStep1);
+                    keyboard.AddHandler(Key.NumPad2, ModifierKeys.Control, JogStep2);
+                    keyboard.AddHandler(Key.NumPad3, ModifierKeys.Control, JogStep3);
+                    keyboard.AddHandler(Key.NumPad4, ModifierKeys.Control, JogFeed0);
+                    keyboard.AddHandler(Key.NumPad5, ModifierKeys.Control, JogFeed1);
+                    keyboard.AddHandler(Key.NumPad6, ModifierKeys.Control, JogFeed2);
+                    keyboard.AddHandler(Key.NumPad7, ModifierKeys.Control, JogFeed3);
 
-                        keyboard.AddHandler(Key.NumPad2, ModifierKeys.None, FeedDec);
-                        keyboard.AddHandler(Key.NumPad4, ModifierKeys.None, StepDec);
-                        keyboard.AddHandler(Key.NumPad6, ModifierKeys.None, StepInc);
-                        keyboard.AddHandler(Key.NumPad8, ModifierKeys.None, FeedInc);
-                    }
+                    keyboard.AddHandler(Key.NumPad2, ModifierKeys.None, FeedDec);
+                    keyboard.AddHandler(Key.NumPad4, ModifierKeys.None, StepDec);
+                    keyboard.AddHandler(Key.NumPad6, ModifierKeys.None, StepInc);
+                    keyboard.AddHandler(Key.NumPad8, ModifierKeys.None, FeedInc);
                 }
             }
         }
@@ -300,17 +404,15 @@ namespace ioSenderTouch.Controls
             }
 
         }
-
         private void feedrate_Click(object sender, RoutedEventArgs e)
         {
             if (!(sender is Button button)) return;
             if (Enum.TryParse(button.Tag.ToString(), true, out JogFeed feed))
             {
-                JobFeed = feed;
+                JogFeed = feed;
                 SetJogRate();
             }
         }
-
         private bool EndJog(Key key)
         {
             if (!keyboard.IsRepeating && keyboard.IsJogging)
@@ -346,72 +448,58 @@ namespace ioSenderTouch.Controls
             SetJogDistance();
             return true;
         }
-
         private bool JogFeed0(Key key)
         {
-            this.JobFeed = JogFeed.Feed0;
+            this.JogFeed = JogFeed.Feed0;
             SetJogRate();
             return true;
         }
-
         private bool JogFeed1(Key key)
         {
-            this.JobFeed = JogFeed.Feed1;
+            this.JogFeed = JogFeed.Feed1;
             SetJogRate();
             return true;
         }
         private bool JogFeed2(Key key)
         {
-            this.JobFeed = JogFeed.Feed2;
+            this.JogFeed = JogFeed.Feed2;
             SetJogRate();
             return true;
         }
         private bool JogFeed3(Key key)
         {
-            this.JobFeed = JogFeed.Feed3;
+            this.JogFeed = JogFeed.Feed3;
             SetJogRate();
             return true;
         }
-
         private bool FeedDec(Key key)
         {
             FeedDec();
-
             return true;
         }
         private bool FeedInc(Key key)
         {
             FeedInc();
-
             return true;
         }
-
         private bool StepDec(Key key)
         {
             StepDec();
-
             return true;
         }
-
         private bool StepInc(Key key)
         {
             StepInc();
-
             return true;
         }
-
         private void JogCommand(string cmd)
         {
-            GrblViewModel model = DataContext as GrblViewModel;
 
             if (cmd == "stop")
                 cmd = ((char)GrblConstants.CMD_JOG_CANCEL).ToString();
-
             else
             {
-
                 var jogDataDistance = cmd[1] == '-' ? -Distance : Distance;
-
                 if (softLimits)
                 {
                     int axis = GrblInfo.AxisLetterToIndex(cmd[0]);
@@ -421,8 +509,8 @@ namespace ioSenderTouch.Controls
 
                     if (axis != jogAxis)
                     {
-                        if (model != null)
-                            position = jogDataDistance + model.MachinePosition.Values[axis];
+                        if (_grblViewModel != null)
+                            position = jogDataDistance + _grblViewModel.MachinePosition.Values[axis];
                     }
                     else
                         position += jogDataDistance;
@@ -467,102 +555,6 @@ namespace ioSenderTouch.Controls
 
             _grblViewModel.ExecuteCommand(cmd);
         }
-        public void SetMetric(bool on)
-        {
-            var convertorJogDistance = new JogDistanceConverter();
-            var convertorJogRate = new JogRateConverter();
-            for (int i = 0; i < _feedRate.Length; i++)
-            {
-                _distance[i] = on ? AppConfig.Settings.JogUiMetric.Distance[i] : AppConfig.Settings.JogUiImperial.Distance[i];
-                var buttonD = new Button
-                {
-                    Name = "Button" + i,
-                    Content = _distance[i],
-                    Tag = i,
-                    Width = 68,
-                    Height = 40,
-                    HorizontalAlignment = HorizontalAlignment.Stretch,
-                    Margin = new Thickness(0, 0, 3, 0),
-                    VerticalAlignment = VerticalAlignment.Stretch,
-                    BorderThickness = new Thickness(2),
-                    
-                };
-                var buttonBinding = new Binding
-                {
-                    Source = _grblViewModel,
-                    Mode = BindingMode.TwoWay,
-                    Path = new PropertyPath("JogStep"),
-                    Converter = convertorJogDistance,
-                    ConverterParameter = _distance[i],
-                    UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
-                   
-                };
-                BindingOperations.SetBinding(buttonD, Button.BorderBrushProperty, buttonBinding);
-                buttonD.Click += distance_Click;
-                PanelDistance.Children.Insert(1,buttonD);
-              
-                _feedRate[i] = on ? AppConfig.Settings.JogUiMetric.Feedrate[i] : AppConfig.Settings.JogUiImperial.Feedrate[i];
-                var buttonFr = new Button
-                {
-                    Name = "Button" + i,
-                    Content = _feedRate[i],
-                    Tag = i,
-                    Height = 40,
-                    Width = 105,
-                    HorizontalAlignment = HorizontalAlignment.Right,
-                    VerticalAlignment = VerticalAlignment.Stretch,
-                    BorderThickness = new Thickness(2),
-                    Margin = new Thickness(0, 3, 0, 0),
-
-                };
-                var buttonBindingFr = new Binding
-                {
-                    Source = _grblViewModel,
-                    Mode = BindingMode.TwoWay,
-                    Path = new PropertyPath("JogRate"),
-                    Converter =  convertorJogRate,
-                    UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
-                    ConverterParameter = _feedRate[i],
-                };
-                BindingOperations.SetBinding(buttonFr, Button.BorderBrushProperty, buttonBindingFr);
-                buttonFr.Click += feedrate_Click;
-                PanelFeedRate.Children.Insert(1,buttonFr);
-            }
-
-            var labelD = new Label
-            {
-                Content = new Binding(nameof(FeedRate)),
-                Height = 20,
-                FontSize = 12,
-                HorizontalContentAlignment = HorizontalAlignment.Center,
-                VerticalContentAlignment = VerticalAlignment.Center
-
-            };
-            Binding labelDBinding = new Binding
-            {
-                Source = _grblViewModel.Unit,
-                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
-            };
-            BindingOperations.SetBinding(labelD, Label.ContentProperty, labelDBinding);
-            PanelDistance.Children.Add(labelD);
-
-            var labelFR = new Label
-            {
-                Content = new Binding(nameof(FeedRate)),
-                Height = 20,
-                FontSize = 12,
-                HorizontalContentAlignment = HorizontalAlignment.Center,
-                VerticalContentAlignment = VerticalAlignment.Center
-
-            };
-            //Binding myBinding = new Binding
-            //{
-            //    Source = _grblViewModel.FeedrateUnit,
-            //    UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
-            //};
-            //BindingOperations.SetBinding(labelFR, Label.ContentProperty, myBinding);
-            //PanelFeedRate.Children.Add(labelFR);
-        }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             JogCommand((string)(sender as Button)?.Tag == "stop" ? "stop" : (string)(sender as Button)?.Content);
@@ -574,7 +566,6 @@ namespace ioSenderTouch.Controls
                 JogStep += 1;
                 SetJogDistance();
             }
-                
         }
         public void StepDec()
         {
@@ -583,44 +574,41 @@ namespace ioSenderTouch.Controls
                 JogStep -= 1;
                 SetJogDistance();
             }
-                
         }
 
         public void FeedInc()
         {
-            if (JobFeed != JogFeed.Feed3)
+            if (JogFeed != JogFeed.Feed3)
             {
-                JobFeed += 1;
+                JogFeed += 1;
                 SetJogRate();
             }
-           
         }
 
         public void FeedDec()
         {
-            if (JobFeed != JogFeed.Feed0)
+            if (JogFeed != JogFeed.Feed0)
             {
-                JobFeed -= 1;
+                JogFeed -= 1;
                 SetJogRate();
             }
-           
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
 
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+        {
+            if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+            field = value;
+            OnPropertyChanged(propertyName);
+            return true;
+        }
     }
-    public enum JogStep
-    {
-        Step0 = 0,
-        Step1,
-        Step2,
-        Step3
-    }
-    public enum JogFeed
-    {
-        Feed0 = 0,
-        Feed1,
-        Feed2,
-        Feed3
-    }
+
 
 }

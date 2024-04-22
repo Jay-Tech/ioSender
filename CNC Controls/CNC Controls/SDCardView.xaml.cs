@@ -86,11 +86,16 @@ namespace CNC.Controls
 
         public void SetupView()
         {
-            _grblSdCard.Load(_viewModel, ViewAll);
             CanUpload = GrblInfo.UploadProtocol != string.Empty;
             CanDelete = GrblInfo.Build >= 20210421;
             CanViewAll = GrblInfo.Build >= 20230312;
             CanRewind = GrblInfo.IsGrblHAL;
+            Task.Run((() =>
+            {
+                _grblSdCard.Load(_viewModel, ViewAll);
+                
+            }));
+
         }
 
         public void CloseFile()

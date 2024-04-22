@@ -93,8 +93,8 @@
     <Reference Include="System.Reactive.Windows.Threading, Version=3.0.3000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
       <HintPath>..\..\ioSender Touch\packages\System.Reactive.Windows.Threading.4.4.1\lib\net46\System.Reactive.Windows.Threading.dll</HintPath>
     </Reference>
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\ioSender Touch\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\ioSender Touch\packages\System.Runtime.CompilerServices.Unsafe.7.0.0-preview.2.22152.2\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\ioSender Touch\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
@@ -153,15 +153,6 @@
       <DependentUpon>GCodeRotateDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="GCodeWrap.cs" />
-    <Compile Include="GotoBaseControl.xaml.cs">
-      <DependentUpon>GotoBaseControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="GotoControl.xaml.cs">
-      <DependentUpon>GotoControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="GotoFlyoutControl.xaml.cs">
-      <DependentUpon>GotoFlyoutControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="GrblAlarmList.xaml.cs">
       <DependentUpon>GrblAlarmList.xaml</DependentUpon>
     </Compile>
@@ -193,8 +184,6 @@
     <Compile Include="GrblErrorList.xaml.cs">
       <DependentUpon>GrblErrorList.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ICamera.cs" />
-    <Compile Include="ICNCView.cs" />
     <Compile Include="IGCodeConverter.cs" />
     <Compile Include="IGCodeTransformer.cs" />
     <Compile Include="ISidebarControl.cs" />
@@ -202,17 +191,8 @@
       <DependentUpon>JobControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="GCode.cs" />
-    <Compile Include="JogBaseControl.xaml.cs">
-      <DependentUpon>JogBaseControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="JogConfigControl.xaml.cs">
       <DependentUpon>JogConfigControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="JogControl.xaml.cs">
-      <DependentUpon>JogControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="JogFlyoutControl.xaml.cs">
-      <DependentUpon>JogFlyoutControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="JogUiConfigControl.xaml.cs">
       <DependentUpon>JogUiConfigControl.xaml</DependentUpon>
@@ -243,17 +223,8 @@
     <Compile Include="OriginControl.xaml.cs">
       <DependentUpon>OriginControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="OutlineBaseControl.xaml.cs">
-      <DependentUpon>OutlineBaseControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="OutlineControl.xaml.cs">
       <DependentUpon>OutlineControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="OutlineFlyout.xaml.cs">
-      <DependentUpon>OutlineFlyout.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="OverrideControl.xaml.cs">
-      <DependentUpon>OverrideControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="PIDLogView.xaml.cs">
       <DependentUpon>PIDLogView.xaml</DependentUpon>
@@ -265,7 +236,6 @@
     <Compile Include="SDCardView.xaml.cs">
       <DependentUpon>SDCardView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SidebarItem.cs" />
     <Compile Include="SignalControl.xaml.cs">
       <DependentUpon>SignalControl.xaml</DependentUpon>
     </Compile>
@@ -274,9 +244,6 @@
     </Compile>
     <Compile Include="SpindleControl.xaml.cs">
       <DependentUpon>SpindleControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="StatusControl.xaml.cs">
-      <DependentUpon>StatusControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="StripGCodeConfigControl.xaml.cs">
       <DependentUpon>StripGCodeConfigControl.xaml</DependentUpon>
@@ -291,20 +258,16 @@
       <DependentUpon>TrinamicView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UIUtils.cs" />
-    <Compile Include="UIViewModel.cs" />
+    <Compile Include="Utility\ControlEnums.cs" />
+    <Compile Include="ViewModels\JogConfigControlViewModel.cs" />
+    <Compile Include="ViewModels\UIJoggingViewModel.cs" />
     <Compile Include="ViewModels\VirtualKeyboardViewModel.cs" />
     <Compile Include="Views\VirtualKeyBoard.xaml.cs">
       <DependentUpon>VirtualKeyBoard.xaml</DependentUpon>
     </Compile>
     <Compile Include="Widget.cs" />
-    <Compile Include="MachinePositionFlyout.xaml.cs">
-      <DependentUpon>MachinePositionFlyout.xaml</DependentUpon>
-    </Compile>
     <Compile Include="WorkParametersControlTouch.xaml.cs">
       <DependentUpon>WorkParametersControlTouch.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WorkParametersControl.xaml.cs">
-      <DependentUpon>WorkParametersControl.xaml</DependentUpon>
     </Compile>
     <Page Include="About.xaml">
       <SubType>Designer</SubType>
@@ -322,27 +285,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="GotoBaseControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="GotoFlyoutControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="GrblAlarmList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="GrblErrorList.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="JogBaseControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="JogFlyoutControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -370,10 +317,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="GotoControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="GrblConfigView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -391,10 +334,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="JogConfigControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="JogControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -450,15 +389,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="MPGPending.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Compile Include="NumericField.xaml.cs">
       <DependentUpon>NumericField.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="MPGPending.xaml.cs">
-      <DependentUpon>MPGPending.xaml</DependentUpon>
     </Compile>
     <Page Include="OffsetView.xaml">
       <SubType>Designer</SubType>
@@ -468,19 +400,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="OutlineBaseControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="OutlineControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="OutlineFlyout.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="OverrideControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -512,10 +432,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="StatusControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="StripGCodeConfigControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -532,19 +448,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MachinePositionFlyout.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\VirtualKeyBoard.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="WorkParametersControlTouch.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="WorkParametersControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -38,6 +38,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 using System.Windows.Controls;
+using CNC.Controls.ViewModels;
+using CNC.Core;
 
 namespace CNC.Controls
 {
@@ -46,9 +48,14 @@ namespace CNC.Controls
     /// </summary>
     public partial class JogUiConfigControl : UserControl
     {
-        public JogUiConfigControl()
+        private readonly UIJoggingViewModel _uiJoggingModel;
+
+        public JogUiConfigControl(GrblViewModel model)
         {
             InitializeComponent();
+            
+            _uiJoggingModel = new UIJoggingViewModel(model);
+            DataContext = _uiJoggingModel;
         }
     }
 }

@@ -3,7 +3,6 @@
 // From https://github.com/martin2250/OpenCNCPilot
 
 using CNC.Core;
-using CNC.GCode;
 using RP.Math;
 using System;
 using System.Collections.Generic;

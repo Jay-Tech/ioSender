@@ -40,7 +40,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 using System.Windows;
 using System.Windows.Controls;
 using CNC.Core;
-using CNC.GCode;
 
 namespace CNC.Controls.Probing
 {
@@ -93,7 +92,7 @@ namespace CNC.Controls.Probing
 
             if (!probing.ValidateInput(probing.ProbeEdge == Edge.Z))
                 return;
-
+            
             if (probing.ProbeEdge == Edge.None)
             {
                 MessageBox.Show((string)FindResource("SelectType"), "Edge finder", MessageBoxButton.OK, MessageBoxImage.Exclamation);
@@ -112,7 +111,6 @@ namespace CNC.Controls.Probing
                 probing.StartPosition.Zero();
 
             var XYClearance = probing.XYClearance + probing.ProbeDiameter / 2d;
-
             probing.Program.Add(string.Format("G91F{0}", probing.ProbeFeedRate.ToInvariantString()));
 
             switch (probing.ProbeEdge)

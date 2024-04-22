@@ -8,10 +8,14 @@
         xmlns:cnccontrols="clr-namespace:CNC.Controls;assembly=CNC.Controls.WPF"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
+        d:DesignHeight="1080"
+        d:DesignWidth="1920"
         WindowStyle="None"
-        WindowState="Maximized"
+        WindowStartupLocation="Manual" 
+        ResizeMode="NoResize"
         Loaded="Window_Load"
         Icon="App.ico" 
+        Name ="AppMainWindow"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{DynamicResource MaterialDesignPaper}"
         TextElement.FontWeight="Medium"
@@ -22,7 +26,7 @@
         <system:String x:Uid="str_mnuArcsToLines" x:Key="MenuArcsToLines">Arcs to lines</system:String>
         <system:String x:Uid="str_mnuCompress" x:Key="MenuCompress">Compress (experimental)</system:String>
         <system:String x:Uid="str_mnuDragKnife" x:Key="MenuDragKnife">Add drag knife moves</system:String>
-        <system:String x:Uid="str_jogStep" x:Key="JogStep">Jog step: {0}</system:String>
+        <system:String x:Uid="str_jogStep" x:Key="JogStep">JogMetric step: {0}</system:String>
         <system:String x:Uid="str_runTime" x:Key="RunTime">Run time: {0}</system:String>
         <cnccontrols:BlocksToStringConverter x:Key="BlocksToStringConverter" />
         <cnccontrols:LogicalNotConverter x:Key="BooleanConverter" />
@@ -31,9 +35,16 @@
     <Window.DataContext>
         <cnccore:GrblViewModel />
     </Window.DataContext>
-    <DockPanel LastChildFill="True" Name="DockPanel">
-        <Border Height="45" Name="MenuBorder" BorderThickness="1" DockPanel.Dock="Top">
-        </Border>
+    <DockPanel LastChildFill="True" Name="DockPanel" SizeChanged="MainGrid_SizeChanged">
+        <DockPanel.LayoutTransform>
+            <ScaleTransform x:Name="ApplicationScaleTransform"
+                CenterX="0"
+                CenterY="0"
+                ScaleX="{Binding ElementName=AppMainWindow, Path=ScaleValue}"
+                ScaleY="{Binding ElementName=AppMainWindow, Path=ScaleValue}" />
+            
+        </DockPanel.LayoutTransform>
+        <Border Height="45" MouseDown="MenuBorder_OnMouseDown" Background="Transparent" Name="MenuBorder" BorderThickness="1" DockPanel.Dock="Top" ></Border>
         <Border Height="25"  BorderThickness="1" DockPanel.Dock="Top">
             <StatusBar>
                 <StatusBar.ItemsPanel>
@@ -62,8 +73,8 @@
                     </TextBlock>
                 </StatusBarItem>
                 <Separator Grid.Column="1" />
-                <StatusBarItem Grid.Column="2">
-                    <TextBlock x:Uid="lbl_message" Text="{Binding Path=Message}" TextWrapping="NoWrap"/>
+                <StatusBarItem Grid.Column="2" >
+                    <TextBlock x:Uid="lbl_message" Text="{Binding Path=Message}"  TextWrapping="NoWrap"/>
                 </StatusBarItem>
                 <Separator Grid.Column="3" />
                 <StatusBarItem Grid.Column="4">

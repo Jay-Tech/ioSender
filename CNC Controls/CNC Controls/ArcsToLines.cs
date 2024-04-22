@@ -41,8 +41,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Media.Media3D;
 using CNC.Core;
-using CNC.GCode;
-using System.Windows;
+
 
 namespace CNC.Controls
 {

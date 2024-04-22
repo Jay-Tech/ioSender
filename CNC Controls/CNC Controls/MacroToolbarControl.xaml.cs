@@ -60,10 +60,10 @@ namespace CNC.Controls
             Macros = AppConfig.Settings.Macros;
         }
 
-        public static readonly DependencyProperty MacrosProperty = DependencyProperty.Register(nameof(MacroToolbarControl.Macros), typeof(ObservableCollection<CNC.GCode.Macro>), typeof(MacroToolbarControl));
-        public ObservableCollection<CNC.GCode.Macro> Macros
+        public static readonly DependencyProperty MacrosProperty = DependencyProperty.Register(nameof(MacroToolbarControl.Macros), typeof(ObservableCollection<Macro>), typeof(MacroToolbarControl));
+        public ObservableCollection<Macro> Macros
         {
-            get => (ObservableCollection<CNC.GCode.Macro>)GetValue(MacrosProperty);
+            get => (ObservableCollection<Macro>)GetValue(MacrosProperty);
             set => SetValue(MacrosProperty, value);
         }
 

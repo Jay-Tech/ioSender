@@ -45,7 +45,6 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using CNC.Controls.Views;
 using CNC.Core;
-using CNC.GCode;
 
 namespace CNC.Controls.Probing
 {
@@ -270,7 +269,7 @@ namespace CNC.Controls.Probing
 
         private void ProbingView_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            showProbeProperties();
+           // showProbeProperties();
         }
         private void showProbeProperties()
         {
@@ -286,14 +285,14 @@ namespace CNC.Controls.Probing
             else
                 height = probeProperties.ActualHeight;
 
-            probeProperties.Visibility = (dp.ActualHeight - t1.ActualHeight - Jog.ActualHeight + probeProperties.ActualHeight) > height ? Visibility.Visible : Visibility.Collapsed;
+           // probeProperties.Visibility = (dp.ActualHeight - t1.ActualHeight - Jog.ActualHeight + probeProperties.ActualHeight) > height ? Visibility.Visible : Visibility.Collapsed;
         }
         #region Methods and properties required by CNCView interface
 
 
         public bool CanEnable { get { return DataContext is GrblViewModel ? !(DataContext as GrblViewModel).IsGCLock : !model.Grbl.IsGCLock; } }
 
-        public void Activate(bool activate, ViewType chgMode)
+        public void Activate(bool activate)
         {
             _grblViewModel.IsProbing = activate;
             if (activate)
@@ -315,7 +314,7 @@ namespace CNC.Controls.Probing
                 if (GrblInfo.IsGrblHAL)
                     Comms.com.WriteByte(GrblConstants.CMD_STATUS_REPORT_ALL);
 
-                if (!model.Grbl.IsGrblHAL && !AppConfig.Settings.Jog.KeyboardEnable)
+                if (!model.Grbl.IsGrblHAL && !AppConfig.Settings.JogMetric.KeyboardEnable)
                     Jog.Visibility = Visibility.Collapsed;
 
                 if (GrblInfo.IsGrblHAL)
@@ -385,11 +384,6 @@ namespace CNC.Controls.Probing
         {
         }
 
-        public void Setup(UIViewModel model, AppConfig profile)
-        {
-            if (!model.IsConfigControlInstantiated<ConfigControl>())
-                model.ConfigControls.Add(new ConfigControl());
-        }
 
         #endregion
 

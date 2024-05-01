@@ -8,15 +8,23 @@ using System.Threading;
 using System.Runtime;
 using Windows.Gaming.Input;
 using System.Collections;
+using System.Diagnostics;
 using System.Text;
 using System.Windows.Markup;
 using CNC.Controls.Utility;
+using CNC.Core.Logging;
+using System.Globalization;
+using System.Text.RegularExpressions;
+using CNC.Core.Comands;
 
 
 namespace ioSenderTouch.Utility
 {
     public class HandController
     {
+
+
+
         private const string JogHeader = "$J = G91G21";
 
         private GrblViewModel _grblViewModel;
@@ -41,10 +49,13 @@ namespace ioSenderTouch.Utility
 
         public HandController(GrblViewModel grblViewModel)
         {
+            var culture = Thread.CurrentThread.CurrentCulture.Name;
             _grblViewModel = grblViewModel;
             _grblViewModel.GrblInitialized += _grblViewModel_GrblInitialized;
             Gamepad.GamepadAdded += Gamepad_GamepadAdded;
             Gamepad.GamepadRemoved += Gamepad_GamepadRemoved;
+            Debug.WriteLine(culture);
+            ExceptionLogging.SendErrorToText(new Exception(), "GamePadLogging Creation" + $" {culture}");
         }
 
         private void _grblViewModel_GrblInitialized(object sender, EventArgs e)
@@ -77,15 +88,32 @@ namespace ioSenderTouch.Utility
 
         private void Gamepad_GamepadAdded(object sender, Gamepad e)
         {
+
+            if (Thread.CurrentThread.CurrentCulture.Name != "en-US")
+            {
+                var cul = Thread.CurrentThread.CurrentCulture.Name;
+                Debug.WriteLine("Not US culture" + cul);
+                ExceptionLogging.SendErrorToText(new Exception(), "GamePadLogging PreThread Start" + $"{cul}");
+
+            }
+            var culture = new CultureInfo("en-US");
             _controller = Gamepad.Gamepads.First();
             if (_buttonPollThread?.Status == TaskStatus.Running) return;
             _cancellationTokenSource = new CancellationTokenSource();
-            _buttonPollThread = Task.Factory.StartNew(() => Poll(_cancellationTokenSource), TaskCreationOptions.LongRunning);
+            _buttonPollThread = Task.Factory.StartNew(() => Poll(_cancellationTokenSource, culture), TaskCreationOptions.LongRunning);
         }
 
 
-        private void Poll(CancellationTokenSource cancellationToken)
+
+
+        private void Poll(CancellationTokenSource cancellationToken, CultureInfo culture)
         {
+            Thread.CurrentThread.CurrentUICulture = culture;
+            CultureInfo.DefaultThreadCurrentCulture = culture;
+            var name = Thread.CurrentThread.CurrentCulture.Name;
+            Debug.WriteLine(name);
+            ExceptionLogging.SendErrorToText(new Exception(), "GamePadLogging Thread Running" + $" {name}");
+
             while (true)
             {
                 var mode = _grblViewModel.IsMetric ? "G21" : "G20";
@@ -122,7 +150,7 @@ namespace ioSenderTouch.Utility
                         {
                             _continuousJogActive = true;
                             var zCurrent = Math.Abs(_grblViewModel.MachinePosition.Z);
-                            var zMax = useImperial ? _grblViewModel.MaxDistanceZ/25.4: _grblViewModel.MaxDistanceX;
+                            var zMax = useImperial ? _grblViewModel.MaxDistanceZ / 25.4 : _grblViewModel.MaxDistanceX;
                             step = zMax - zCurrent;
                         }
                         command = $"$J = G91{mode}Z{step}F{_grblViewModel.JogRate}";
@@ -140,7 +168,7 @@ namespace ioSenderTouch.Utility
                             var zCurrent = _grblViewModel.MachinePosition.Z;
                             step = zCurrent;
                         }
-                        command = $"$J = G91{mode}Z-{step}F{_grblViewModel.JogRate}";
+                        command = FormattableString.Invariant($"$J = G91{mode}Z-{Math.Abs(step)}F{_grblViewModel.JogRate}");
                         ProcessJogCommand(command);
                         break;
                     case GamepadButtons.DPadLeft:
@@ -155,7 +183,10 @@ namespace ioSenderTouch.Utility
                             var xCurrent = _grblViewModel.MachinePosition.X;
                             step = xCurrent;
                         }
-                        command = $"$J = G91{mode}X-{step}F{_grblViewModel.JogRate}";
+                        var x = $"$J = G91{mode}X-{step}F{_grblViewModel.JogRate}";
+                        //ExceptionLogging.SendErrorToText(new Exception("GamePad Logging: X logging old command ***"), $"{x} and X is {step}");
+                        command = FormattableString.Invariant($"$J = G91{mode}X-{Math.Abs(step)}F{_grblViewModel.JogRate}");
+                       // ExceptionLogging.SendErrorToText(new Exception("GamePad Logging: X logging new ***"), $"{command}");
                         ProcessJogCommand(command);
                         break;
                     case GamepadButtons.DPadRight:
@@ -168,8 +199,8 @@ namespace ioSenderTouch.Utility
                         {
                             _continuousJogActive = true;
                             var xCurrent = Math.Abs(_grblViewModel.MachinePosition.X);
-                            var xMax = useImperial ? _grblViewModel.MaxDistanceX / 25.4:
-                                _grblViewModel.MaxDistanceX; 
+                            var xMax = useImperial ? _grblViewModel.MaxDistanceX / 25.4 :
+                                _grblViewModel.MaxDistanceX;
                             step = xMax - xCurrent;
                         }
                         command = $"$J = G91{mode}X{step}F{_grblViewModel.JogRate}";
@@ -185,7 +216,7 @@ namespace ioSenderTouch.Utility
                         {
                             _continuousJogActive = true;
                             var yCurrent = Math.Abs(_grblViewModel.MachinePosition.Y);
-                            var yMax =  useImperial ? _grblViewModel.MaxDistanceY/25.4:
+                            var yMax = useImperial ? _grblViewModel.MaxDistanceY / 25.4 :
                                 _grblViewModel.MaxDistanceY;
                             step = yMax - yCurrent;
                         }
@@ -196,6 +227,7 @@ namespace ioSenderTouch.Utility
                         if (_continuousJogActive) continue;
                         if (_stepMode)
                         {
+                            
                             step = _grblViewModel.JogStep;
                         }
                         else
@@ -204,7 +236,10 @@ namespace ioSenderTouch.Utility
                             var yCurrent = _grblViewModel.MachinePosition.Y;
                             step = yCurrent;
                         }
-                        command = $"$J = G91{mode}Y-{step}F{_grblViewModel.JogRate}";
+                        var y = $"$J = G91{mode}Y-{step}F{_grblViewModel.JogRate}";
+                        ExceptionLogging.SendErrorToText(new Exception("GamePad Logging: Y logging old command ***"), $"{y} and Y is {step}");
+                        command = FormattableString.Invariant($"$J = G91{mode}Y-{Math.Abs(step)}F{_grblViewModel.JogRate}");
+                        ExceptionLogging.SendErrorToText(new Exception("GamePad Logging: Y logging new ***"), $"{command}");
                         ProcessJogCommand(command);
                         break;
                     case GamepadButtons.X:
@@ -242,6 +277,7 @@ namespace ioSenderTouch.Utility
 
                 if (Math.Abs(input.LeftTrigger - 1) < 0.1)
                 {
+                    ExceptionLogging.SendErrorToText(new Exception("GamePad Logging:***"), $"{GrblConstants.CMD_JOG_CANCEL}");
                     _continuousJogActive = false;
                     _stepMode = true;
 
@@ -255,7 +291,7 @@ namespace ioSenderTouch.Utility
                     && _previousDown != GamepadButtons.None
                     && !_stepMode)
                 {
-
+                    ExceptionLogging.SendErrorToText(new Exception("GamePad Logging:***"), $"{GrblConstants.CMD_JOG_CANCEL}");
                     Comms.com.WriteByte(GrblConstants.CMD_JOG_CANCEL);
                     _continuousJogActive = false;
                 }
@@ -267,153 +303,6 @@ namespace ioSenderTouch.Utility
                 Thread.Sleep(_pollRate);
             }
         }
-
-        private void ProcessJoyStick(double x, double y)
-        {
-            if ((x + y) == 0 && !_joystickJogging) return;
-            var commandX = x > 0 ? "X" : "X-";
-            var commandY = y > 0 ? "Y" : "Y-";
-            var absX = Math.Abs(x);
-            var absY = Math.Abs(y);
-            var command = ProcessVelocity(absX, commandX, absY, commandY);
-            if (string.IsNullOrEmpty(command)) return;
-            Console.WriteLine(command);
-            Send(command);
-        }
-
-        private string ProcessVelocity(double velocityX, string commandX, double velocityY, string commandY)
-        {
-            string command;
-            _joystickJogging = true;
-            var feedRateX = BuildJoggingCommand(velocityX);
-            var feedRateY = BuildJoggingCommand(velocityY);
-            var averageRate = (feedRateX + feedRateY) / 2;
-
-            if (feedRateX == 0)
-            {
-                var step = CalculateJogStep(feedRateY);
-                command = $"{JogHeader}{commandY}{step}F{feedRateY}";
-            }
-            else if (feedRateY == 0)
-            {
-                var step = CalculateJogStep(feedRateX);
-                command = $"{JogHeader}{commandX}{step}F{feedRateX}";
-            }
-            else
-            {
-                var step = CalculateJogStep(averageRate);
-                command = $"{JogHeader}{commandX}{step}{commandY}{_grblViewModel.JogStep}F{averageRate}";
-            }
-
-            if (!averageRate.Equals(0)) return command;
-            _joystickJogging = false;
-            Comms.com.WriteByte(GrblConstants.CMD_JOG_CANCEL);
-            command = string.Empty;
-            _pollRate = 50;
-            return command;
-        }
-
-        private double CalculateJogStep(double feedRate)
-        {
-            var step = 0.0;
-            if (feedRate > 1500)
-            {
-                step = 1.65;
-                _pollRate = 50;
-            }
-            else if (feedRate > 500)
-            {
-                step = 1.5;
-                _pollRate = 110;
-
-            }
-            else
-            {
-                step = .35;
-                _pollRate = 210;
-            }
-            return step;
-        }
-
-        private double BuildJoggingCommand(double velocity)
-        {
-            double feedRate = 0;
-            //if (velocity >= .7)
-            //{
-            //    feedRate = _feedRate[3];
-            //}
-            //else if (velocity > .4)
-            //{
-            //    feedRate = _feedRate[2];
-            //}
-            //else if (velocity > .3)
-            //{
-            //    feedRate = _feedRate[1];
-            //}
-            if (velocity > .3)
-            {
-                feedRate = _grblViewModel.JogRate;
-            }
-            else if (velocity <= .3)
-            {
-                feedRate = 0;
-            }
-            return feedRate;
-        }
-
-
-        // Single Axis Joystick movement 
-        // For using joystick for JogMetric found to much drift on release of joystick causing machine to jog and appearance of latency 
-        private void ProcessX(double movement)
-        {
-            if (movement == 0 && !_joystickJogging) return;
-            var command = movement > 0 ? "$J = G91G21X" : "$J = G91G21X-";
-            var x = Math.Abs(movement);
-            var c = ProcessVelocity(x, command);
-            if (!string.IsNullOrEmpty(c))
-            {
-                Send(c);
-            }
-        }
-        // Single Axis Joystick movement 
-        // For using joystick for JogMetric found to much drift on release of joystick causing machine to jog and appearance of latency
-        private void ProcessY(double movement)
-        {
-            if (movement == 0 && !_joystickJogging) return;
-            var command = movement > 0 ? $"$J = G91G21Y" : $"$J = G91G21Y-";
-            var y = Math.Abs(movement);
-            command += ProcessVelocity(y, command);
-            if (!string.IsNullOrEmpty(command))
-            {
-                Send(command);
-            }
-        }
-        //// Single Axis Joystick movement 
-        private string ProcessVelocity(double velocity, string command)
-        {
-            _joystickJogging = true;
-
-            if (velocity > .8)
-            {
-                command += $"{_grblViewModel.JogStep}F{_feedRate[3]}";
-            }
-            else if (velocity > .5)
-            {
-                command += $"{_grblViewModel.JogStep}F{_feedRate[2]}";
-            }
-            else if (velocity > .2)
-            {
-                command += $"{_grblViewModel.JogStep}F{_feedRate[1]}";
-            }
-            else if (velocity <= .2)
-            {
-                Comms.com.WriteByte(GrblConstants.CMD_JOG_CANCEL);
-                command = string.Empty;
-                _joystickJogging = false;
-            }
-            return command;
-        }
-
         private void ProcessJogCommand(string command)
         {
             if (!_stepMode)
@@ -427,10 +316,7 @@ namespace ioSenderTouch.Utility
                 _jogProcessed = true;
             }
         }
-        private void Send(string command)
-        {
-            Comms.com.WriteCommand(command);
-        }
+       
 
         private void ProcessSinglePressCommand(string command)
         {
@@ -440,7 +326,11 @@ namespace ioSenderTouch.Utility
             }
             _singleActionPress = true;
         }
-
+        private void Send(string command)
+        {
+            ExceptionLogging.SendErrorToText(new Exception("GamePad Logging:***"), $"{command}");
+            Comms.com.WriteCommand(command);
+        }
         private void ProcessJogDistance()
         {
             if (_singleActionPress) return;
@@ -477,5 +367,155 @@ namespace ioSenderTouch.Utility
         {
             _grblViewModel.JogStep = DistanceRate;
         }
+
+        //private void ProcessJoyStick(double x, double y)
+        //{
+        //    if ((x + y) == 0 && !_joystickJogging) return;
+        //    var commandX = x > 0 ? "X" : "X-";
+        //    var commandY = y > 0 ? "Y" : "Y-";
+        //    var absX = Math.Abs(x);
+        //    var absY = Math.Abs(y);
+        //    var command = ProcessVelocity(absX, commandX, absY, commandY);
+        //    if (string.IsNullOrEmpty(command)) return;
+        //    Console.WriteLine(command);
+        //    Send(command);
+        //}
+
+        //private string ProcessVelocity(double velocityX, string commandX, double velocityY, string commandY)
+        //{
+        //    string command;
+        //    _joystickJogging = true;
+        //    var feedRateX = BuildJoggingCommand(velocityX);
+        //    var feedRateY = BuildJoggingCommand(velocityY);
+        //    var averageRate = (feedRateX + feedRateY) / 2;
+
+        //    if (feedRateX == 0)
+        //    {
+        //        var step = CalculateJogStep(feedRateY);
+        //        command = $"{JogHeader}{commandY}{step}F{feedRateY}";
+        //    }
+        //    else if (feedRateY == 0)
+        //    {
+        //        var step = CalculateJogStep(feedRateX);
+        //        command = $"{JogHeader}{commandX}{step}F{feedRateX}";
+        //    }
+        //    else
+        //    {
+        //        var step = CalculateJogStep(averageRate);
+        //        command = $"{JogHeader}{commandX}{step}{commandY}{_grblViewModel.JogStep}F{averageRate}";
+        //    }
+
+        //    if (!averageRate.Equals(0)) return command;
+        //    _joystickJogging = false;
+        //    ExceptionLogging.SendErrorToText(new Exception("GamePad Logging:***"), $"{GrblConstants.CMD_JOG_CANCEL}");
+        //    Comms.com.WriteByte(GrblConstants.CMD_JOG_CANCEL);
+        //    command = string.Empty;
+        //    _pollRate = 50;
+        //    return command;
+        //}
+
+        //private double CalculateJogStep(double feedRate)
+        //{
+        //    var step = 0.0;
+        //    if (feedRate > 1500)
+        //    {
+        //        step = 1.65;
+        //        _pollRate = 50;
+        //    }
+        //    else if (feedRate > 500)
+        //    {
+        //        step = 1.5;
+        //        _pollRate = 110;
+
+        //    }
+        //    else
+        //    {
+        //        step = .35;
+        //        _pollRate = 210;
+        //    }
+        //    return step;
+        //}
+
+        //private double BuildJoggingCommand(double velocity)
+        //{
+        //    double feedRate = 0;
+        //    //if (velocity >= .7)
+        //    //{
+        //    //    feedRate = _feedRate[3];
+        //    //}
+        //    //else if (velocity > .4)
+        //    //{
+        //    //    feedRate = _feedRate[2];
+        //    //}
+        //    //else if (velocity > .3)
+        //    //{
+        //    //    feedRate = _feedRate[1];
+        //    //}
+        //    if (velocity > .3)
+        //    {
+        //        feedRate = _grblViewModel.JogRate;
+        //    }
+        //    else if (velocity <= .3)
+        //    {
+        //        feedRate = 0;
+        //    }
+        //    return feedRate;
+        //}
+
+
+        //// Single Axis Joystick movement 
+        //// For using joystick for JogMetric found to much drift on release of joystick causing machine to jog and appearance of latency 
+        //private void ProcessX(double movement)
+        //{
+        //    if (movement == 0 && !_joystickJogging) return;
+        //    var command = movement > 0 ? "$J = G91G21X" : "$J = G91G21X-";
+        //    var x = Math.Abs(movement);
+        //    var c = ProcessVelocity(x, command);
+        //    if (!string.IsNullOrEmpty(c))
+        //    {
+        //        Send(c);
+        //    }
+        //}
+        //// Single Axis Joystick movement 
+        //// For using joystick for JogMetric found to much drift on release of joystick causing machine to jog and appearance of latency
+        //private void ProcessY(double movement)
+        //{
+        //    if (movement == 0 && !_joystickJogging) return;
+        //    var command = movement > 0 ? $"$J = G91G21Y" : $"$J = G91G21Y-";
+        //    var y = Math.Abs(movement);
+        //    command += ProcessVelocity(y, command);
+        //    if (!string.IsNullOrEmpty(command))
+        //    {
+        //        Send(command);
+        //    }
+        //}
+        ////// Single Axis Joystick movement 
+        //private string ProcessVelocity(double velocity, string command)
+        //{
+        //    _joystickJogging = true;
+
+        //    if (velocity > .8)
+        //    {
+        //        command += $"{_grblViewModel.JogStep}F{_feedRate[3]}";
+        //    }
+        //    else if (velocity > .5)
+        //    {
+        //        command += $"{_grblViewModel.JogStep}F{_feedRate[2]}";
+        //    }
+        //    else if (velocity > .2)
+        //    {
+        //        command += $"{_grblViewModel.JogStep}F{_feedRate[1]}";
+        //    }
+        //    else if (velocity <= .2)
+        //    {
+        //        ExceptionLogging.SendErrorToText(new Exception("GamePad Logging:***"), $"{command}");
+        //        Comms.com.WriteByte(GrblConstants.CMD_JOG_CANCEL);
+        //        command = string.Empty;
+        //        _joystickJogging = false;
+        //    }
+        //    return command;
+        //}
+
+
     }
 }

@@ -8,12 +8,13 @@ namespace CNC.Core.Logging
     /// </summary>  
     public static class ExceptionLogging
     {
-
+       
         private static String ErrorlineNo, Errormsg, extype, ErrorLocation;
 
         public static void SendErrorToText(Exception ex, string customMessage)
         {
-            var line = Environment.NewLine + Environment.NewLine;
+            ;
+           var line = Environment.NewLine + Environment.NewLine;
             if(ex ==  null) return;
             ErrorlineNo = ex.StackTrace == null ? "" : ex.StackTrace.Substring(ex.StackTrace.Length - 7, 7);
             Errormsg = ex.GetType().Name.ToString();

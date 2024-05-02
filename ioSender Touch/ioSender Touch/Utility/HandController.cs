@@ -8,9 +8,11 @@ using System.Threading;
 using System.Runtime;
 using Windows.Gaming.Input;
 using System.Collections;
+using System.Globalization;
 using System.Text;
 using System.Windows.Markup;
 using CNC.Controls.Utility;
+using System.Text.RegularExpressions;
 
 
 namespace ioSenderTouch.Utility
@@ -32,6 +34,7 @@ namespace ioSenderTouch.Utility
         CancellationTokenSource _cancellationTokenSource;
         private bool _joystickJogging;
         private bool _continuousJogActive;
+        private bool _fallOverCutureFix;
 
 
         public double DistanceRate => _distanceRate?[(int)JogStepRate] ?? 1;
@@ -77,15 +80,27 @@ namespace ioSenderTouch.Utility
 
         private void Gamepad_GamepadAdded(object sender, Gamepad e)
         {
+            if(Thread.CurrentThread.CurrentCulture.Name != "en-US")
+            {
+                _fallOverCutureFix = true;
+            }
+            var cultureInfo = new CultureInfo("en-US");
             _controller = Gamepad.Gamepads.First();
             if (_buttonPollThread?.Status == TaskStatus.Running) return;
             _cancellationTokenSource = new CancellationTokenSource();
-            _buttonPollThread = Task.Factory.StartNew(() => Poll(_cancellationTokenSource), TaskCreationOptions.LongRunning);
+        
+            _buttonPollThread = Task.Factory.StartNew(() => Poll(_cancellationTokenSource, cultureInfo), TaskCreationOptions.LongRunning);
         }
 
 
-        private void Poll(CancellationTokenSource cancellationToken)
+        private void Poll(CancellationTokenSource cancellationToken, CultureInfo culture)
         {
+            if (_fallOverCutureFix)
+            {
+                Thread.CurrentThread.CurrentCulture = culture;
+                Thread.CurrentThread.CurrentUICulture = culture;
+            }
+             
             while (true)
             {
                 var mode = _grblViewModel.IsMetric ? "G21" : "G20";
@@ -125,7 +140,7 @@ namespace ioSenderTouch.Utility
                             var zMax = useImperial ? _grblViewModel.MaxDistanceZ/25.4: _grblViewModel.MaxDistanceX;
                             step = zMax - zCurrent;
                         }
-                        command = $"$J = G91{mode}Z{step}F{_grblViewModel.JogRate}";
+                        command = FormattableString.Invariant($"$J = G91{mode}Z{step}F{_grblViewModel.JogRate}");
                         ProcessJogCommand(command);
                         break;
                     case GamepadButtons.A:
@@ -140,7 +155,7 @@ namespace ioSenderTouch.Utility
                             var zCurrent = _grblViewModel.MachinePosition.Z;
                             step = zCurrent;
                         }
-                        command = $"$J = G91{mode}Z-{step}F{_grblViewModel.JogRate}";
+                        command = FormattableString.Invariant($"$J = G91{mode}Z-{Math.Abs(step)}F{_grblViewModel.JogRate}");
                         ProcessJogCommand(command);
                         break;
                     case GamepadButtons.DPadLeft:
@@ -155,7 +170,7 @@ namespace ioSenderTouch.Utility
                             var xCurrent = _grblViewModel.MachinePosition.X;
                             step = xCurrent;
                         }
-                        command = $"$J = G91{mode}X-{step}F{_grblViewModel.JogRate}";
+                        command = FormattableString.Invariant($"$J = G91{mode}X-{Math.Abs(step)}F{_grblViewModel.JogRate}"); ;
                         ProcessJogCommand(command);
                         break;
                     case GamepadButtons.DPadRight:
@@ -172,7 +187,7 @@ namespace ioSenderTouch.Utility
                                 _grblViewModel.MaxDistanceX; 
                             step = xMax - xCurrent;
                         }
-                        command = $"$J = G91{mode}X{step}F{_grblViewModel.JogRate}";
+                        command = FormattableString.Invariant($"$J = G91{mode}X{step}F{_grblViewModel.JogRate}");
                         ProcessJogCommand(command);
                         break;
                     case GamepadButtons.DPadUp:
@@ -189,7 +204,7 @@ namespace ioSenderTouch.Utility
                                 _grblViewModel.MaxDistanceY;
                             step = yMax - yCurrent;
                         }
-                        command = $"$J = G91{mode}Y{step}F{_grblViewModel.JogRate}";
+                        command = FormattableString.Invariant($"$J = G91{mode}Y{step}F{_grblViewModel.JogRate}");
                         ProcessJogCommand(command);
                         break;
                     case GamepadButtons.DPadDown:
@@ -204,7 +219,7 @@ namespace ioSenderTouch.Utility
                             var yCurrent = _grblViewModel.MachinePosition.Y;
                             step = yCurrent;
                         }
-                        command = $"$J = G91{mode}Y-{step}F{_grblViewModel.JogRate}";
+                        command = FormattableString.Invariant($"$J = G91{mode}Y-{Math.Abs(step)}F{_grblViewModel.JogRate}");
                         ProcessJogCommand(command);
                         break;
                     case GamepadButtons.X:
@@ -259,7 +274,7 @@ namespace ioSenderTouch.Utility
                     Comms.com.WriteByte(GrblConstants.CMD_JOG_CANCEL);
                     _continuousJogActive = false;
                 }
-                //TODO JoyStick has a little of drift when releasing 
+                //TODO JoyStick has too much drift when releasing 
                 //var x = Math.Round(input.LeftThumbstickX, 1);
                 //var y = Math.Round(input.LeftThumbstickY, 1);
                 // ProcessJoyStick(x, y);

@@ -120,6 +120,7 @@ namespace CNC.Core
         public ICommand FeedOverRide { get; }
         public ICommand FeedOverRideReset { get; }
         public ICommand ResetCommand { get; }
+        public ICommand OverRidePercentCommand { get; }
 
         public string AlarmConText
         {
@@ -278,9 +279,19 @@ namespace CNC.Core
             RapidOverRide = new Command(SetRapidOverRide);
             WcsCommand = new Command(SetWcs);
             ResetCommand = new Command(SetResetCommand);
+            OverRidePercentCommand = new Command(SpindleOverRidePrecent);
             SetDefaults();
             Connected = false;
             SetToolCommand();
+        }
+
+        private void SpindleOverRidePrecent(object obj)
+        {
+            if (obj is string speed)
+            {
+                SpindleOverRideValue = speed == "1" ? 1 : 10;
+            }
+
         }
 
 

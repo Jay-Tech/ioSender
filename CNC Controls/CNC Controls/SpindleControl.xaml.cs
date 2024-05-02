@@ -42,6 +42,7 @@ using System.Windows;
 using System.Windows.Controls;
 using CNC.Core;
 using System.Windows.Input;
+using System;
 
 namespace CNC.Controls
 {
@@ -62,9 +63,7 @@ namespace CNC.Controls
            var finePlusCommand = GrblConstants.CMD_SPINDLE_OVR_FINE_PLUS;
             var coarseMinusCommand = GrblConstants.CMD_SPINDLE_OVR_COARSE_MINUS;
             var coarsePlusCommand = GrblConstants.CMD_SPINDLE_OVR_COARSE_PLUS;
-            OverRidePrecent.Value = 10;
             cvRPM.PreviewKeyUp += txtPos_KeyPress;
-            //overrideControl.CommandGenerated += overrideControl_CommandGenerated;
         }
 
         private void SpindleControl_DataContextChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
@@ -125,9 +124,12 @@ namespace CNC.Controls
             }
         }
 
-        void overrideControl_CommandGenerated(string command)
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-            (DataContext as GrblViewModel).ExecuteCommand(command);
+            if (!(DataContext is GrblViewModel p)) return;
+            var command = FormattableString.Invariant( $"S{cvRPM.Value}");
+            p.ExecuteCommand(command);
         }
     }
 }

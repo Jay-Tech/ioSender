@@ -53,7 +53,7 @@
                 <Label  Name="WCS" Content="{Binding WorkCoordinateSystem}"  BorderThickness="1" FontSize="20"  VerticalAlignment="Center"  HorizontalContentAlignment="Center"/>
                 <Label  Name="Signals" Content="Signal Status:"  BorderThickness="1" FontSize="20" VerticalAlignment="Center" HorizontalContentAlignment="Center"  Margin="20,0,0,0"/>
                 <controls:SignalsControl VerticalAlignment="Top"></controls:SignalsControl>
-                <Label  Name="Tool" Content="Tool Number:"  BorderThickness="1" FontSize="20" HorizontalContentAlignment="Center"  VerticalAlignment="Center" Margin="20,0,0,0"/>
+                <Label  Name="Tool" Content="Tool Number:"  BorderThickness="1" FontSize="20" HorizontalContentAlignment="Center"  VerticalAlignment="Center" Margin="5,0,0,0"/>
                 <Label  Name="ToolNumber" Content="{Binding Tool}" VerticalAlignment="Center"  BorderThickness="1" FontSize="20" HorizontalContentAlignment="Center"/>
 
             </StackPanel>

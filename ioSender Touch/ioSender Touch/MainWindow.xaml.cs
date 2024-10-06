@@ -25,6 +25,7 @@ namespace ioSenderTouch
         private readonly HomeViewPortrait _homeViewPortrait;
         private bool _shown;
         private bool _windowStyle;
+        private JogConfig _jogConfig;
         public string BaseWindowTitle { get; set; }
         public MainWindow()
         {
@@ -35,6 +36,7 @@ namespace ioSenderTouch
             _viewModel = DataContext as GrblViewModel ?? new GrblViewModel();
             BaseWindowTitle = Title;
             AppConfig.Settings.OnConfigFileLoaded += Settings_OnConfigFileLoaded;
+            _viewModel.PropertyChanged += _viewModel_PropertyChanged;
             if (SystemInformation.ScreenOrientation == ScreenOrientation.Angle90 || SystemInformation.ScreenOrientation == ScreenOrientation.Angle270)
             {
                 _homeViewPortrait = new HomeViewPortrait(_viewModel);
@@ -93,7 +95,44 @@ namespace ioSenderTouch
             SetPrimaryColor(color);
             Left = 0;
             Top = 0;
+            SetUpKeyBoard();
         }
+
+
+
+        private void _viewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(GrblViewModel.IsMetric))
+            {
+                SetUpKeyBoard();
+            }
+        }
+        private void SetUpKeyBoard()
+        {
+            if (_jogConfig != null)
+            {
+                _jogConfig.PropertyChanged -= JogConfig_PropertyChanged;
+            }
+            _jogConfig = _viewModel.IsMetric ? AppConfig.Settings.JogMetric : AppConfig.Settings.JogImperial;
+            _jogConfig.PropertyChanged += JogConfig_PropertyChanged;
+            ApplyKeyboardJogging();
+        }
+        private void ApplyKeyboardJogging()
+        {
+            _viewModel.Keyboard.JogStepDistance = AppConfig.Settings.JogMetric.LinkStepJogToUI ? AppConfig.Settings.JogUiMetric.Distance0 : _jogConfig.StepDistance;
+            _viewModel.Keyboard.JogDistances[(int)KeypressHandler.JogMode.Slow] = _jogConfig.SlowDistance;
+            _viewModel.Keyboard.JogDistances[(int)KeypressHandler.JogMode.Fast] = _jogConfig.FastDistance;
+            _viewModel.Keyboard.JogFeedrates[(int)KeypressHandler.JogMode.Step] = _jogConfig.StepFeedrate;
+            _viewModel.Keyboard.JogFeedrates[(int)KeypressHandler.JogMode.Slow] = _jogConfig.SlowFeedrate;
+            _viewModel.Keyboard.JogFeedrates[(int)KeypressHandler.JogMode.Fast] = _jogConfig.FastFeedrate;
+            _viewModel.Keyboard.IsJoggingEnabled = _jogConfig.Mode != JogConfig.JogMode.UI;
+        }
+
+        private void JogConfig_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            ApplyKeyboardJogging();
+        }
+
         private void CheckAndSetScale()
         {
             _windowStyle = !AppConfig.Settings.AppUiSettings.EnableToolBar;
@@ -141,8 +180,10 @@ namespace ioSenderTouch
         }
         // Dynamic Resize
 
-        public static readonly DependencyProperty ScaleValueProperty = DependencyProperty.Register("ScaleValue", typeof(double), 
+        public static readonly DependencyProperty ScaleValueProperty = DependencyProperty.Register("ScaleValue", typeof(double),
             typeof(MainWindow), new UIPropertyMetadata(1.0, new PropertyChangedCallback(OnScaleValueChanged), new CoerceValueCallback(OnCoerceScaleValue)));
+
+
 
         private static object OnCoerceScaleValue(DependencyObject o, object value)
         {

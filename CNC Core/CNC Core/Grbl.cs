@@ -1076,19 +1076,19 @@ namespace CNC.Core
 
             if (HasFirmwareJog)
             {
-                double val;
-                if (!(val = GrblSettings.GetDouble(grblHALSetting.JogStepDistance)).Equals(double.NaN))
-                    model.Keyboard.JogStepDistance = val;
-                if (!(val = GrblSettings.GetDouble(grblHALSetting.JogSlowDistance)).Equals(double.NaN))
-                    model.Keyboard.JogDistances[(int)KeypressHandler.JogMode.Slow] = val;
-                if (!(val = GrblSettings.GetDouble(grblHALSetting.JogFastDistance)).Equals(double.NaN))
-                    model.Keyboard.JogDistances[(int)KeypressHandler.JogMode.Fast] = val;
-                if (!(val = GrblSettings.GetDouble(grblHALSetting.JogStepSpeed)).Equals(double.NaN))
-                    model.Keyboard.JogFeedrates[(int)KeypressHandler.JogMode.Step] = val;
-                if (!(val = GrblSettings.GetDouble(grblHALSetting.JogSlowSpeed)).Equals(double.NaN))
-                    model.Keyboard.JogFeedrates[(int)KeypressHandler.JogMode.Slow] = val;
-                if (!(val = GrblSettings.GetDouble(grblHALSetting.JogFastSpeed)).Equals(double.NaN))
-                    model.Keyboard.JogFeedrates[(int)KeypressHandler.JogMode.Fast] = val;
+                //double val;
+                //if (!(val = GrblSettings.GetDouble(grblHALSetting.JogStepDistance)).Equals(double.NaN))
+                //    model.Keyboard.JogStepDistance = val;
+                //if (!(val = GrblSettings.GetDouble(grblHALSetting.JogSlowDistance)).Equals(double.NaN))
+                //    model.Keyboard.JogDistances[(int)KeypressHandler.JogMode.Slow] = val;
+                //if (!(val = GrblSettings.GetDouble(grblHALSetting.JogFastDistance)).Equals(double.NaN))
+                //    model.Keyboard.JogDistances[(int)KeypressHandler.JogMode.Fast] = val;
+                //if (!(val = GrblSettings.GetDouble(grblHALSetting.JogStepSpeed)).Equals(double.NaN))
+                //    model.Keyboard.JogFeedrates[(int)KeypressHandler.JogMode.Step] = val;
+                //if (!(val = GrblSettings.GetDouble(grblHALSetting.JogSlowSpeed)).Equals(double.NaN))
+                //    model.Keyboard.JogFeedrates[(int)KeypressHandler.JogMode.Slow] = val;
+                //if (!(val = GrblSettings.GetDouble(grblHALSetting.JogFastSpeed)).Equals(double.NaN))
+                //    model.Keyboard.JogFeedrates[(int)KeypressHandler.JogMode.Fast] = val;
             }
         }
 

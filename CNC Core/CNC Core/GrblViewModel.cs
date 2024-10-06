@@ -46,7 +46,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using CNC.Core.Comands;
-using CNC.Core;
 using Color = System.Windows.Media.Color;
 
 namespace CNC.Core

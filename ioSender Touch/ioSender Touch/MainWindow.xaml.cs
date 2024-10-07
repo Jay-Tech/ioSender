@@ -90,7 +90,7 @@ namespace ioSenderTouch
         private void Settings_OnConfigFileLoaded(object sender, EventArgs e)
         {
             _viewModel.DisplayMenuBar = AppConfig.Settings.AppUiSettings.EnableToolBar;
-            CheckAndSetScale();
+            //CheckAndSetScale();
             var color = AppConfig.Settings.AppUiSettings.UIColor;
             SetPrimaryColor(color);
             Left = 0;
@@ -180,23 +180,21 @@ namespace ioSenderTouch
         }
         // Dynamic Resize
 
-        public static readonly DependencyProperty ScaleValueProperty = DependencyProperty.Register("ScaleValue", typeof(double),
+        public static readonly DependencyProperty ScaleValueProperty = DependencyProperty.Register(nameof(ScaleValue), typeof(double),
             typeof(MainWindow), new UIPropertyMetadata(1.0, new PropertyChangedCallback(OnScaleValueChanged), new CoerceValueCallback(OnCoerceScaleValue)));
 
 
 
         private static object OnCoerceScaleValue(DependencyObject o, object value)
         {
-            MainWindow mainWindow = o as MainWindow;
-            if (mainWindow != null)
+            if (o is MainWindow mainWindow)
                 return mainWindow.OnCoerceScaleValue((double)value);
-            else return value;
+            return value;
         }
-
+        protected virtual void OnScaleValueChanged(double oldValue, double newValue) { }
         private static void OnScaleValueChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
-            MainWindow mainWindow = o as MainWindow;
-            if (mainWindow != null)
+            if (o is MainWindow mainWindow)
                 mainWindow.OnScaleValueChanged((double)e.OldValue, (double)e.NewValue);
         }
 
@@ -209,7 +207,7 @@ namespace ioSenderTouch
             return value;
         }
 
-        protected virtual void OnScaleValueChanged(double oldValue, double newValue) { }
+        
 
         public double ScaleValue
         {
@@ -221,8 +219,19 @@ namespace ioSenderTouch
 
         private void CalculateScale()
         {
-            double yScale = ActualHeight / 1080;
-            double xScale = ActualWidth / 1920;
+            double yScale;
+            double xScale;
+            if (SystemInformation.ScreenOrientation == ScreenOrientation.Angle90 || SystemInformation.ScreenOrientation == ScreenOrientation.Angle270)
+            {
+                 yScale = ActualHeight / 1920;
+                 xScale = ActualWidth / 1080;
+            }
+            else
+            {
+                yScale = ActualHeight / 1080;
+                xScale = ActualWidth / 1920;
+            }
+             
             double value = Math.Min(xScale, yScale);
             ScaleValue = (double)OnCoerceScaleValue(AppMainWindow, value);
         }

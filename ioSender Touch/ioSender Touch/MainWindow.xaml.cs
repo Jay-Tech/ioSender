@@ -90,7 +90,7 @@ namespace ioSenderTouch
         private void Settings_OnConfigFileLoaded(object sender, EventArgs e)
         {
             _viewModel.DisplayMenuBar = AppConfig.Settings.AppUiSettings.EnableToolBar;
-            //CheckAndSetScale();
+            CheckAndSetScale();
             var color = AppConfig.Settings.AppUiSettings.UIColor;
             SetPrimaryColor(color);
             Left = 0;
@@ -141,8 +141,18 @@ namespace ioSenderTouch
             var dpi = DPIProvider.GetDpiScale();
             var h = height / dpi.DpiX;
             var w = width / dpi.DpiY;
-            Width = w;
-            Height = h;
+            if (SystemInformation.ScreenOrientation == ScreenOrientation.Angle90 ||
+                SystemInformation.ScreenOrientation == ScreenOrientation.Angle270)
+            {
+                Width = h;
+                Height = w;
+            }
+            else
+            {
+                Width = w;
+                Height = h;
+            }
+           
         }
 
         private void _viewModel_OnShutDown(object sender, EventArgs e)

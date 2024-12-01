@@ -60,9 +60,19 @@ namespace ioSenderTouch
                 MenuBorder.Child = menu;
                 MenuBorder.DataContext = _viewModel;
             }
-            _viewModel.OnShutDown += _viewModel_OnShutDown;
+            this.Closing += MainWindow_Closing;
         }
 
+        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Comms.com.DataReceived -= ((GrblViewModel)DataContext).DataReceived;
+
+            using (new UIUtils.WaitCursor())
+            {
+                Comms.com.Close(); // disconnecting from websocket may take some time...
+                AppConfig.Settings.Shutdown();
+            }
+        }
 
         protected override void OnContentRendered(EventArgs e)
         {
@@ -155,11 +165,7 @@ namespace ioSenderTouch
            
         }
 
-        private void _viewModel_OnShutDown(object sender, EventArgs e)
-        {
-            AppConfig.Settings.Shutdown();
-            Close();
-        }
+      
 
         private void Window_Load(object sender, EventArgs e)
         {

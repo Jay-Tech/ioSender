@@ -17,7 +17,7 @@ namespace ioSenderTouch
 {
     public partial class MainWindow : Window
     {
-        private const string Version = "1.0.1.5";
+        private const string Version = "1.0.1.6";
         private const string App_Name = "IO Sender Touch";
 
         private readonly GrblViewModel _viewModel;
@@ -69,7 +69,7 @@ namespace ioSenderTouch
 
             using (new UIUtils.WaitCursor())
             {
-                Comms.com.Close(); // disconnecting from websocket may take some time...
+                Comms.com.Close();
                 AppConfig.Settings.Shutdown();
             }
         }

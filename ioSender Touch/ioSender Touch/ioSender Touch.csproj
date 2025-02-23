@@ -2,6 +2,7 @@
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
+    <LangVersion>preview</LangVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{9492A88B-066D-42AE-9244-3369BE99F37F}</ProjectGuid>
@@ -91,24 +92,50 @@
   </PropertyGroup>
   <PropertyGroup />
   <ItemGroup>
+    <Reference Include="HelixToolkit, Version=2.26.0.0, Culture=neutral, PublicKeyToken=52aa3500039caf0d, processorArchitecture=MSIL">
+      <HintPath>..\packages\HelixToolkit.2.26.0\lib\netstandard2.0\HelixToolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="HelixToolkit.Wpf, Version=2.26.0.0, Culture=neutral, PublicKeyToken=52aa3500039caf0d, processorArchitecture=MSIL">
+      <HintPath>..\packages\HelixToolkit.Wpf.2.26.0\lib\net462\HelixToolkit.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="MaterialDesignColors, Version=2.1.5.0, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignColors.2.1.5-ci317\lib\net462\MaterialDesignColors.dll</HintPath>
     </Reference>
     <Reference Include="MaterialDesignThemes.Wpf, Version=4.10.0.0, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignThemes.4.10.0-ci317\lib\net462\MaterialDesignThemes.Wpf.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\lib\net461\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.39\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
+    <Reference Include="RP.Math.Vector3, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\RP.Math.Vector3.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime, Version=4.1.1.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.4.3.1\lib\net462\System.Runtime.dll</HintPath>
       <Private>True</Private>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -129,33 +156,234 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\About.xaml.cs">
+      <DependentUpon>About.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\AppConfigView.xaml.cs">
+      <DependentUpon>AppConfigView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\AppUiSettings.xaml.cs">
       <DependentUpon>AppUiSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ArcsToLines.cs" />
+    <Compile Include="Controls\BasicConfigControl.xaml.cs">
+      <DependentUpon>BasicConfigControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\CalibrationControl.xaml.cs">
       <DependentUpon>CalibrationControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ConfigTextBox.xaml.cs">
+      <DependentUpon>ConfigTextBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ConsoleControl.xaml.cs">
+      <DependentUpon>ConsoleControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ConsoleWindow.xaml.cs">
+      <DependentUpon>ConsoleWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Converters.cs" />
+    <Compile Include="Controls\CoolantControl.xaml.cs">
+      <DependentUpon>CoolantControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CoordValueSetControl.xaml.cs">
+      <DependentUpon>CoordValueSetControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DROBaseControl.xaml.cs">
+      <DependentUpon>DROBaseControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DROControl.xaml.cs">
+      <DependentUpon>DROControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ErrorsAndAlarms.xaml.cs">
+      <DependentUpon>ErrorsAndAlarms.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\FeedControl.xaml.cs">
+      <DependentUpon>FeedControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\FileActionControl.xaml.cs">
+      <DependentUpon>FileActionControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\GCode.cs" />
+    <Compile Include="Controls\GCodeCompress.cs" />
+    <Compile Include="Controls\GCodeListControl.xaml.cs">
+      <DependentUpon>GCodeListControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\GCodeRotate.cs" />
+    <Compile Include="Controls\GCodeRotateDialog.xaml.cs">
+      <DependentUpon>GCodeRotateDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\GCodeWrap.cs" />
+    <Compile Include="Controls\GCodeWrapDialog.xaml.cs">
+      <DependentUpon>GCodeWrapDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\GrblAlarmList.xaml.cs">
+      <DependentUpon>GrblAlarmList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\GrblConfigView.xaml.cs">
+      <DependentUpon>GrblConfigView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\GrblErrorList.xaml.cs">
+      <DependentUpon>GrblErrorList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\IGCodeConverter.cs" />
+    <Compile Include="Controls\IGCodeTransformer.cs" />
+    <Compile Include="Controls\ISidebarControl.cs" />
+    <Compile Include="Controls\JobControl.xaml.cs">
+      <DependentUpon>JobControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\JogConfigControl.xaml.cs">
+      <DependentUpon>JogConfigControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\JogControl.xaml.cs">
       <DependentUpon>JogControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\JogUiConfigControl.xaml.cs">
+      <DependentUpon>JogUiConfigControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\LandScapeMenu.xaml.cs">
       <DependentUpon>LandScapeMenu.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\LEDControl.xaml.cs">
+      <DependentUpon>LEDControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\LimitsBaseControl.xaml.cs">
+      <DependentUpon>LimitsBaseControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\LimitsControl.xaml.cs">
+      <DependentUpon>LimitsControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\MacroEditor.xaml.cs">
       <DependentUpon>MacroEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MacroExecuteControl.xaml.cs">
+      <DependentUpon>MacroExecuteControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MacroToolbarControl.xaml.cs">
+      <DependentUpon>MacroToolbarControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MDIControl.xaml.cs">
+      <DependentUpon>MDIControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\NumericComboBox.cs" />
+    <Compile Include="Controls\NumericField.xaml.cs">
+      <DependentUpon>NumericField.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\NumericTextBox.cs" />
+    <Compile Include="Controls\OffsetView.xaml.cs">
+      <DependentUpon>OffsetView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\OriginControl.xaml.cs">
+      <DependentUpon>OriginControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\OutlineControl.xaml.cs">
+      <DependentUpon>OutlineControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PIDLogView.xaml.cs">
+      <DependentUpon>PIDLogView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PipeServer.cs" />
+    <Compile Include="Controls\PortDialog.xaml.cs">
+      <DependentUpon>PortDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\PortraitMenu.xaml.cs">
       <DependentUpon>PortraitMenu.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Probing\CenterFinderControl.xaml.cs">
+      <DependentUpon>CenterFinderControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Probing\ProbingConfigControl.xaml.cs">
+      <DependentUpon>ProbingConfigControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Probing\Converters.cs" />
+    <Compile Include="Controls\Probing\CsSelectControl.xaml.cs">
+      <DependentUpon>CsSelectControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Probing\EdgeFinderControl.xaml.cs">
+      <DependentUpon>EdgeFinderControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Probing\EdgeFinderIntControl.xaml.cs">
+      <DependentUpon>EdgeFinderIntControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Probing\GCodeTransform.cs" />
+    <Compile Include="Controls\Probing\HeightMap.cs" />
+    <Compile Include="Controls\Probing\HeightMapControl.xaml.cs">
+      <DependentUpon>HeightMapControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Probing\HeightMapViewModel.cs" />
+    <Compile Include="Controls\Probing\IProbeTab.cs" />
+    <Compile Include="Controls\Probing\ProbeVerify.xaml.cs">
+      <DependentUpon>ProbeVerify.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Probing\ProbingConfig.cs" />
+    <Compile Include="Controls\Probing\ProbingView.xaml.cs">
+      <DependentUpon>ProbingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Render\ColorPicker.xaml.cs">
+      <DependentUpon>ColorPicker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Render\RenderConfigControl.xaml.cs">
+      <DependentUpon>RenderConfigControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Render\RenderControl.xaml.cs">
+      <DependentUpon>RenderControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Render\Renderer.xaml.cs">
+      <DependentUpon>Renderer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Render\TextOverlayControl.xaml.cs">
+      <DependentUpon>TextOverlayControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\Probling\ProbingViewModel.cs" />
+    <Compile Include="Controls\Probing\Program.cs" />
+    <Compile Include="Controls\Probing\RotationControl.xaml.cs">
+      <DependentUpon>RotationControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Probing\ToolLengthControl.xaml.cs">
+      <DependentUpon>ToolLengthControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SDCardView.xaml.cs">
+      <DependentUpon>SDCardView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SignalControl.xaml.cs">
+      <DependentUpon>SignalControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SignalsControl.xaml.cs">
+      <DependentUpon>SignalsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SpindleControl.xaml.cs">
+      <DependentUpon>SpindleControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\StripGCodeConfigControl.xaml.cs">
+      <DependentUpon>StripGCodeConfigControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\SurfacingControl.xaml.cs">
       <DependentUpon>SurfacingControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\THCMonitorControl.xaml.cs">
+      <DependentUpon>THCMonitorControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ToolView.xaml.cs">
+      <DependentUpon>ToolView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TrinamicView.xaml.cs">
+      <DependentUpon>TrinamicView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\UIUtils.cs" />
     <Compile Include="Controls\UtilityMacroControl.xaml.cs">
       <DependentUpon>UtilityMacroControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Widget.cs" />
+    <Compile Include="Controls\WorkParametersControlTouch.xaml.cs">
+      <DependentUpon>WorkParametersControlTouch.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Convertors\RadioBoolToIntConverter.cs" />
-    <Compile Include="DPIProvider.cs" />
-    <Compile Include="HomeViewPortrait.xaml.cs">
+    <Compile Include="Utility\ControlEnums.cs" />
+    <Compile Include="Utility\Controller.cs" />
+    <Compile Include="Utility\DPIProvider.cs" />
+    <Compile Include="ViewModels\JogConfigControlViewModel.cs" />
+    <Compile Include="ViewModels\UIJoggingViewModel.cs" />
+    <Compile Include="ViewModels\VirtualKeyboardViewModel.cs" />
+    <Compile Include="Views\HomeViewPortrait.xaml.cs">
       <DependentUpon>HomeViewPortrait.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utility\CalibrationTriangle.cs" />
@@ -164,18 +392,112 @@
     <Compile Include="Utility\HandController.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\UtilityViewModel.cs" />
+    <Compile Include="Views\ProbePopupWindow.xaml.cs">
+      <DependentUpon>ProbePopupWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\UtilityView.xaml.cs">
       <DependentUpon>UtilityView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\VirtualKeyBoard.xaml.cs">
+      <DependentUpon>VirtualKeyBoard.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Controls\About.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\AppConfigView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\AppUiSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\BasicConfigControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\CalibrationControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\ConfigTextBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ConsoleControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ConsoleWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\CoolantControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\CoordValueSetControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\DROBaseControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\DROControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ErrorsAndAlarms.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\FeedControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\FileActionControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\GCodeListControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\GCodeRotateDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\GCodeWrapDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\GrblAlarmList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\GrblConfigView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\GrblErrorList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\JobControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\JogConfigControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\JogControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\JogUiConfigControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -183,7 +505,59 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\LEDControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\LibStrings.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\LimitsBaseControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\LimitsControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\MacroEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\MacroExecuteControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\MacroToolbarControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\MDIControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\NumericField.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\OffsetView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\OriginControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\OutlineControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\PIDLogView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\PortDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -191,19 +565,123 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\Probing\CenterFinderControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Probing\ProbingConfigControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Probing\CsSelectControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Probing\EdgeFinderControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Probing\EdgeFinderIntControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Probing\HeightMapControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Probing\LibStrings.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Probing\ProbeVerify.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Probing\ProbingView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Probing\RotationControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Probing\ToolLengthControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Render\ColorPicker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Render\RenderConfigControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Render\RenderControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Render\Renderer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Render\TextOverlayControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\SDCardView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\SharedStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\SignalControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\SignalsControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\SpindleControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\StripGCodeConfigControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\SurfacingControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\THCMonitorControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ToolView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\TrinamicView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\UtilityMacroControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="HomeViewPortrait.xaml">
+    <Page Include="Controls\WorkParametersControlTouch.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="HomeView.xaml">
+    <Page Include="Views\HomeViewPortrait.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\HomeView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -215,7 +693,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="HomeView.xaml.cs">
+    <Compile Include="Views\HomeView.xaml.cs">
       <DependentUpon>HomeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
@@ -226,7 +704,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\ProbePopupWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\UtilityView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\VirtualKeyBoard.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -235,21 +721,14 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="Controls\app.config" />
+    <None Include="Controls\packages.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -258,21 +737,9 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\CNC Controls Probing\CNC Controls Probing\CNC Controls Probing.csproj">
-      <Project>{e8a9b2cd-988a-4dae-8dda-bebccb99bf9c}</Project>
-      <Name>CNC Controls Probing</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\CNC Controls\CNC Controls\CNC Controls.csproj">
-      <Project>{fa7fef55-aa80-4b20-b345-e3ca7204dd18}</Project>
-      <Name>CNC Controls</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\CNC Core\CNC Core\CNC Core.csproj">
       <Project>{f245ff89-a838-4d6e-aa40-92cfd3d072d3}</Project>
       <Name>CNC Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\CNC GCodeViewer\CNC GCodeViewer\CNC GCodeViewer.csproj">
-      <Project>{f1f1e439-a3ee-462c-b8bf-bfd08c0b3d9e}</Project>
-      <Name>CNC GCodeViewer</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -290,7 +757,12 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\close.png" />
+    <Resource Include="Resources\edit.png" />
+    <Resource Include="Resources\open.png" />
+    <Resource Include="Resources\reload.png" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Symbols_Stop_32xLG.png" />
   </ItemGroup>
@@ -300,6 +772,117 @@
   <ItemGroup>
     <Resource Include="Resources\Triangle.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Controls\App.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\StatusAnnotations_Warning_16xLG_color.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Probing\RotaterCD.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Probing\App.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Probing\centerI.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Probing\CenterO.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Probing\cornerA.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Probing\cornerB.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Probing\cornerC.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Probing\cornerD.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Probing\cornerIA.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Probing\cornerIB.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Probing\cornerIC.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Probing\CornerID.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Probing\edgeAB.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Probing\edgeAD.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Probing\edgeBC.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Probing\edgeCD.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Probing\edgeIAB.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Probing\edgeIAD.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Probing\edgeIBC.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Probing\edgeICD.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Probing\edgeZ.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Probing\RotaterAB.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Probing\RotaterAD.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Probing\RotaterCB.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Render\GridOff.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Render\GridOn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Render\JobBoxOff.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Render\JobBoxOn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Render\ResetView.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Render\RestoreView.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Render\SaveView.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Render\WorkBoxOff.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Render\WorkBoxOn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Render\XYZOff.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Render\XYZOn.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\MaterialDesignThemes.4.10.0-ci317\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.4.10.0-ci317\build\MaterialDesignThemes.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
@@ -308,8 +891,10 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\MaterialDesignThemes.4.10.0-ci317\build\MaterialDesignThemes.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MaterialDesignThemes.4.10.0-ci317\build\MaterialDesignThemes.targets'))" />
     <Error Condition="!Exists('..\packages\System.Runtime.WindowsRuntime.4.7.0\build\net461\System.Runtime.WindowsRuntime.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Runtime.WindowsRuntime.4.7.0\build\net461\System.Runtime.WindowsRuntime.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets'))" />
   </Target>
   <Import Project="..\packages\System.Runtime.WindowsRuntime.4.7.0\build\net461\System.Runtime.WindowsRuntime.targets" Condition="Exists('..\packages\System.Runtime.WindowsRuntime.4.7.0\build\net461\System.Runtime.WindowsRuntime.targets')" />
+  <Import Project="..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets" Condition="Exists('..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

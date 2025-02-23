@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="ioSenderTouch.Controls.GCodeListControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d"
+             HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+             d:DesignHeight="335" d:DesignWidth="440"
+             Loaded="UserControl_Loaded">
+    <UserControl.Resources>
+        
+            <Style TargetType="{x:Type ScrollBar}" BasedOn="{StaticResource {x:Type ScrollBar}}">
+                <Style.Resources>
+                <system:Double x:Key="{x:Static SystemParameters.VerticalScrollBarButtonHeightKey}">65</system:Double>
+                    <system:Double x:Key="{x:Static SystemParameters.VerticalScrollBarWidthKey}">30</system:Double>
+                    <system:Double x:Key="{x:Static SystemParameters.VerticalScrollBarThumbHeight}">65</system:Double>
+                    <system:Double x:Key="{x:Static SystemParameters.HorizontalScrollBarButtonWidthKey}">30</system:Double>
+                </Style.Resources>
+            </Style>
+        
+    </UserControl.Resources>
+    <DataGrid SelectionMode="Single" ScrollViewer.PanningMode="None"  SelectionUnit="FullRow"   x:Name="grdGCode" Grid.Row="0" ItemsSource="{Binding}" AllowDrop="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="False"
+              CanUserSortColumns="false" CanUserResizeRows="False" IsReadOnly="true" DragEnter="grdGCode_Drag" DragOver="grdGCode_Drag" DragLeave="grdGCode_Drag" Drop="grdGCode_Drop" HorizontalScrollBarVisibility="{Binding ShowScrollBar}">
+
+        <DataGrid.Columns>
+            <DataGridTextColumn x:Uid="hdr_block" CanUserResize="False" Header="Block" Binding="{Binding LineNum}" Width="77"/>
+            <DataGridTextColumn CanUserResize="False" Header="Status" Binding="{Binding Sent}" Width="70"  />
+            <DataGridTextColumn x:Uid="hdr_data" CanUserResize="False" Header="Data" Binding="{Binding Data}" Width="258"/>
+        </DataGrid.Columns>
+
+    </DataGrid>
+</UserControl>

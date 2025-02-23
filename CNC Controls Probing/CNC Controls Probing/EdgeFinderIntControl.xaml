@@ -6,6 +6,7 @@
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:Controls="clr-namespace:CNC.Controls;assembly=CNC.Controls.WPF"
              xmlns:local="clr-namespace:CNC.Controls.Probing"
+             xmlns:utility="clr-namespace:CNC.Controls.Probing.Utility"
              mc:Ignorable="d" Height="425" d:DesignWidth="500">
     <UserControl.Resources>
         <system:String x:Uid="str_edgeIntFinderInstructions" x:Key="Instructions">Click edge, corner or center in image above to select probing action.\nMove the probe to above the position indicated by green dot before start.</system:String>
@@ -14,9 +15,9 @@
         <system:String x:Uid="str_edgeIntFinderInitFailed" x:Key="OffsetWarning">Offset is less than XY Clearance + ½ Probe/tool diameter.\nUse Offset as clearance and run anyway?.</system:String>
         <system:String x:Uid="str_edgeIntFinderFailed" x:Key="ProbingFailed">Probing failed</system:String>
         <system:String x:Uid="str_edgeIntFinderCompleted" x:Key="ProbingCompleted">Probing completed.</system:String>
-        <Controls:LogicalNotConverter x:Key="IsNotRunningConverter" />
-        <Controls:EnumValueToBooleanConverter x:Key="EnumToEdgeConverter" />
-        <Controls:BoolToVisibleConverter x:Key="ToVisibleConverter" />
+        <utility:LogicalNotConverter x:Key="IsNotRunningConverter" />
+        <utility:EnumValueToBooleanConverter x:Key="EnumToEdgeConverter" />
+        <utility:BoolToVisibleConverter x:Key="ToVisibleConverter" />
         <local:EnumValueToVisibleConverter x:Key="ZProbeIsVisibleConverter"/>
         <Style x:Key="ButtonStyleNoHighlighting" TargetType="Button" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
             <Setter Property="Template">

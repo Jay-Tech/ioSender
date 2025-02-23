@@ -3,9 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:Controls="clr-namespace:CNC.Controls;assembly=CNC.Controls.WPF"
              xmlns:local="clr-namespace:CNC.Controls.Probing"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:utility="clr-namespace:CNC.Controls.Probing.Utility"
              mc:Ignorable="d" Height="433.023" Width="746.729">
     <UserControl.Resources>
         <system:String x:Uid="str_CenterFinderInstructions" x:Key="Instructions">Click image above to select probing action.\nPlace the probe above the approximate center of the workpiece before start.</system:String>
@@ -17,10 +17,10 @@
         <system:String x:Uid="str_centerFinderFailed" x:Key="ProbingFailed">Probing failed</system:String>
         <system:String x:Uid="str_centerFinderCompleted" x:Key="ProbingCompleted">Probing completed: X distance {0}, Y distance {1}.</system:String>
         <system:String x:Uid="str_positionsRequired" x:Key="PositionsRequired">{0} probe positions are required.</system:String>
-        <Controls:MultiLineConverter x:Key="ErrorMessageConverter" />
-        <Controls:LogicalNotConverter x:Key="IsNotRunningConverter" />
-        <Controls:BoolToVisibleConverter x:Key="ToVisibleConverter" />
-        <Controls:EnumValueToBooleanConverter x:Key="EnumToEdgeConverter" />
+        <utility:MultiLineConverter x:Key="ErrorMessageConverter" />
+        <utility:LogicalNotConverter x:Key="IsNotRunningConverter" />
+        <utility:BoolToVisibleConverter x:Key="ToVisibleConverter" />
+        <utility:EnumValueToBooleanConverter x:Key="EnumToEdgeConverter" />
         <Style x:Key="ErrorStyle" TargetType="Controls:NumericField">
             <Style.Triggers>
                 <Trigger Property="Validation.HasError" Value="true">

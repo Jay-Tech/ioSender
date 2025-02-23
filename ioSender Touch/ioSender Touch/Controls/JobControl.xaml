@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="ioSenderTouch.Controls.JobControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:controls="clr-namespace:ioSenderTouch.Controls"
+             mc:Ignorable="d"  Width="131">
+    <UserControl.Resources>
+        <system:String x:Uid="str_toolchanges" x:Key="JobToolChanges">Job has {0} tool change(s) using M6, only a few Grbl ports supports that.</system:String>
+        <system:String x:Uid="str_toolchangeTLO" x:Key="JobToolReference">Job has {0} tool change(s), tool length reference should be established before start.</system:String>
+        <system:String x:Uid="str_g28g30" x:Key="JobG28G30">Job has G28/G30 moves and machine is not homed.</system:String>
+        <system:String x:Uid="str_stop" x:Key="JobStop">Stop</system:String>
+        <system:String x:Uid="str_pause" x:Key="JobPause">Pause</system:String>
+        <system:String x:Uid="str_checking" x:Key="Checking">Checking...</system:String>
+        <system:String x:Uid="str_transferComplete" x:Key="TransferComplete">Transfer complete</system:String>
+        <controls:StreamingStateConvertor x:Key="StreamingStateConvertor" />
+        <controls:StreamingHoldStateConvertor x:Key="StreamingHoldStateConvertor" />
+        <controls:StreamingStopStateConvertor x:Key="StreamingStopStateConvertor" />
+        <controls:StreamingReWindStateConvertor x:Key="StreamingReWindStateConvertor" />
+    </UserControl.Resources>
+    <GroupBox Width="Auto" Header=" Job">
+        <StackPanel Orientation="Vertical">
+            <DockPanel  Margin="0,0,0,3">
+                <Button Margin="0,2" Height="45" x:Uid="btn_cycleStart" x:Name="btnStart" Content="Cycle Start" ToolTip="Alt+R"  Click="btnStart_Click" />
+            </DockPanel>
+            <DockPanel  Margin="0,0,0,3">
+                <Button Margin="0,2" Height="45" x:Uid="btn_feedHold" x:Name="btnHold" Content="Feed Hold" ToolTip="Space"   Click="btnHold_Click"/>
+            </DockPanel>
+            <DockPanel  Margin="0,0,0,3">
+                <Button Margin="0,2" Height="45" x:Uid="btn_stop" x:Name="btnStop" Content="Stop" ToolTip="Alt+S" Click="btnStop_Click"/>
+            </DockPanel>
+            <DockPanel  Margin="0,0,0,3">
+                <Button Margin="0,2" Height="45" x:Uid="btn_rewind" x:Name="btnRewind" Content="Rewind"  Click="btnRewind_Click"/>
+            </DockPanel>
+        </StackPanel>
+    </GroupBox>
+</UserControl>

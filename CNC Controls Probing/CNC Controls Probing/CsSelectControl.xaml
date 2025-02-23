@@ -5,11 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:Controls="clr-namespace:CNC.Controls;assembly=CNC.Controls.WPF"
              xmlns:local="clr-namespace:CNC.Controls.Probing"
+             xmlns:utility="clr-namespace:CNC.Controls.Probing.Utility"
              mc:Ignorable="d" 
              d:DesignHeight="105" d:DesignWidth="230">
     <UserControl.Resources>
-        <Controls:EnumValueToBooleanConverter x:Key="EnumToCheckedConverter" />
-        <Controls:BoolToVisibleConverter x:Key="IsVisibleConverter" />
+        <utility:EnumValueToBooleanConverter x:Key="EnumToCheckedConverter" />
+        <utility:BoolToVisibleConverter x:Key="IsVisibleConverter" />
     </UserControl.Resources>
     <GroupBox x:Uid="grp_action" Header="Action">
         <StackPanel Orientation="Vertical" Margin="2,3,0,0">

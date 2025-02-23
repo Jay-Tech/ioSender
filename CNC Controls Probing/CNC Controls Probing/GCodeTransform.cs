@@ -6,6 +6,7 @@ using CNC.Core;
 using RP.Math;
 using System;
 using System.Collections.Generic;
+using CNC.Core.Config;
 
 namespace CNC.Controls.Probing
 {

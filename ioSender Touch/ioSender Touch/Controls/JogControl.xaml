@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:controls="clr-namespace:CNC.Controls;assembly=CNC.Controls.WPF"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:local="clr-namespace:ioSenderTouch.Controls"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -25,20 +24,20 @@
 }"></Setter>
             <Setter Property="Content" Value="xx"/>
         </Style>
-        <controls:EnumValueToBooleanConverter x:Key="EnumToCheckedConverter" />
-        <controls:BoolToVisibleConverter x:Key="IsVisibleConverter" />
-        <controls:LogicalNotConverter x:Key="IsNotVisibleConverter">
-            <controls:LogicalNotConverter.FinalConverter>
-                <controls:BoolToVisibleConverter />
-            </controls:LogicalNotConverter.FinalConverter>
-        </controls:LogicalNotConverter>
-        <controls:LogicalNotConverter x:Key="LogicalNotConverter" />
-        <controls:LogicalOrConverter x:Key="LogicalOrConverter"/>
-        <controls:GrblStateToIsJoggingConverter x:Key ="IsJoggingConverter"/>
-        <controls:AxisLetterToJogPlusConverter x:Key="JogPlusConverter"/>
-        <controls:AxisLetterToJogMinusConverter x:Key="JogMinusConverter"/>
-        <controls:JogRateConverter x:Key="JogRateConverter"/>
-        <controls:JogDistanceConverter x:Key="JogDistanceConverter"/>
+        <local:EnumValueToBooleanConverter x:Key="EnumToCheckedConverter" />
+        <local:BoolToVisibleConverter x:Key="IsVisibleConverter" />
+        <local:LogicalNotConverter x:Key="IsNotVisibleConverter">
+            <local:LogicalNotConverter.FinalConverter>
+                <local:BoolToVisibleConverter />
+            </local:LogicalNotConverter.FinalConverter>
+        </local:LogicalNotConverter>
+        <local:LogicalNotConverter x:Key="LogicalNotConverter" />
+        <local:LogicalOrConverter x:Key="LogicalOrConverter"/>
+        <local:GrblStateToIsJoggingConverter x:Key ="IsJoggingConverter"/>
+        <local:AxisLetterToJogPlusConverter x:Key="JogPlusConverter"/>
+        <local:AxisLetterToJogMinusConverter x:Key="JogMinusConverter"/>
+        <local:JogRateConverter x:Key="JogRateConverter"/>
+        <local:JogDistanceConverter x:Key="JogDistanceConverter"/>
     </UserControl.Resources>
     <Grid>
         <Grid.IsEnabled>

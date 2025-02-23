@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="ioSenderTouch.Controls.OriginControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="clr-namespace:ioSenderTouch.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="52" d:DesignWidth="52">
+    <UserControl.Resources>
+        <controls:EnumValueToBooleanConverter x:Key="EnumToEdgeConverter" />
+    </UserControl.Resources>
+    <Grid Width="52" Height="52" HorizontalAlignment="Left" VerticalAlignment="Top">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="17" />
+            <RowDefinition Height="17" />
+            <RowDefinition Height="17" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="17" />
+            <ColumnDefinition Width="17" />
+            <ColumnDefinition Width="17" />
+        </Grid.ColumnDefinitions>
+        <RadioButton IsChecked="{Binding Path=Value, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay, Converter={StaticResource EnumToEdgeConverter}, ConverterParameter=D}" />
+        <RadioButton Grid.Column="1" IsChecked="{Binding Path=Value, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay, Converter={StaticResource EnumToEdgeConverter}, ConverterParameter=CD}" />
+        <RadioButton Grid.Column="2" IsChecked="{Binding Path=Value, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay, Converter={StaticResource EnumToEdgeConverter}, ConverterParameter=C}" />
+        <RadioButton Grid.Row="1"  IsChecked="{Binding Path=Value, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay, Converter={StaticResource EnumToEdgeConverter}, ConverterParameter=AD}" />
+        <RadioButton Grid.Row="1" Grid.Column="1" IsChecked="{Binding Path=Value, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay, Converter={StaticResource EnumToEdgeConverter}, ConverterParameter=Center}" />
+        <RadioButton Grid.Row="1" Grid.Column="2" IsChecked="{Binding Path=Value, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay, Converter={StaticResource EnumToEdgeConverter}, ConverterParameter=CB}" />
+        <RadioButton Grid.Row="2" Grid.Column="0" IsChecked="{Binding Path=Value, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay, Converter={StaticResource EnumToEdgeConverter}, ConverterParameter=A}" />
+        <RadioButton Grid.Row="2" Grid.Column="1" IsChecked="{Binding Path=Value, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay, Converter={StaticResource EnumToEdgeConverter}, ConverterParameter=AB}" />
+        <RadioButton Grid.Row="2" Grid.Column="2" IsChecked="{Binding Path=Value, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay, Converter={StaticResource EnumToEdgeConverter}, ConverterParameter=B}" />
+    </Grid>
+</UserControl>

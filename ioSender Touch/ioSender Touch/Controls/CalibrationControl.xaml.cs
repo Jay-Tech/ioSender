@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-
-using CNC.Controls.Views;
+using ioSenderTouch.Views;
 
 namespace ioSenderTouch.Controls
 {

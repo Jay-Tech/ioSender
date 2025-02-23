@@ -44,6 +44,7 @@ using System.Collections.ObjectModel;
 using CNC.Core;
 using System.Diagnostics;
 using System.Windows;
+using CNC.Core.Config;
 
 namespace CNC.Controls.Probing
 {

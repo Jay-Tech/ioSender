@@ -41,6 +41,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using CNC.Core;
+using CNC.Core.Config;
 
 namespace CNC.Controls.Viewer
 {

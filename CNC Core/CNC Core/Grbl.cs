@@ -1222,8 +1222,8 @@ namespace CNC.Core
                                 Grbl.GrblViewModel.ClearPosition();
                         }
                         if (s.Length > 4)
-                            
-                         NumTools = int.Parse(s[4], CultureInfo.InvariantCulture);
+
+                            NumTools = int.Parse(s[4], CultureInfo.InvariantCulture);
                         if (Grbl.GrblViewModel != null) Grbl.GrblViewModel.HasToolTable = NumTools > 0;
                         break;
 
@@ -2723,7 +2723,7 @@ namespace CNC.Core
                     setting.IsDirty = setting.HasErrors;
                 }
             }
-            
+
             return ok;
         }
 
@@ -2925,7 +2925,7 @@ namespace CNC.Core
             {
                 //RTCommand = GrblLegacy.ConvertRTCommand(GrblConstants.CMD_STATUS_REPORT);
             }
-               
+
         }
     }
 

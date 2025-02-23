@@ -10,11 +10,12 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Xml.Linq;
-using CNC.Controls;
 using CNC.Core;
 using CNC.Core.Comands;
+using CNC.Core.Config;
 using ioSenderTouch.Controls;
 using ioSenderTouch.Utility;
+
 
 namespace ioSenderTouch.ViewModels
 {

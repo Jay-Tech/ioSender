@@ -1,5 +1,5 @@
 ﻿/*
- * EltimaStream.cs - part of CNC Controls library
+ * 
  *
  * v0.33 / 2021-05-12 / Io Engineering (Terje Io)
  *

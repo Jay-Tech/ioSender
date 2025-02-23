@@ -6,6 +6,7 @@
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:Controls="clr-namespace:CNC.Controls;assembly=CNC.Controls.WPF"
              xmlns:local="clr-namespace:CNC.Controls.Probing"
+             xmlns:utility="clr-namespace:CNC.Controls.Probing.Utility"
              mc:Ignorable="d" Height="509" d:DesignWidth="625">
     <UserControl.Resources>
         <system:String x:Uid="str_rotationInstructions" x:Key="Instructions">Click edge in image above to select probing action.\nMove the probe to above the position indicated by green dot before start.</system:String>
@@ -13,9 +14,9 @@
         <system:String x:Uid="str_rotationInitFailed" x:Key="ProbedAngle">Angle: {0} deg</system:String>
         <system:String x:Uid="str_rotationFailed" x:Key="ProbingFailed">Probing failed</system:String>
         <system:String x:Uid="str_rotationCompleted" x:Key="ProbingCompleted">Probing completed.</system:String>
-        <Controls:LogicalNotConverter x:Key="IsNotRunningConverter" />
-        <Controls:EnumValueToBooleanConverter x:Key="EnumToEdgeConverter" />
-        <Controls:BoolToVisibleConverter x:Key="ToVisibleConverter" />
+        <utility:LogicalNotConverter x:Key="IsNotRunningConverter" />
+        <utility:EnumValueToBooleanConverter x:Key="EnumToEdgeConverter" />
+        <utility:BoolToVisibleConverter x:Key="ToVisibleConverter" />
         <local:OriginToBooleanConverter x:Key="UseX0Y0Converter" />
         <local:OriginToCurrentPositionConverter x:Key="UseXYConverter" />
         <local:EnumValueToVisibleConverter x:Key="ZProbeIsVisibleConverter" />

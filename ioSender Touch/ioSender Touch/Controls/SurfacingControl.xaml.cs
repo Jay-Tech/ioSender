@@ -2,9 +2,9 @@
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
-using CNC.Controls.Views;
 using CNC.Core;
 using ioSenderTouch.ViewModels;
+using ioSenderTouch.Views;
 
 namespace ioSenderTouch.Controls
 {

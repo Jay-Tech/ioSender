@@ -42,9 +42,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using CNC.Controls;
-using CNC.Controls.Views;
 using CNC.Core;
+using CNC.Core.Config;
+using ioSenderTouch.Views;
 
 namespace ioSenderTouch.Controls
 {

@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using CNC.Core;
 using ioSenderTouch.Controls;
-using CNC.Controls;
 using System.Threading;
 using System.Runtime;
 using Windows.Gaming.Input;
@@ -11,8 +10,8 @@ using System.Collections;
 using System.Globalization;
 using System.Text;
 using System.Windows.Markup;
-using CNC.Controls.Utility;
 using System.Text.RegularExpressions;
+using CNC.Core.Config;
 
 
 namespace ioSenderTouch.Utility

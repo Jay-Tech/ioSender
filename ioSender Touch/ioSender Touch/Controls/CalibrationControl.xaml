@@ -5,12 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ioSenderTouch.Controls"
              xmlns:convertors="clr-namespace:ioSenderTouch.Convertors"
-             xmlns:controls="clr-namespace:CNC.Controls;assembly=CNC.Controls.WPF"
              mc:Ignorable="d" 
              d:DesignHeight="Auto" d:DesignWidth="Auto" VerticalAlignment="Top">
     <UserControl.Resources>
         <convertors:RadioBoolToIntConverter x:Key="RadioBoolToIntConverter" />
-        <controls:BoolToVisibleConverter x:Key="ToVisibleConverter" />
+        <local:BoolToVisibleConverter x:Key="ToVisibleConverter" />
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>

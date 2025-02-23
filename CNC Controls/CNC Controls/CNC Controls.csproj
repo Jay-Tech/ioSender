@@ -37,7 +37,8 @@
   </PropertyGroup>
   <PropertyGroup>
     <UICulture>en-US</UICulture>
-    <ApplicationIcon>App.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
     <Localizable>False</Localizable>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
@@ -122,343 +123,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="About.xaml.cs">
-      <DependentUpon>About.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="AppConfig.cs" />
-    <Compile Include="ArcsToLines.cs" />
-    <Compile Include="BasicConfigControl.xaml.cs">
-      <DependentUpon>BasicConfigControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ConfigTextBox.xaml.cs">
-      <DependentUpon>ConfigTextBox.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ConsoleWindow.xaml.cs">
-      <DependentUpon>ConsoleWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ErrorsAndAlarms.xaml.cs">
-      <DependentUpon>ErrorsAndAlarms.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="FileActionControl.xaml.cs">
-      <DependentUpon>FileActionControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="GCodeWrapDialog.xaml.cs">
-      <DependentUpon>GCodeWrapDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="GCodeCompress.cs" />
-    <Compile Include="GCodeListControl.xaml.cs">
-      <DependentUpon>GCodeListControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="GCodeRotate.cs" />
-    <Compile Include="GCodeRotateDialog.xaml.cs">
-      <DependentUpon>GCodeRotateDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="GCodeWrap.cs" />
-    <Compile Include="GrblAlarmList.xaml.cs">
-      <DependentUpon>GrblAlarmList.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="GrblConfigView.xaml.cs">
-      <DependentUpon>GrblConfigView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="AppConfigView.xaml.cs">
-      <DependentUpon>AppConfigView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ConsoleControl.xaml.cs">
-      <DependentUpon>ConsoleControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Converters.cs" />
-    <Compile Include="CoolantControl.xaml.cs">
-      <DependentUpon>CoolantControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="CoordValueSetControl.xaml.cs">
-      <DependentUpon>CoordValueSetControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="DROBaseControl.xaml.cs">
-      <DependentUpon>DROBaseControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="DROControl.xaml.cs">
-      <DependentUpon>DROControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="FeedControl.xaml.cs">
-      <DependentUpon>FeedControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="GrblErrorList.xaml.cs">
-      <DependentUpon>GrblErrorList.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="IGCodeConverter.cs" />
-    <Compile Include="IGCodeTransformer.cs" />
-    <Compile Include="ISidebarControl.cs" />
-    <Compile Include="JobControl.xaml.cs">
-      <DependentUpon>JobControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="GCode.cs" />
-    <Compile Include="JogConfigControl.xaml.cs">
-      <DependentUpon>JogConfigControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="JogUiConfigControl.xaml.cs">
-      <DependentUpon>JogUiConfigControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="LEDControl.xaml.cs">
-      <DependentUpon>LEDControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="LimitsBaseControl.xaml.cs">
-      <DependentUpon>LimitsBaseControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="LimitsControl.xaml.cs">
-      <DependentUpon>LimitsControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="MacroExecuteControl.xaml.cs">
-      <DependentUpon>MacroExecuteControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="MacroToolbarControl.xaml.cs">
-      <DependentUpon>MacroToolbarControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="MDIControl.xaml.cs">
-      <DependentUpon>MDIControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="NumericComboBox.cs" />
-    <Compile Include="NumericTextBox.cs" />
-    <Compile Include="OffsetView.xaml.cs">
-      <DependentUpon>OffsetView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="OriginControl.xaml.cs">
-      <DependentUpon>OriginControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="OutlineControl.xaml.cs">
-      <DependentUpon>OutlineControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PIDLogView.xaml.cs">
-      <DependentUpon>PIDLogView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="PipeServer.cs" />
-    <Compile Include="PortDialog.xaml.cs">
-      <DependentUpon>PortDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="SDCardView.xaml.cs">
-      <DependentUpon>SDCardView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="SignalControl.xaml.cs">
-      <DependentUpon>SignalControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="SignalsControl.xaml.cs">
-      <DependentUpon>SignalsControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="SpindleControl.xaml.cs">
-      <DependentUpon>SpindleControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="StripGCodeConfigControl.xaml.cs">
-      <DependentUpon>StripGCodeConfigControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="THCMonitorControl.xaml.cs">
-      <DependentUpon>THCMonitorControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ToolView.xaml.cs">
-      <DependentUpon>ToolView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="TrinamicView.xaml.cs">
-      <DependentUpon>TrinamicView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UIUtils.cs" />
-    <Compile Include="Utility\ControlEnums.cs" />
-    <Compile Include="ViewModels\JogConfigControlViewModel.cs" />
-    <Compile Include="ViewModels\UIJoggingViewModel.cs" />
-    <Compile Include="ViewModels\VirtualKeyboardViewModel.cs" />
-    <Compile Include="Views\VirtualKeyBoard.xaml.cs">
-      <DependentUpon>VirtualKeyBoard.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Widget.cs" />
-    <Compile Include="WorkParametersControlTouch.xaml.cs">
-      <DependentUpon>WorkParametersControlTouch.xaml</DependentUpon>
-    </Compile>
-    <Page Include="About.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ConfigTextBox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ErrorsAndAlarms.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="GCodeWrapDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="GrblAlarmList.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="GrblErrorList.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="LibStrings.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="BasicConfigControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ConsoleWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="FileActionControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="GCodeListControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="GCodeRotateDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="GrblConfigView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="AppConfigView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ConsoleControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="CoolantControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="JogConfigControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="JogUiConfigControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="LEDControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="LimitsBaseControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="LimitsControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MacroExecuteControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MacroToolbarControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="NumericField.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="CoordValueSetControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="DROBaseControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="DROControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="FeedControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="JobControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MDIControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="NumericField.xaml.cs">
-      <DependentUpon>NumericField.xaml</DependentUpon>
-    </Compile>
-    <Page Include="OffsetView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="OriginControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="OutlineControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PIDLogView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PortDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="SDCardView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="SharedStyles.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="SignalControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="SignalsControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="SpindleControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="StripGCodeConfigControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="THCMonitorControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ToolView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="TrinamicView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\VirtualKeyBoard.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="WorkParametersControlTouch.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -471,8 +135,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="app.config" />
-    <None Include="packages.config" />
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
@@ -480,9 +142,6 @@
       <Project>{f245ff89-a838-4d6e-aa40-92cfd3d072d3}</Project>
       <Name>CNC Core</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="App.ico" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Symbols_Stop_32xLG.png" />
@@ -502,7 +161,11 @@
     <Resource Include="Resources\openWhite.png" />
     <Resource Include="Resources\reloadWhite.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Utility\" />
+    <Folder Include="ViewModels\" />
+    <Folder Include="Views\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\ioSender Touch\packages\MaterialDesignThemes.4.10.0-ci317\build\MaterialDesignThemes.targets" Condition="Exists('..\..\ioSender Touch\packages\MaterialDesignThemes.4.10.0-ci317\build\MaterialDesignThemes.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

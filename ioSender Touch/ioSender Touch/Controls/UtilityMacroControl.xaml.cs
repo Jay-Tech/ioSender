@@ -2,8 +2,6 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-
-using CNC.Controls;
 using CNC.Core;
 
 

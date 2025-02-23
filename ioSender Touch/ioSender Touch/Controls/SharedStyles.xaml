@@ -1,0 +1,130 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:core="clr-namespace:CNC.Core;assembly=CNC.Core"
+                    xmlns:controls="clr-namespace:ioSenderTouch.Controls">
+    <controls:IsAxisVisibleConverter x:Key="IsAxisVisibleConverter" />
+    <Style x:Key="SmallXButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="YAxisVisibleStyle">
+        <Setter Property="Control.Visibility">
+            <Setter.Value>
+                <MultiBinding Converter="{StaticResource IsAxisVisibleConverter}">
+                    <Binding Path="AxisEnabledFlags" />
+                    <Binding>
+                        <Binding.Source>
+                            <core:AxisFlags>Y</core:AxisFlags>
+                        </Binding.Source>
+                    </Binding>
+                </MultiBinding>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="ZAxisVisibleStyle">
+        <Setter Property="Control.Visibility">
+            <Setter.Value>
+                <MultiBinding Converter="{StaticResource IsAxisVisibleConverter}">
+                    <Binding Path="AxisEnabledFlags" />
+                    <Binding>
+                        <Binding.Source>
+                            <core:AxisFlags>Z</core:AxisFlags>
+                        </Binding.Source>
+                    </Binding>
+                </MultiBinding>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="AAxisVisibleStyle">
+        <Setter Property="Control.Visibility">
+            <Setter.Value>
+                <MultiBinding Converter="{StaticResource IsAxisVisibleConverter}">
+                    <Binding Path="AxisEnabledFlags" />
+                    <Binding>
+                        <Binding.Source>
+                            <core:AxisFlags>A</core:AxisFlags>
+                        </Binding.Source>
+                    </Binding>
+                </MultiBinding>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="BAxisVisibleStyle">
+        <Setter Property="Control.Visibility">
+            <Setter.Value>
+                <MultiBinding Converter="{StaticResource IsAxisVisibleConverter}">
+                    <Binding Path="AxisEnabledFlags" />
+                    <Binding>
+                        <Binding.Source>
+                            <core:AxisFlags>B</core:AxisFlags>
+                        </Binding.Source>
+                    </Binding>
+                </MultiBinding>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="CAxisVisibleStyle">
+        <Setter Property="Control.Visibility">
+            <Setter.Value>
+                <MultiBinding Converter="{StaticResource IsAxisVisibleConverter}">
+                    <Binding Path="AxisEnabledFlags" />
+                    <Binding>
+                        <Binding.Source>
+                            <core:AxisFlags>C</core:AxisFlags>
+                        </Binding.Source>
+                    </Binding>
+                </MultiBinding>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="UAxisVisibleStyle">
+        <Setter Property="Control.Visibility">
+            <Setter.Value>
+                <MultiBinding Converter="{StaticResource IsAxisVisibleConverter}">
+                    <Binding Path="AxisEnabledFlags" />
+                    <Binding>
+                        <Binding.Source>
+                            <core:AxisFlags>U</core:AxisFlags>
+                        </Binding.Source>
+                    </Binding>
+                </MultiBinding>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="VAxisVisibleStyle">
+        <Setter Property="Control.Visibility">
+            <Setter.Value>
+                <MultiBinding Converter="{StaticResource IsAxisVisibleConverter}">
+                    <Binding Path="AxisEnabledFlags" />
+                    <Binding>
+                        <Binding.Source>
+                            <core:AxisFlags>V</core:AxisFlags>
+                        </Binding.Source>
+                    </Binding>
+                </MultiBinding>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="WAxisVisibleStyle">
+        <Setter Property="Control.Visibility">
+            <Setter.Value>
+                <MultiBinding Converter="{StaticResource IsAxisVisibleConverter}">
+                    <Binding Path="AxisEnabledFlags" />
+                    <Binding>
+                        <Binding.Source>
+                            <core:AxisFlags>W</core:AxisFlags>
+                        </Binding.Source>
+                    </Binding>
+                </MultiBinding>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

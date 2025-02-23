@@ -44,9 +44,9 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using CNC.Controls;
-using CNC.Controls.Utility;
 using CNC.Core;
+using CNC.Core.Config;
+using ioSenderTouch.Utility;
 
 namespace ioSenderTouch.Controls
 {

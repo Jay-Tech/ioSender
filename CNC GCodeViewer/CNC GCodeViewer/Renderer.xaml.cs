@@ -57,6 +57,7 @@ using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using HelixToolkit.Wpf;
 using CNC.Core;
+using CNC.Core.Config;
 
 namespace CNC.Controls.Viewer
 {

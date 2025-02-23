@@ -4,9 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ioSenderTouch.Controls"
-             xmlns:controls="clr-namespace:CNC.Controls;assembly=CNC.Controls.WPF"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:core="clr-namespace:CNC.Core;assembly=CNC.Core"
              mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance Type=core:GrblViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="45" d:DesignWidth="Auto">
 
     <UserControl.Resources>
@@ -15,11 +16,11 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../stlye/TitleBar.xaml"></ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
-            <controls:BlocksToStringConverter x:Key="BlocksToStringConverter" />
-            <controls:LogicalNotConverter x:Key="BooleanConverter" />
-            <controls:GrblStateToColorConverter x:Key="StateColorConverter" />
-            <controls:BoolToVisibleConverter x:Key="BoolVisibleConverter" />
-            <controls:BoolToNotVisibleConverter x:Key="BoolNotVisibleConverter" />
+            <local:BlocksToStringConverter x:Key="BlocksToStringConverter" />
+            <local:LogicalNotConverter x:Key="BooleanConverter" />
+            <local:GrblStateToColorConverter x:Key="StateColorConverter" />
+            <local:BoolToVisibleConverter x:Key="BoolVisibleConverter" />
+            <local:BoolToNotVisibleConverter x:Key="BoolNotVisibleConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid  Name="Panel" Margin="0,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Center">
@@ -40,7 +41,7 @@
             <Label  Name="JogFeed" Content="{Binding MeasurementUnit}" ContentStringFormat="Jog Feed {0}:"  BorderThickness="1" FontSize="16" Margin="5,0,0,0"  VerticalAlignment="Center"  HorizontalContentAlignment="Center"/>
             <Label  Name="JogFeedUnit" Content="{Binding JogRate}" FontSize="16"  VerticalAlignment="Center" HorizontalAlignment="Left"  HorizontalContentAlignment="Left"/>
             <Label  Name="WCS" Content="{Binding WorkCoordinateSystem}"  ContentStringFormat="WCS:{0}"  Margin="5,0,0,0" BorderThickness="1" FontSize="16"  VerticalAlignment="Center"  HorizontalContentAlignment="Left"/>
-            <controls:SignalsControl VerticalAlignment="Top" Width="140" Margin="5,0,0,0" ></controls:SignalsControl>
+            <local:SignalsControl VerticalAlignment="Top" Width="140" Margin="5,0,0,0" ></local:SignalsControl>
             <Label  Name="ToolNumber" Content="{Binding Tool}" ContentStringFormat="Tool#: {0}" VerticalAlignment="Center"  BorderThickness="1" FontSize="16" Margin="5,0,0,0" HorizontalContentAlignment="Center"/>
 
         </StackPanel>

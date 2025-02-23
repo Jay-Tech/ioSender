@@ -1,9 +1,4 @@
-﻿/*
- * HelperClasses.cs - part of CNC Controls library for Grbl
- *
- * v0.36 / 2021-11-06 / Io Engineering (Terje Io)
- *
- */
+﻿
 
 using System;
 using System.ComponentModel;

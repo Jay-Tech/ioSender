@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CNC.Controls.Viewer"
-             xmlns:Controls="clr-namespace:CNC.Controls;assembly=CNC.Controls.WPF" x:Class="CNC.Controls.Viewer.ConfigControl"
+            
              mc:Ignorable="d"
              d:DesignHeight="370" d:DesignWidth="300">
     <GroupBox x:Uid="grp_gcodeViewer" x:Name="grpGCodeViewer" Header="GCode Viewer" HorizontalAlignment="Left" VerticalAlignment="Top" Height="Auto" Width="300">

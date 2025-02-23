@@ -2,16 +2,20 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using CNC.Controls;
-using CNC.Controls.Probing;
-using CNC.Controls.Viewer;
 using CNC.Core;
 using CNC.Core.Comands;
+using CNC.Core.Config;
+using ioSenderTouch.Controls;
+using ioSenderTouch.Controls.Probing;
+using ioSenderTouch.Controls.Render;
+using ioSenderTouch.Utility;
 using ioSenderTouch.Views;
+
 
 namespace ioSenderTouch.ViewModels
 {
@@ -53,11 +57,10 @@ namespace ioSenderTouch.ViewModels
             _grblAppSettings = new AppConfigView(_grblViewModel);
             _offsetView = new OffsetView(_grblViewModel);
             _utilityView = new UtilityView(_grblViewModel);
-            AppConfig.Settings.SetupAndOpen(_grblViewModel, Application.Current.Dispatcher);
+            _controller = new Controller(_grblViewModel, AppConfig.Settings);
+            _controller.SetupAndOpen(Application.Current.Dispatcher);
             InitSystem();
             ChangeView = new Command(SetNewView);
-           
-
         }
 
         

@@ -4,12 +4,14 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
-using CNC.Controls;
 using CNC.Core;
+using CNC.Core.Config;
 using ioSenderTouch.Controls;
+using ioSenderTouch.Utility;
+using ioSenderTouch.Views;
 using MaterialDesignThemes.Wpf;
-using Color = System.Windows.Media.Color;
 
 
 

@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         xmlns:cnccore="clr-namespace:CNC.Core;assembly=CNC.Core"
-        xmlns:cnccontrols="clr-namespace:CNC.Controls;assembly=CNC.Controls.WPF"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:controls="clr-namespace:ioSenderTouch.Controls"
         mc:Ignorable="d"
         d:DesignHeight="1080"
         d:DesignWidth="1920"
@@ -28,14 +28,14 @@
         <system:String x:Uid="str_mnuDragKnife" x:Key="MenuDragKnife">Add drag knife moves</system:String>
         <system:String x:Uid="str_jogStep" x:Key="JogStep">JogMetric step: {0}</system:String>
         <system:String x:Uid="str_runTime" x:Key="RunTime">Run time: {0}</system:String>
-        <cnccontrols:BlocksToStringConverter x:Key="BlocksToStringConverter" />
-        <cnccontrols:LogicalNotConverter x:Key="BooleanConverter" />
-        <cnccontrols:GrblStateToColorConverter x:Key="StateColorConverter" />
+        <controls:BlocksToStringConverter x:Key="BlocksToStringConverter" />
+        <controls:LogicalNotConverter x:Key="BooleanConverter" />
+        <controls:GrblStateToColorConverter x:Key="StateColorConverter" />
     </Window.Resources>
     <Window.DataContext>
         <cnccore:GrblViewModel />
     </Window.DataContext>
-    <DockPanel LastChildFill="True" Name="DockPanel" SizeChanged="MainGrid_SizeChanged">
+    <DockPanel  LastChildFill="True" Name="DockPanel" SizeChanged="MainGrid_SizeChanged">
         <DockPanel.LayoutTransform>
             <ScaleTransform x:Name="ApplicationScaleTransform"
                 CenterX="0"
@@ -86,9 +86,9 @@
         <Grid Height="55"  DockPanel.Dock="Top">
             <ToolBarTray  IsLocked="True">
                 <ToolBar IsEnabled="{Binding Path=IsJobRunning, Converter={StaticResource BooleanConverter}}" Height="42" VerticalAlignment="Top" Width="{Binding Path=ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DockPanel}}}" >
-                    <cnccontrols:FileActionControl IsEnabled="{Binding Path=IsToolChanging, Converter={StaticResource BooleanConverter}}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    <controls:FileActionControl IsEnabled="{Binding Path=IsToolChanging, Converter={StaticResource BooleanConverter}}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                     <Separator Margin="4,0"></Separator>
-                    <cnccontrols:MacroToolbarControl x:Name="toolbarMacros"/>
+                    <controls:MacroToolbarControl x:Name="toolbarMacros"/>
                     <Separator Margin="4,0"></Separator>
                 </ToolBar>
             </ToolBarTray>

@@ -1,5 +1,5 @@
 ﻿/*
- * Comms.cs - part of CNC Controls library
+ *
  *
  * v0.31 / 2021-04-23 / Io Engineering (Terje Io)
  *

@@ -1,0 +1,195 @@
+﻿<UserControl x:Class="ioSenderTouch.Controls.OffsetView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:core="clr-namespace:CNC.Core;assembly=CNC.Core"
+             xmlns:controls="clr-namespace:ioSenderTouch.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="515" d:DesignWidth="875">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="SharedStyles.xaml"/>
+                <ResourceDictionary>
+                    <FrameworkElement x:Key="ProxyElement" DataContext="{Binding}"/>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+            <system:String x:Uid="lbl_axis" x:Key="AxisLabel">{0} axis:</system:String>
+            <controls:LogicalNotConverter x:Key="IsNotPredefined" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid Background="Transparent">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <ContentControl Visibility="Collapsed" Content="{StaticResource ProxyElement}"/>
+        <DataGrid x:Name="dgrOffsets" Grid.Row="0" ItemsSource="{Binding}" Width="775" IsReadOnly="True" SelectionMode="Single" SelectionUnit="FullRow" AutoGenerateColumns="False" HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top"
+                            CanUserReorderColumns="False" CanUserResizeColumns="True" CanUserResizeRows="False" CanUserSortColumns="False" SelectionChanged="dgrOffsets_SelectionChanged">
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Uid="hdr_offset" Header="Offset" Binding="{Binding Code}" Width="105"/>
+                <DataGridTextColumn Header="X" Binding="{Binding X}" Width="95"/>
+                <DataGridTextColumn Header="Y" Binding="{Binding Y}" Width="95">
+                    <DataGridTextColumn.Visibility>
+                        <MultiBinding Converter="{StaticResource IsAxisVisibleConverter}">
+                            <Binding Source="{StaticResource ProxyElement}" Path="DataContext.AxisEnabledFlags" />
+                            <Binding>
+                                <Binding.Source>
+                                    <core:AxisFlags>Y</core:AxisFlags>
+                                </Binding.Source>
+                            </Binding>
+                        </MultiBinding>
+                    </DataGridTextColumn.Visibility>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Z" Binding="{Binding Z}" Width="95">
+                    <DataGridTextColumn.Visibility>
+                        <MultiBinding Converter="{StaticResource IsAxisVisibleConverter}">
+                            <Binding Source="{StaticResource ProxyElement}" Path="DataContext.AxisEnabledFlags" />
+                            <Binding>
+                                <Binding.Source>
+                                    <core:AxisFlags>Z</core:AxisFlags>
+                                </Binding.Source>
+                            </Binding>
+                        </MultiBinding>
+                    </DataGridTextColumn.Visibility>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding A}" Width="95">
+                    <DataGridTextColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding DataContext.AxisLetter.A, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                        </DataTemplate>
+                    </DataGridTextColumn.HeaderTemplate>
+                    <DataGridTextColumn.Visibility>
+                        <MultiBinding Converter="{StaticResource IsAxisVisibleConverter}">
+                            <Binding Source="{StaticResource ProxyElement}" Path="DataContext.AxisEnabledFlags" />
+                            <Binding>
+                                <Binding.Source>
+                                    <core:AxisFlags>A</core:AxisFlags>
+                                </Binding.Source>
+                            </Binding>
+                        </MultiBinding>
+                    </DataGridTextColumn.Visibility>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding B}" Width="95">
+                    <DataGridTextColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding DataContext.AxisLetter.B, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                        </DataTemplate>
+                    </DataGridTextColumn.HeaderTemplate>
+                    <DataGridTextColumn.Visibility>
+                        <MultiBinding Converter="{StaticResource IsAxisVisibleConverter}">
+                            <Binding Source="{StaticResource ProxyElement}" Path="DataContext.AxisEnabledFlags" />
+                            <Binding>
+                                <Binding.Source>
+                                    <core:AxisFlags>B</core:AxisFlags>
+                                </Binding.Source>
+                            </Binding>
+                        </MultiBinding>
+                    </DataGridTextColumn.Visibility>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding C}" Width="95">
+                    <DataGridTextColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding DataContext.AxisLetter.C, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                        </DataTemplate>
+                    </DataGridTextColumn.HeaderTemplate>
+                    <DataGridTextColumn.Visibility>
+                        <MultiBinding Converter="{StaticResource IsAxisVisibleConverter}">
+                            <Binding Source="{StaticResource ProxyElement}" Path="DataContext.AxisEnabledFlags" />
+                            <Binding>
+                                <Binding.Source>
+                                    <core:AxisFlags>C</core:AxisFlags>
+                                </Binding.Source>
+                            </Binding>
+                        </MultiBinding>
+                    </DataGridTextColumn.Visibility>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="U" Binding="{Binding U}" Width="95">
+                    <DataGridTextColumn.Visibility>
+                        <MultiBinding Converter="{StaticResource IsAxisVisibleConverter}">
+                            <Binding Source="{StaticResource ProxyElement}" Path="DataContext.AxisEnabledFlags" />
+                            <Binding>
+                                <Binding.Source>
+                                    <core:AxisFlags>U</core:AxisFlags>
+                                </Binding.Source>
+                            </Binding>
+                        </MultiBinding>
+                    </DataGridTextColumn.Visibility>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="V" Binding="{Binding V}" Width="95">
+                    <DataGridTextColumn.Visibility>
+                        <MultiBinding Converter="{StaticResource IsAxisVisibleConverter}">
+                            <Binding Source="{StaticResource ProxyElement}" Path="DataContext.AxisEnabledFlags" />
+                            <Binding>
+                                <Binding.Source>
+                                    <core:AxisFlags>V</core:AxisFlags>
+                                </Binding.Source>
+                            </Binding>
+                        </MultiBinding>
+                    </DataGridTextColumn.Visibility>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="W" Binding="{Binding W}" Width="95">
+                    <DataGridTextColumn.Visibility>
+                        <MultiBinding Converter="{StaticResource IsAxisVisibleConverter}">
+                            <Binding Source="{StaticResource ProxyElement}" Path="DataContext.AxisEnabledFlags" />
+                            <Binding>
+                                <Binding.Source>
+                                    <core:AxisFlags>W</core:AxisFlags>
+                                </Binding.Source>
+                            </Binding>
+                        </MultiBinding>
+                    </DataGridTextColumn.Visibility>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <StackPanel Grid.Column="1" HorizontalAlignment="Left" Margin="20,15,0,0" VerticalAlignment="Top">
+            <StackPanel Orientation="Horizontal">
+                <Label x:Uid="lbl_offset" Content="Offset:" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Margin="29,0,0,0" VerticalAlignment="Top"/>
+                <TextBox Text="{Binding Path=Offset.Code, RelativeSource={RelativeSource AncestorType=UserControl}}" HorizontalAlignment="Left" Height="23" TextWrapping="NoWrap" VerticalAlignment="Top" Width="40" IsReadOnly="True"/>
+            </StackPanel>
+            <controls:CoordValueSetControl x:Name="cvXOffset" Label="{Binding Path=AxisLetter.X, StringFormat={StaticResource AxisLabel}, Mode=OneWay}" Tag="X" Click="cvOffset_Click"
+                Value="{Binding Path=Offset.X, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
+                IsEnabled="{Binding Path=CanEdit, RelativeSource={RelativeSource AncestorType=UserControl}}"
+            />
+            <controls:CoordValueSetControl x:Name="cvYOffset" Label="{Binding Path=AxisLetter.Y, StringFormat={StaticResource AxisLabel}, Mode=OneWay}" Tag="Y" Style="{StaticResource YAxisVisibleStyle}" Click="cvOffset_Click"
+                Value="{Binding Path=Offset.Y, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
+                IsEnabled="{Binding Path=CanEdit, RelativeSource={RelativeSource AncestorType=UserControl}}"
+            />
+            <controls:CoordValueSetControl x:Name="cvZOffset" Label="{Binding Path=AxisLetter.Z, StringFormat={StaticResource AxisLabel}, Mode=OneWay}" Tag="Z"  Click="cvOffset_Click"
+                Value="{Binding Path=Offset.Z, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
+                IsEnabled="{Binding Path=CanEdit, RelativeSource={RelativeSource AncestorType=UserControl}}"
+            />
+            <controls:CoordValueSetControl x:Name="cvAOffset" Label="{Binding Path=AxisLetter.A, StringFormat={StaticResource AxisLabel}, Mode=OneWay}" Tag="{Binding Path=AxisLetter.A, Mode=OneWay}" Style="{StaticResource AAxisVisibleStyle}"  Click="cvOffset_Click"
+                Value="{Binding Path=Offset.A, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
+                IsEnabled="{Binding Path=CanEdit, RelativeSource={RelativeSource AncestorType=UserControl}}"
+            />
+            <controls:CoordValueSetControl x:Name="cvBOffset" Label="{Binding Path=AxisLetter.B, StringFormat={StaticResource AxisLabel}, Mode=OneWay}" Tag="{Binding Path=AxisLetter.B, Mode=OneWay}" Style="{StaticResource BAxisVisibleStyle}"  Click="cvOffset_Click"
+                Value="{Binding Path=Offset.B, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
+                IsEnabled="{Binding Path=CanEdit, RelativeSource={RelativeSource AncestorType=UserControl}}"
+            />
+            <controls:CoordValueSetControl x:Name="cvCOffset" Label="{Binding Path=AxisLetter.C, StringFormat={StaticResource AxisLabel}, Mode=OneWay}" Tag="{Binding Path=AxisLetter.C, Mode=OneWay}" Style="{StaticResource CAxisVisibleStyle}"  Click="cvOffset_Click"
+                Value="{Binding Path=Offset.C, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
+                IsEnabled="{Binding Path=CanEdit, RelativeSource={RelativeSource AncestorType=UserControl}}"
+            />
+            <controls:CoordValueSetControl x:Name="cvUOffset" Label="{Binding Path=AxisLetter.U, StringFormat={StaticResource AxisLabel}, Mode=OneWay}" Tag="{Binding Path=AxisLetter.U, Mode=OneWay}" Style="{StaticResource UAxisVisibleStyle}"  Click="cvOffset_Click"
+                Value="{Binding Path=Offset.U, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
+                IsEnabled="{Binding Path=CanEdit, RelativeSource={RelativeSource AncestorType=UserControl}}"
+            />
+            <controls:CoordValueSetControl x:Name="cvVOffset" Label="{Binding Path=AxisLetter.V, StringFormat={StaticResource AxisLabel}, Mode=OneWay}" Tag="{Binding Path=AxisLetter.V, Mode=OneWay}" Style="{StaticResource VAxisVisibleStyle}"  Click="cvOffset_Click"
+                Value="{Binding Path=Offset.U, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
+                IsEnabled="{Binding Path=CanEdit, RelativeSource={RelativeSource AncestorType=UserControl}}"
+            />
+            <controls:CoordValueSetControl x:Name="cvWOffset" Label="{Binding Path=AxisLetter.V, StringFormat={StaticResource AxisLabel}, Mode=OneWay}" Tag="{Binding Path=AxisLetter.W, Mode=OneWay}" Style="{StaticResource WAxisVisibleStyle}"  Click="cvOffset_Click"
+                Value="{Binding Path=Offset.W, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
+                IsEnabled="{Binding Path=CanEdit, RelativeSource={RelativeSource AncestorType=UserControl}}"
+            />
+            <StackPanel Orientation="Horizontal" Height="28" Margin="0,5">
+                <Button x:Uid="btn_currPos" x:Name="btnCurrPos" Content="Get current position" Padding="5,0" IsEnabled="{Binding Path=IsPredefined, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource IsNotPredefined}}" Margin="3,0" Click="btnCurrPos_Click"/>
+                <Button x:Uid="btn_clear" x:Name="btnClear" Content="Clear all" Padding="5,0" IsEnabled="{Binding Path=CanEdit, RelativeSource={RelativeSource AncestorType=UserControl}}" Click="btnClearAll_Click"/>
+                <Button x:Uid="btn_setAll" x:Name="btnSetAll" Content="Set all" Padding="5,0" Margin="3,0" Click="btnSetAll_Click"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -41,6 +41,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using CNC.Core;
+using CNC.Core.Config;
 
 namespace CNC.Controls.Probing
 {

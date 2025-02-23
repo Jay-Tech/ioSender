@@ -6,6 +6,8 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         
+
+        
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="BlueGrey" SecondaryColor="LightGreen" ColorAdjustment="{materialDesign:ColorAdjustment}" />
@@ -18,21 +20,18 @@
             <!--<SolidColorBrush x:Key="PrimaryHueDarkBrush" Color="#656865"/>
             <SolidColorBrush x:Key="PrimaryHueDarkForegroundBrush" Color="#FFFFFF"/>-->
 
-            
+           
             <!--<SolidColorBrush x:Key="PrimaryHueMidBrush" Color="#FF808587"/>-->
 
              <!--accent--> 
             <SolidColorBrush x:Key="SecondaryHueMidBrush" Color="#989994"/>
             <SolidColorBrush x:Key="SecondaryHueLightBrush" Color="LightGreen"/>
             <SolidColorBrush x:Key="SecondaryHueMidForegroundBrush" Color="#FFFFFF"/>
-
             
             <system:Double x:Key="{x:Static SystemParameters.VerticalScrollBarThumbHeight}">65</system:Double>
             <system:Double x:Key="{x:Static SystemParameters.VerticalScrollBarWidthKey}">30</system:Double>
             <system:Double x:Key="{x:Static SystemParameters.HorizontalScrollBarHeightKey}">25</system:Double>
+
         </ResourceDictionary>
-
-       
-
     </Application.Resources>
 </Application>

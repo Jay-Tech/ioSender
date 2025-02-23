@@ -1,0 +1,132 @@
+﻿<UserControl x:Class="ioSenderTouch.Controls.Probing.RotationControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:probing="clr-namespace:ioSenderTouch.Controls.Probing"
+             xmlns:controls="clr-namespace:ioSenderTouch.Controls"
+             mc:Ignorable="d" Height="509" d:DesignWidth="625">
+    <UserControl.Resources>
+        <system:String x:Uid="str_rotationInstructions" x:Key="Instructions">Click edge in image above to select probing action.\nMove the probe to above the position indicated by green dot before start.</system:String>
+        <system:String x:Uid="str_rotationType" x:Key="SelectType">Select edge to probe by clicking on the relevant part of the image above.</system:String>
+        <system:String x:Uid="str_rotationInitFailed" x:Key="ProbedAngle">Angle: {0} deg</system:String>
+        <system:String x:Uid="str_rotationFailed" x:Key="ProbingFailed">Probing failed</system:String>
+        <system:String x:Uid="str_rotationCompleted" x:Key="ProbingCompleted">Probing completed.</system:String>
+        <controls:LogicalNotConverter x:Key="IsNotRunningConverter" />
+        <controls:EnumValueToBooleanConverter x:Key="EnumToEdgeConverter" />
+        <controls:BoolToVisibleConverter x:Key="ToVisibleConverter" />
+        <probing:OriginToBooleanConverter x:Key="UseX0Y0Converter" />
+        <probing:OriginToCurrentPositionConverter x:Key="UseXYConverter" />
+        <probing:EnumValueToVisibleConverter x:Key="ZProbeIsVisibleConverter" />
+        <Style x:Key="ButtonStyleNoHighlighting" TargetType="Button" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid Background="{TemplateBinding Background}">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal"/>
+                                    <VisualState x:Name="MouseOver"/>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="61*"/>
+            <RowDefinition Height="13*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="0*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Vertical"  Grid.ColumnSpan="2" Grid.RowSpan="2">
+            <StackPanel.Resources>
+                <Style x:Key="Flag" TargetType="RadioButton">
+                    <Style.Triggers>
+                        <Trigger Property="IsChecked" Value="False">
+                            <Setter Property="Opacity" Value="0.5"/>
+                        </Trigger>
+                    </Style.Triggers>
+                    <Setter Property="Focusable" Value="False"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="Width" Value="80"/>
+                    <Setter Property="Height" Value="80"/>
+                    <Setter Property="GroupName" Value="edge"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="RadioButton">
+                                <Border BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                Background="Transparent">
+                                    <Image Source="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </StackPanel.Resources>
+            <StackPanel Orientation="Horizontal" Height="220">
+                <GroupBox x:Uid="grp_workpiece" Header="Workpiece" Visibility="Collapsed">
+                    <controls:NumericField x:Uid="fld_distance" Label="Distance" Value="{Binding Path=WorkpieceHeight, Mode=TwoWay}" Margin="0,5,85,0" VerticalAlignment="Top"/>
+                </GroupBox>
+                <GroupBox x:Uid="grp_workpieceOffset" Header="Workpiece offset" Margin="5,0,0,0" Width="340">
+                    <StackPanel>
+                        <CheckBox x:Uid="lbl_addOffset" Content="Determine X0,Y0 for right angled workpiece" ToolTip="Adds a probe point on the left edge." IsChecked="{Binding Path=AddAction, Mode=TwoWay}"  Margin="5,7,0,5" VerticalAlignment="Center"/>
+                        <probing:CsSelectControl IsEnabled="{Binding Path=AddAction}" Margin="5,0,0,0"/>
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox x:Uid="grp_RotationCenter" Header="Rotation center" HorizontalAlignment="Left" Margin="5,0" ToolTip="Click to select rotation center relative to job, if not selected X0,Y0 is used." Width="263">
+                    <StackPanel Orientation="Horizontal">
+                        <controls:OriginControl Value="{Binding Path=Origin, Mode=TwoWay}" IsEnabled="{Binding Path=Grbl.IsFileLoaded}" Margin="5,5,0,0"/>
+                        <StackPanel Orientation="Vertical" Margin="8,18,5,3">
+                            <CheckBox x:Uid="chk_useXY" Content="Use X,Y" IsEnabled="{Binding Path=Grbl.IsFileLoaded}" IsChecked="{Binding Path=Origin, Mode=TwoWay, Converter={StaticResource UseXYConverter}}"/>
+                            <CheckBox x:Uid="chk_useX0Y0" Content="Use X0,Y0" IsEnabled="{Binding Path=Grbl.IsFileLoaded}" IsChecked="{Binding Path=Origin, Mode=TwoWay, Converter={StaticResource UseX0Y0Converter}}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </GroupBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,2,0,2">
+                <CheckBox x:Uid="lbl_preview" Content="Preview" Margin="15,0,0,0" IsChecked="{Binding Path=PreviewEnable}" Height="40" Width="75"/>
+            </StackPanel>
+            <Grid  Height="233" HorizontalAlignment="Stretch" Margin="3,0,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Grid x:Name="grd_action" x:Uid="grd_action" ToolTip="Click edge to select probing action." Width="160" Height="160" Margin="5,3,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="80" />
+                        <RowDefinition Height="80" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80" />
+                        <ColumnDefinition Width="80" />
+                    </Grid.ColumnDefinitions>
+                    <RadioButton Content="\Resources\probing\RotaterAD.png" Style="{StaticResource Flag}" IsChecked="{Binding Path=ProbeEdge, Mode=TwoWay, Converter={StaticResource EnumToEdgeConverter}, ConverterParameter=AD}" />
+                    <RadioButton Content="\Resources\probing\RotaterCD.png" Grid.Row="0" Grid.Column="2" Style="{StaticResource Flag}" IsChecked="{Binding Path=ProbeEdge, Mode=TwoWay, Converter={StaticResource EnumToEdgeConverter}, ConverterParameter=CD}" />
+                    <RadioButton Content="\Resources\probing\RotaterAB.png" Grid.Row="1" Grid.Column="0" Style="{StaticResource Flag}" IsChecked="{Binding Path=ProbeEdge, Mode=TwoWay, Converter={StaticResource EnumToEdgeConverter}, ConverterParameter=AB}" />
+                    <RadioButton Content="\Resources\probing\RotaterCB.png" Grid.Row="1" Grid.Column="1" Style="{StaticResource Flag}" IsChecked="{Binding Path=ProbeEdge, Mode=TwoWay, Converter={StaticResource EnumToEdgeConverter}, ConverterParameter=CB}" />
+                </Grid>
+                <GroupBox Grid.Column="1" x:Uid="hdr_preview" Header="Preview" Margin="0,0,10,0" Visibility="{Binding Path=PreviewEnable, Converter={StaticResource ToVisibleConverter}}" HorizontalAlignment="Right" VerticalAlignment="Top" Width="287">
+                    <TextBox IsReadOnly="True" Text="{Binding Path=PreviewText, Mode=OneWay}" TextWrapping="NoWrap" Margin="0,5,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="265" Height="150"
+                         FontSize="10" FontFamily="Verdana"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                    </TextBox>
+                </GroupBox>
+            </Grid>
+        </StackPanel>
+        <StackPanel Grid.Column="0" Margin="5,0,0,5" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="32" Width="237" Grid.Row="1">
+            <Button x:Uid="btn_start" Content="Start" IsEnabled="{Binding Path=Grbl.IsJobRunning, Converter={StaticResource IsNotRunningConverter}}" Margin="2,0" Width="75" Click="start_Click"/>
+            <Button x:Uid="btn_stop" Content="Stop" IsEnabled="{Binding Path=Grbl.IsJobRunning}" Margin="2,0" Width="75" Click="stop_Click"/>
+            <Button x:Uid="btn_apply" Content="_Apply" IsEnabled="{Binding Path=CanApplyTransform}" Margin="2,0" Width="75" Click="apply_Click"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

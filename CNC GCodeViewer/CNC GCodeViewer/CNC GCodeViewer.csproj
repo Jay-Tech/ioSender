@@ -185,41 +185,13 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\CNC Controls\CNC Controls\CNC Controls.csproj">
-      <Project>{fa7fef55-aa80-4b20-b345-e3ca7204dd18}</Project>
-      <Name>CNC Controls</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\CNC Core\CNC Core\CNC Core.csproj">
       <Project>{f245ff89-a838-4d6e-aa40-92cfd3d072d3}</Project>
       <Name>CNC Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\GridOn.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\JobBoxOff.png" />
-    <Resource Include="Resources\JobBoxOn.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\WorkBoxOff.png" />
-    <Resource Include="Resources\WorkBoxOn.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\SaveView.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\GridOff.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\ResetView.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\RestoreView.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\XYZOff.png" />
-    <Resource Include="Resources\XYZOn.png" />
+    <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

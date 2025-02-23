@@ -7,13 +7,14 @@
     xmlns:local="clr-namespace:CNC.Controls.Probing"
     xmlns:Controls="clr-namespace:CNC.Controls;assembly=CNC.Controls.WPF" x:Class="CNC.Controls.Probing.HeightMapControl"
     xmlns:helix="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf"
+    xmlns:utility="clr-namespace:CNC.Controls.Probing.Utility"
     mc:Ignorable="d" Height="370"
     d:DesignHeight="500" d:DesignWidth="600">
     <UserControl.Resources>
         <system:String x:Uid="str_heightMapInstructions" x:Key="Instructions">A rapid motion to X0Y0 will be performed before probing the height map starts.\nEnsure the initial Z-position is clear of any obstacles that might be encountered during probing.</system:String>
         <system:String x:Uid="str_heightMapFailed" x:Key="ProbingFailed">Probing failed</system:String>
         <system:String x:Uid="str_heightMapCompleted" x:Key="ProbingCompleted">Probing completed: Z min: {0}, Z max: {1}.</system:String>
-        <Controls:LogicalNotConverter x:Key="IsNotRunningConverter" />
+        <utility:LogicalNotConverter x:Key="IsNotRunningConverter" />
     </UserControl.Resources>
         <Grid>
         <StackPanel Margin="5,5,0,0" Width="260" HorizontalAlignment="Left" VerticalAlignment="Top">

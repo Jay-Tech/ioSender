@@ -41,7 +41,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using CNC.Core;
+using ioSenderTouch.GrblCore;
 
 namespace ioSenderTouch.Controls
 {

@@ -4,8 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:system="clr-namespace:System;assembly=mscorlib"
-             xmlns:core="clr-namespace:CNC.Core;assembly=CNC.Core"
              xmlns:controls="clr-namespace:ioSenderTouch.Controls"
+             xmlns:core="clr-namespace:ioSenderTouch.GrblCore"
              mc:Ignorable="d"
              d:DesignHeight="150" Width="Auto">
     <UserControl.Resources>

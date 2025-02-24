@@ -38,7 +38,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 using System.Collections.Generic;
-using CNC.Core;
+using ioSenderTouch.GrblCore;
 
 namespace ioSenderTouch.Controls
 {
@@ -50,12 +50,12 @@ namespace ioSenderTouch.Controls
             {
                 List<string> gc = GCodeParser.TokensToGCode(GCode.File.Tokens, true);
 
-                GCode.File.AddBlock(string.Format("Compression applied: {0}", GCode.File.Model.FileName), CNC.Core.Action.New);
+                GCode.File.AddBlock(string.Format("Compression applied: {0}", GCode.File.Model.FileName), Action.New);
 
                 foreach (string block in gc)
-                    GCode.File.AddBlock(block, CNC.Core.Action.Add);
+                    GCode.File.AddBlock(block, Action.Add);
 
-                GCode.File.AddBlock("", CNC.Core.Action.End);
+                GCode.File.AddBlock("", Action.End);
             }
         }
     }

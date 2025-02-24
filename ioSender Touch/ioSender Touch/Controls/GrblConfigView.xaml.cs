@@ -44,7 +44,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using CNC.Core;
+using ioSenderTouch.GrblCore;
+using ioSenderTouch.ViewModels;
 using Application = System.Windows.Application;
 using MessageBox = System.Windows.MessageBox;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
@@ -104,7 +105,7 @@ namespace ioSenderTouch.Controls
 
         void btnBackup_Click(object sender, RoutedEventArgs e)
         {
-            GrblSettings.Backup(string.Format("{0}settings.txt", CNC.Core.Resources.Path));
+            GrblSettings.Backup(string.Format("{0}settings.txt", GrblCore.Resources.Path));
             _model.Message = string.Format((string)FindResource("SettingsWritten"), "settings.txt");
         }
 
@@ -330,7 +331,7 @@ namespace ioSenderTouch.Controls
         {
             OpenFileDialog file = new OpenFileDialog();
 
-            file.InitialDirectory = CNC.Core.Resources.Path;
+            file.InitialDirectory = GrblCore.Resources.Path;
             file.Title = (string)FindResource("SettingsRestore");
 
             file.Filter = string.Format("Text files (*.txt)|*.txt");

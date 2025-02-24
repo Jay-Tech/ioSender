@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using CNC.Core;
-using CNC.Core.Config;
+using ioSenderTouch.GrblCore;
+using ioSenderTouch.GrblCore.Config;
 
 namespace ioSenderTouch.ViewModels
 {

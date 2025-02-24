@@ -6,10 +6,11 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
-using CNC.Core;
-using CNC.Core.Config;
 using ioSenderTouch.Controls;
+using ioSenderTouch.GrblCore;
+using ioSenderTouch.GrblCore.Config;
 using ioSenderTouch.Utility;
+using ioSenderTouch.ViewModels;
 using ioSenderTouch.Views;
 using MaterialDesignThemes.Wpf;
 
@@ -32,10 +33,11 @@ namespace ioSenderTouch
         public MainWindow()
         {
             var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config" + Path.DirectorySeparatorChar);
-            CNC.Core.Resources.Path = path;
+            GrblCore.Resources.Path = path;
             InitializeComponent();
             Title = string.Format(Title, Version);
             _viewModel = DataContext as GrblViewModel ?? new GrblViewModel();
+            _viewModel.ContentManager = new ContentManager();
             BaseWindowTitle = Title;
             AppConfig.Settings.OnConfigFileLoaded += Settings_OnConfigFileLoaded;
             _viewModel.PropertyChanged += _viewModel_PropertyChanged;
@@ -110,8 +112,6 @@ namespace ioSenderTouch
             SetUpKeyBoard();
         }
 
-
-
         private void _viewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(GrblViewModel.IsMetric))
@@ -167,11 +167,8 @@ namespace ioSenderTouch
            
         }
 
-      
-
         private void Window_Load(object sender, EventArgs e)
         {
-
             System.Threading.Thread.Sleep(50);
             Comms.com.PurgeQueue();
             if (!string.IsNullOrEmpty(AppConfig.Settings.FileName))
@@ -183,7 +180,6 @@ namespace ioSenderTouch
                 }));
             }
         }
-
         private void MenuBorder_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (_windowStyle) return;
@@ -200,8 +196,6 @@ namespace ioSenderTouch
 
         public static readonly DependencyProperty ScaleValueProperty = DependencyProperty.Register(nameof(ScaleValue), typeof(double),
             typeof(MainWindow), new UIPropertyMetadata(1.0, new PropertyChangedCallback(OnScaleValueChanged), new CoerceValueCallback(OnCoerceScaleValue)));
-
-
 
         private static object OnCoerceScaleValue(DependencyObject o, object value)
         {
@@ -224,8 +218,6 @@ namespace ioSenderTouch
             value = Math.Max(0.1, value);
             return value;
         }
-
-        
 
         public double ScaleValue
         {

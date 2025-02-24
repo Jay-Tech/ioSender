@@ -41,8 +41,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using CNC.Core;
-using CNC.Core.Config;
+using ioSenderTouch.GrblCore;
+using ioSenderTouch.GrblCore.Config;
+using ioSenderTouch.ViewModels;
 
 namespace ioSenderTouch.Controls
 {

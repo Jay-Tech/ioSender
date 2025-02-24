@@ -43,8 +43,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
-using CNC.Core;
-using CNC.Core.Config;
+using ioSenderTouch.GrblCore;
+using ioSenderTouch.GrblCore.Config;
+using ioSenderTouch.ViewModels;
 using ioSenderTouch.ViewModels.Probling;
 using ioSenderTouch.Views;
 
@@ -79,6 +80,7 @@ namespace ioSenderTouch.Controls.Probing
             DataContext = model = new ProbingViewModel(_grblViewModel, profiles);
             this.LostFocus += ProbingView_LostFocus;
             this.IsVisibleChanged += ProbingView_IsVisibleChanged;
+           
         }
 
         private void ProbingView_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -486,7 +488,5 @@ namespace ioSenderTouch.Controls.Probing
                 e.Handled = true;
             }
         }
-
-        // https://stackoverflow.com/questions/5707143/how-to-get-the-width-height-of-a-collapsed-control-in-wpf
     }
 }

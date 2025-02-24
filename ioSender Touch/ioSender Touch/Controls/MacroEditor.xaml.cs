@@ -42,8 +42,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using CNC.Core;
-using CNC.Core.Config;
+using ioSenderTouch.GrblCore;
+using ioSenderTouch.GrblCore.Config;
 using ioSenderTouch.Views;
 
 namespace ioSenderTouch.Controls

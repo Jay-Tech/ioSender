@@ -43,10 +43,10 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading;
 using System.Windows;
-using CNC.Core;
-using CNC.Core.Config;
 using ioSenderTouch.Controls;
 using ioSenderTouch.Controls.Probing;
+using ioSenderTouch.GrblCore;
+using ioSenderTouch.GrblCore.Config;
 using LibStrings = ioSenderTouch.Controls.Probing.LibStrings;
 
 
@@ -137,9 +137,9 @@ namespace ioSenderTouch.ViewModels.Probling
             Measurement.PropertyChanged += Measurement_PropertyChanged;
         }
 
-        private void _grblmodel_GrblUnitChnaged1(object sender, CNC.Core.Measurement e)
+        private void _grblmodel_GrblUnitChnaged1(object sender, GrblCore.Measurement e)
         {
-            Unit = e == CNC.Core.Measurement.Metric ? "mm" : "in";
+            Unit = e == GrblCore.Measurement.Metric ? "mm" : "in";
         }
 
       

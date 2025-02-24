@@ -46,7 +46,7 @@ using System.Windows;
 using System.Windows.Media.Media3D;
 using System.Xml.Serialization;
 
-namespace CNC.Core
+namespace ioSenderTouch.GrblCore
 {
     public class GCodeParser : Machine
     {
@@ -1640,7 +1640,7 @@ namespace CNC.Core
                         break;
 
                     case MotionMode.G5:
-                        if (Plane.Plane != Core.Plane.XY)
+                        if (Plane.Plane != GrblCore.Plane.XY)
                             throw new GCodeException(LibStrings.FindResource("ParserPlaneNotXY"));
                         if (!(wordFlags.HasFlag(WordFlags.P) && wordFlags.HasFlag(WordFlags.Q)))
                             throw new GCodeException(LibStrings.FindResource("ParserNoPandorQ"));
@@ -1675,7 +1675,7 @@ namespace CNC.Core
                         break;
 
                     case MotionMode.G5_1:
-                        if (Plane.Plane != Core.Plane.XY)
+                        if (Plane.Plane != GrblCore.Plane.XY)
                             throw new GCodeException(LibStrings.FindResource("ParserPlaneNotXY"));
                         if (!(wordFlags.HasFlag(WordFlags.I) && wordFlags.HasFlag(WordFlags.J)))
                             throw new GCodeException(LibStrings.FindResource("ParserNoIandorJ"));
@@ -1733,7 +1733,7 @@ namespace CNC.Core
                             ThreadingFlags optFlags = ThreadingFlags.None;
                             double[] optValues = new double[5];
 
-                            if (Plane.Plane != Core.Plane.XZ)
+                            if (Plane.Plane != GrblCore.Plane.XZ)
                                 throw new GCodeException(LibStrings.FindResource("ParserPlaneNotZX"));
 
                             if (axisWords != AxisFlags.Z)

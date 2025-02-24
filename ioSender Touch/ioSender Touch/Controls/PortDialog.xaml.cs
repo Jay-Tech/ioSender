@@ -42,7 +42,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using CNC.Core;
+using ioSenderTouch.GrblCore;
 using ioSenderTouch.Views;
 
 namespace ioSenderTouch.Controls

@@ -38,10 +38,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 using System.Collections.Generic;
-using System.Linq;
 using System.Globalization;
+using System.Linq;
 
-namespace CNC.Core
+namespace ioSenderTouch.GrblCore
 {
     public class Machine
     {
@@ -117,15 +117,15 @@ namespace CNC.Core
 
             switch (GrblParserState.Plane)
             {
-                case Core.Plane.XY:
+                case GrblCore.Plane.XY:
                     Plane = new GCPlane(Commands.G17, 0);
                     break;
 
-                case Core.Plane.XZ:
+                case GrblCore.Plane.XZ:
                     Plane = new GCPlane(Commands.G18, 0);
                     break;
 
-                case Core.Plane.YZ:
+                case GrblCore.Plane.YZ:
                     Plane = new GCPlane(Commands.G19, 0);
                     break;
             }

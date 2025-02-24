@@ -38,19 +38,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 using System;
-using System.Net.Http;
 using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Markup;
-using System.Windows.Threading;
-using WebSocketSharp;
-using WebSocket = WebSocketSharp.WebSocket;
-using WebSocketState = System.Net.WebSockets.WebSocketState;
 
-namespace CNC.Core
-{
+namespace ioSenderTouch.GrblCore;
+
+
 #if USEWEBSOCKET
     public class WebsocketStream : StreamComms
     {
@@ -239,7 +234,6 @@ namespace CNC.Core
         }
     }
 #endif
-}
 
 public class WebSocketClient
 {
@@ -252,7 +246,7 @@ public class WebSocketClient
 
     public async Task<bool> BuildClient()
     {
-         _ws = new ClientWebSocket();
+        _ws = new ClientWebSocket();
         await _ws.ConnectAsync(new Uri("ws://192.168.5.1:80/ws"), CancellationToken.None);
         switch (_ws.State)
         {

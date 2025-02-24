@@ -4,9 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
-        xmlns:cnccore="clr-namespace:CNC.Core;assembly=CNC.Core"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:controls="clr-namespace:ioSenderTouch.Controls"
+        xmlns:grblCore="clr-namespace:ioSenderTouch.GrblCore"
+        xmlns:viewModels="clr-namespace:ioSenderTouch.ViewModels"
         mc:Ignorable="d"
         d:DesignHeight="1080"
         d:DesignWidth="1920"
@@ -33,7 +34,7 @@
         <controls:GrblStateToColorConverter x:Key="StateColorConverter" />
     </Window.Resources>
     <Window.DataContext>
-        <cnccore:GrblViewModel />
+        <viewModels:GrblViewModel />
     </Window.DataContext>
     <DockPanel  LastChildFill="True" Name="DockPanel" SizeChanged="MainGrid_SizeChanged">
         <DockPanel.LayoutTransform>

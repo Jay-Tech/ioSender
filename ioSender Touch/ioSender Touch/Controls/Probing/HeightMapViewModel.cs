@@ -38,7 +38,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 using System.Windows.Media.Media3D;
-using CNC.Core;
+using ioSenderTouch.GrblCore;
 
 namespace ioSenderTouch.Controls.Probing
 {

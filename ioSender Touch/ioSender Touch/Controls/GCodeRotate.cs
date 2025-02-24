@@ -39,9 +39,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 using System;
 using System.Collections.Generic;
-using CNC.Core;
+using ioSenderTouch.GrblCore;
 using RP.Math;
-using LibStrings = CNC.Core.Config.LibStrings;
+using Action = ioSenderTouch.GrblCore.Action;
+using LibStrings = ioSenderTouch.GrblCore.Config.LibStrings;
 
 namespace ioSenderTouch.Controls
 {
@@ -219,12 +220,12 @@ namespace ioSenderTouch.Controls
 
             //            GCodeParser.Save(@"C:\Users\terjeio\Desktop\Probing\file.nc", gc);
 
-            GCode.File.AddBlock(string.Format("{0} degree rotation applied: {1}", Math.Round(angle * 180d / Math.PI, 1).ToInvariantString(), Grbl.GrblViewModel.FileName), CNC.Core.Action.New);
+            GCode.File.AddBlock(string.Format("{0} degree rotation applied: {1}", Math.Round(angle * 180d / Math.PI, 1).ToInvariantString(), Grbl.GrblViewModel.FileName), Action.New);
 
             foreach (string block in gc)
-                GCode.File.AddBlock(block, CNC.Core.Action.Add);
+                GCode.File.AddBlock(block, Action.Add);
 
-            GCode.File.AddBlock("", CNC.Core.Action.End);
+            GCode.File.AddBlock("", Action.End);
         }
     }
 }

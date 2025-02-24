@@ -41,8 +41,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Windows;
-using CNC.Core;
-using CNC.Core.Config;
+using ioSenderTouch.GrblCore;
+using ioSenderTouch.GrblCore.Config;
+using ioSenderTouch.ViewModels;
 using ioSenderTouch.ViewModels.Probling;
 
 namespace ioSenderTouch.Controls.Probing

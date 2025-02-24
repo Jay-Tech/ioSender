@@ -5,23 +5,27 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:render="clr-namespace:ioSenderTouch.Controls.Render"
              xmlns:controls="clr-namespace:ioSenderTouch.Controls"
+             xmlns:viewModels="clr-namespace:ioSenderTouch.ViewModels"
              mc:Ignorable="d"
-             xmlns:core="clr-namespace:CNC.Core;assembly=CNC.Core"
-             d:DataContext="{d:DesignInstance Type=core:GrblViewModel, IsDesignTimeCreatable=True}"
+             d:DataContext="{d:DesignInstance Type=viewModels:GrblViewModel, IsDesignTimeCreatable=True}"
              Loaded="RenderControl_Loaded"
-             d:DesignHeight="335" d:DesignWidth="400">
+             d:DesignHeight="800" d:DesignWidth="1080">
     <UserControl.Resources>
+        <controls:PositionToStringConverter x:Key="PositionConverter" />
+        <controls:FeedSpeedToStringConverter x:Key="FeedSpeedConverter" />
         <controls:HomedStateToBooleanConverter x:Key="IsHomed" />
         <controls:LogicalNotConverter x:Key="IsNotRunningConverter" />
         <controls:BoolToVisibleConverter x:Key="IsVisibleConverter" />
         <controls:ToolWithOffsetStringConverter x:Key="ToolWithOffsetStringConverter" />
         <controls:LogicalNotConverter x:Key="IsNotVisibleConverter">
-            
-
             <controls:LogicalNotConverter.FinalConverter>
                 <controls:BoolToVisibleConverter />
             </controls:LogicalNotConverter.FinalConverter>
         </controls:LogicalNotConverter>
+        <Style x:Key="JobButton" TargetType="Button">
+            <Setter Property="Width" Value="125"/>
+            <Setter Property="Height" Value="22"/>
+        </Style>
         <Style x:Key="Flag" TargetType="ToggleButton">
             <Style.Triggers>
                 <Trigger Property="IsChecked" Value="True">
@@ -82,21 +86,31 @@
             <ToggleButton x:Uid="showJobEnvelope" Content="\Resources\Render\JobBoxOn.png" Tag="\Resources\Render\JobBoxOff.png" Style="{StaticResource Flag}" IsChecked="{Binding Path=MachineView.ShowJobEnvelope, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}" ToolTip="Toggle job bounds visibility (Ctrl+J)"/>
             <ToggleButton x:Uid="showWorkEnvelope" Content="\Resources\Render\WorkBoxOn.png" Tag="\Resources\Render\WorkBoxOff.png" Style="{StaticResource Flag}" IsChecked="{Binding Path=MachineView.ShowWorkEnvelope, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}" IsEnabled="{Binding Path=HomedState, Mode=OneWay, Converter={StaticResource IsHomed}}" ToolTip="Toggle machine work envelope visibility (Ctrl+W)"/>
             <ToggleButton x:Uid="showXYZMarkers" Content="\Resources\Render\XYZOn.png" Tag="\Resources\Render\XYZOff.png" Style="{StaticResource Flag}" IsChecked="{Binding Path=MachineView.ShowAxes, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}" ToolTip="Toggle axes visibility"/>
-            <Button x:Uid="saveView" Content="Resources/SaveView.png" Style="{StaticResource BtnImage}" IsEnabled="{Binding Path=IsFileLoaded}" Click="SaveView_Click" ToolTip="Save view"/>
+            <Button x:Uid="saveView" Content="\Resources\Render\SaveView.png" Style="{StaticResource BtnImage}" IsEnabled="{Binding Path=IsFileLoaded}" Click="SaveView_Click" ToolTip="Save view"/>
         </StackPanel>
         <Grid DockPanel.Dock="Top">
-
             <render:Renderer x:Name="gcodeView"/>
-            <render:TextOverlayControl x:Name="textOverlay" HorizontalAlignment="Right" Margin="5,5" VerticalAlignment="Top"/>
-            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top">
-                <Label MouseDoubleClick="Control_OnMouseDoubleClick"  Content="Tool Change" 
-                       Visibility="{Binding ToolChangeInProgress,  Converter={StaticResource IsNotVisibleConverter}}" FontSize="100" 
-                       HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="Red" Opacity=".5"></Label>
-                <Label Content="MPG ACTIVE"  HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="Red" Opacity=".5"
-                       Visibility="{Binding IsMPGActive,  Converter={StaticResource IsNotVisibleConverter}}" FontSize="100"/>
-            </StackPanel>
            
-            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="22" Margin="5,5,0,0" Foreground="Red" Opacity=".9"  
+            <StackPanel Visibility="{Binding RenderVM.ShowOverlay, Converter={StaticResource BooleanToVisibilityConverter}}" 
+                        Orientation="Vertical"  HorizontalAlignment="left" VerticalAlignment="Top" Margin="5,5">
+                <TextBlock Foreground="{Binding RenderVM.ForegroundColor}"  HorizontalAlignment="Left" FontSize="20" Margin="3,0,0,0">
+                <TextBlock.Text>
+                    <MultiBinding Converter="{StaticResource PositionConverter}">
+                        <Binding Path="Position" Mode="OneWay"/>
+                        <Binding Path="Format" Mode="OneWay"/>
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+            <TextBlock Foreground="{Binding RenderVM.ForegroundColor}" HorizontalAlignment="Left" FontSize="18" Margin="3,0,3,0">
+                <TextBlock.Text>
+                    <MultiBinding Converter="{StaticResource FeedSpeedConverter}">
+                        <Binding Path="FeedRate" Mode="OneWay"/>
+                        <Binding Path="RPM" Mode="OneWay"/>
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+            </StackPanel>
+            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="22" Margin="3,50,0,0" Foreground="Red" Opacity=".9"  
                        Visibility="{Binding Path=IsTloReferenceSet, Converter={StaticResource IsNotVisibleConverter}}">
                 <TextBlock.Text>
                     <MultiBinding Converter="{StaticResource ToolWithOffsetStringConverter}">
@@ -105,7 +119,26 @@
                     </MultiBinding>
                 </TextBlock.Text>
             </TextBlock>
-        </Grid>
+            <StackPanel VerticalAlignment="Top" HorizontalAlignment="Center" Margin="5,5"  >
+                <Label MouseDoubleClick="Control_OnMouseDoubleClick"  Content="Tool Change" 
+                       Visibility="{Binding ToolChangeInProgress,  Converter={StaticResource IsNotVisibleConverter}}" FontSize="100" 
+                       HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="Red" Opacity=".5"></Label>
+                <Label Content="MPG ACTIVE"  HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="Red" Opacity=".5"
+                       Visibility="{Binding IsMPGActive,  Converter={StaticResource IsNotVisibleConverter}}" FontSize="100"/>
+            </StackPanel>
+            <Grid  VerticalAlignment="Top"  Margin="0,5,5,5"  HorizontalAlignment="Right" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition Height="50"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Button Grid.Row="0" FontSize="20" Height="40" MaxWidth="150" Opacity=".6" Margin="5,0" Content="Start"></Button>
+                <Button Grid.Row="1" FontSize="20" Height="40" MaxWidth="150" Opacity=".6"   Margin="5,0" Content="Feed Hold" ></Button>
+                <Button Grid.Row="2" FontSize="20" Height="40"  MaxWidth="150" Opacity=".6" Margin="5,0"  Content="Stop" ></Button>
+                <Button Grid.Row="3" FontSize="20" Height="40" MaxWidth="150" Opacity=".6" Margin="5,0" Content="Rewind" ></Button>
+            </Grid>
 
+        </Grid>
     </DockPanel>
 </UserControl>

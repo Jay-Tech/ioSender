@@ -39,9 +39,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-using CNC.Core;
-using CNC.Core.Config;
-using LibStrings = CNC.Core.Config.LibStrings;
+using ioSenderTouch.GrblCore;
+using ioSenderTouch.GrblCore.Config;
+using ioSenderTouch.ViewModels;
+using LibStrings = ioSenderTouch.GrblCore.Config.LibStrings;
 
 namespace ioSenderTouch.Controls
 {
@@ -93,7 +94,7 @@ namespace ioSenderTouch.Controls
 
         private void btnSaveKeyMap_Click(object sender, RoutedEventArgs e)
         {
-            string filename = CNC.Core.Resources.Path + string.Format("KeyMap{0}.xml", (int)AppConfig.Settings.JogMetric.Mode);
+            string filename = GrblCore.Resources.Path + string.Format("KeyMap{0}.xml", (int)AppConfig.Settings.JogMetric.Mode);
             if (Grbl.GrblViewModel.Keyboard.SaveMappings(filename))
                 Grbl.GrblViewModel.Message = string.Format(LibStrings.FindResource("KeymappingsSaved"), filename);
         }

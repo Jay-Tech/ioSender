@@ -45,8 +45,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using CNC.Core;
-using CNC.Core.Config;
+using ioSenderTouch.GrblCore;
+using ioSenderTouch.GrblCore.Config;
+using ioSenderTouch.ViewModels;
 
 namespace ioSenderTouch.Controls
 {
@@ -112,6 +113,7 @@ namespace ioSenderTouch.Controls
             job.PgmEndLine = -1;
             AppConfig.Settings.OnConfigFileLoaded += Settings_OnConfigFileLoaded;
             this.Loaded += JobControl_Loaded;
+            Name = nameof(JobControl);
         }
 
         private void JobControl_Loaded(object sender, RoutedEventArgs e)

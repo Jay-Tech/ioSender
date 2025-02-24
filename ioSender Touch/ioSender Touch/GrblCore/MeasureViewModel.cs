@@ -39,7 +39,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 using System;
 
-namespace CNC.Core
+namespace ioSenderTouch.GrblCore
 {
     public enum Measurement
     {

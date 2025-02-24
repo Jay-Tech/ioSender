@@ -4,10 +4,11 @@
 
 using System;
 using System.Collections.Generic;
-using CNC.Core;
-using CNC.Core.Config;
+using ioSenderTouch.GrblCore;
+using ioSenderTouch.GrblCore.Config;
 using ioSenderTouch.ViewModels.Probling;
 using RP.Math;
+using Action = ioSenderTouch.GrblCore.Action;
 
 namespace ioSenderTouch.Controls.Probing
 {
@@ -149,12 +150,12 @@ namespace ioSenderTouch.Controls.Probing
 
 //            GCodeParser.Save(@"C:\Users\terjeio\Desktop\Probing\file.nc", gc);
 
-            GCode.File.AddBlock(string.Format("Heightmap applied: {0}", model.Grbl.FileName), CNC.Core.Action.New);
+            GCode.File.AddBlock(string.Format("Heightmap applied: {0}", model.Grbl.FileName), Action.New);
 
             foreach (string block in gc)
-                GCode.File.AddBlock(block, CNC.Core.Action.Add);
+                GCode.File.AddBlock(block, Action.Add);
 
-            GCode.File.AddBlock("", CNC.Core.Action.End);
+            GCode.File.AddBlock("", Action.End);
 
             model.HeightMapApplied = true;
         }

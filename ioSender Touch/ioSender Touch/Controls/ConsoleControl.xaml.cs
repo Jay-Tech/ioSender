@@ -41,7 +41,8 @@ using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using CNC.Core;
+using ioSenderTouch.GrblCore;
+using ioSenderTouch.ViewModels;
 
 namespace ioSenderTouch.Controls
 {

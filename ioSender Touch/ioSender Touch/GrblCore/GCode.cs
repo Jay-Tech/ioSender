@@ -38,12 +38,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 using System;
-using System.Xml.Serialization;
 using System.Collections.Generic;
-using System.Management;
 using System.Windows.Media.Media3D;
+using System.Xml.Serialization;
 
-namespace CNC.Core
+namespace ioSenderTouch.GrblCore
 {
 
     public enum Dialect

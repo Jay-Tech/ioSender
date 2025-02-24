@@ -40,8 +40,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using CNC.Core;
-using CNC.Core.Config;
+using ioSenderTouch.GrblCore;
+using ioSenderTouch.GrblCore.Config;
+using ioSenderTouch.ViewModels;
 
 namespace ioSenderTouch.Controls.Render
 {
@@ -60,15 +61,15 @@ namespace ioSenderTouch.Controls.Render
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            if (DataContext is GrblViewModel)
-            {
-                model = DataContext as GrblViewModel;
-               Foreground =  AppConfig.Settings.GCodeViewer.BlackBackground? 
+            //if (DataContext is GrblViewModel)
+            //{
+            //    model = DataContext as GrblViewModel;
+             Foreground =  AppConfig.Settings.GCodeViewer.BlackBackground? 
                    Brushes.White : Brushes.Black;
-            }
+            //}
             
-            if (Visibility != Visibility.Visible)
-                DataContext = null;
+            //if (Visibility != Visibility.Visible)
+            //    DataContext = null;
         }
 
         private void OnVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)

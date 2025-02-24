@@ -38,8 +38,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 using System.Windows;
-using CNC.Core;
-using CNC.Core.Config;
+using ioSenderTouch.GrblCore;
+using ioSenderTouch.GrblCore.Config;
 
 namespace ioSenderTouch.Controls
 {
@@ -57,7 +57,7 @@ namespace ioSenderTouch.Controls
         private void About_Load(object sender, System.EventArgs e)
         {
             Title = version;
-            if (CNC.Core.Resources.IsLegacyController)
+            if (GrblCore.Resources.IsLegacyController)
                 Title += " (legacy mode)";
 
             GrblInfo.Get();

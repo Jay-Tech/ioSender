@@ -42,7 +42,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
-using CNC.Core;
+using ioSenderTouch.GrblCore;
 using ioSenderTouch.ViewModels.Probling;
 
 namespace ioSenderTouch.Controls.Probing
@@ -139,7 +139,7 @@ namespace ioSenderTouch.Controls.Probing
             XmlSerializer xs = new XmlSerializer(typeof(ObservableCollection<ProbingProfile>));
             try
             {
-                FileStream fsout = new FileStream(CNC.Core.Resources.Path + "ProbingProfiles.xml", FileMode.Create, FileAccess.Write, FileShare.None);
+                FileStream fsout = new FileStream(Resources.Path + "ProbingProfiles.xml", FileMode.Create, FileAccess.Write, FileShare.None);
                 using (fsout)
                 {
                     xs.Serialize(fsout, Profiles);
@@ -156,9 +156,9 @@ namespace ioSenderTouch.Controls.Probing
 
             try
             {
-                if (File.Exists(CNC.Core.Resources.Path + "ProbingProfiles.xml"))
+                if (File.Exists(Resources.Path + "ProbingProfiles.xml"))
                 {
-                    StreamReader reader = new StreamReader(CNC.Core.Resources.Path + "ProbingProfiles.xml");
+                    StreamReader reader = new StreamReader(Resources.Path + "ProbingProfiles.xml");
                     Profiles = (ObservableCollection<ProbingProfile>)xs.Deserialize(reader);
                     reader.Close();
 

@@ -1,7 +1,6 @@
 ﻿
 using System.Windows.Controls;
-
-using CNC.Core.Config;
+using ioSenderTouch.GrblCore.Config;
 
 namespace ioSenderTouch.Controls
 {

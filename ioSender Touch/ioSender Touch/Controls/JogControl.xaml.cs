@@ -44,9 +44,10 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using CNC.Core;
-using CNC.Core.Config;
+using ioSenderTouch.GrblCore;
+using ioSenderTouch.GrblCore.Config;
 using ioSenderTouch.Utility;
+using ioSenderTouch.ViewModels;
 
 namespace ioSenderTouch.Controls
 {

@@ -45,8 +45,10 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using CNC.Core;
+using ioSenderTouch.GrblCore;
+using ioSenderTouch.ViewModels;
 using Microsoft.Win32;
+using Action = ioSenderTouch.GrblCore.Action;
 
 namespace ioSenderTouch.Controls
 {
@@ -175,11 +177,11 @@ namespace ioSenderTouch.Controls
             }
         }
 
-        public void AddBlock(string block, CNC.Core.Action action)
+        public void AddBlock(string block, Action action)
         {
             Program.AddBlock(block, action);
 
-            if(action == CNC.Core.Action.End)
+            if(action == Action.End)
                 Model.Blocks = Blocks;
         }
 

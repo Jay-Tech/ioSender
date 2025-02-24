@@ -2,9 +2,10 @@
 using System.IO;
 using System.Threading;
 using System.Windows;
-using CNC.Core;
-using CNC.Core.Config;
-using LibStrings = CNC.Core.Config.LibStrings;
+using ioSenderTouch.GrblCore;
+using ioSenderTouch.GrblCore.Config;
+using ioSenderTouch.ViewModels;
+using LibStrings = ioSenderTouch.GrblCore.Config.LibStrings;
 
 namespace ioSenderTouch.Utility
 {
@@ -45,20 +46,20 @@ namespace ioSenderTouch.Utility
                 switch (args[p++].ToLowerInvariant())
                 {
                     case "-inifile":
-                        CNC.Core.Resources.IniName = GetArg(args, p++);
+                        Resources.IniName = GetArg(args, p++);
                         break;
 
                     case "-debugfile":
-                        CNC.Core.Resources.DebugFile = GetArg(args, p++);
+                        Resources.DebugFile = GetArg(args, p++);
                         break;
 
                     case "-configmapping":
-                        CNC.Core.Resources.ConfigName = GetArg(args, p++);
+                        Resources.ConfigName = GetArg(args, p++);
                         break;
 
                     case "-locale":
                     case "-language": // deprecated
-                        CNC.Core.Resources.Locale = GetArg(args, p++);
+                        Resources.Locale = GetArg(args, p++);
                         break;
 
                     case "-port":
@@ -74,7 +75,7 @@ namespace ioSenderTouch.Utility
                         break;
 
                     case "-islegacy":
-                        CNC.Core.Resources.IsLegacyController = true;
+                        Resources.IsLegacyController = true;
                         break;
 
                     case "-jogmode":
@@ -88,12 +89,12 @@ namespace ioSenderTouch.Utility
                         break;
                 }
 
-            if (!_config.Load(CNC.Core.Resources.IniFile))
+            if (!_config.Load(Resources.IniFile))
             {
                 if (MessageBox.Show(LibStrings.FindResource("CreateConfig"), "IoSender", MessageBoxButton.YesNo,
                         MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
-                    if (!_config.Save(CNC.Core.Resources.IniFile))
+                    if (!_config.Save(Resources.IniFile))
                     {
                         MessageBox.Show(LibStrings.FindResource("CreateConfigFail"), "IoSender");
                         status = 1;
@@ -154,7 +155,7 @@ namespace ioSenderTouch.Utility
                         new SerialStream(_config.Base.PortParams, _config.Base.ResetDelay,
                             dispatcher);
 #endif
-                    _config.Save(CNC.Core.Resources.IniFile);
+                    _config.Save(Resources.IniFile);
                     _config.CallFileLoaded();
                 }
             }

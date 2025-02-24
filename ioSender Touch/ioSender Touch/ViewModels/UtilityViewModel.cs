@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Xml.Linq;
-using CNC.Core;
-using CNC.Core.Comands;
-using CNC.Core.Config;
 using ioSenderTouch.Controls;
+using ioSenderTouch.GrblCore;
+using ioSenderTouch.GrblCore.Comands;
+using ioSenderTouch.GrblCore.Config;
 using ioSenderTouch.Utility;
 
 

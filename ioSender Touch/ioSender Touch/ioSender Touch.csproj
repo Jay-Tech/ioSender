@@ -122,6 +122,7 @@
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
     </Reference>
@@ -333,6 +334,27 @@
     <Compile Include="Controls\Render\TextOverlayControl.xaml.cs">
       <DependentUpon>TextOverlayControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GrblCore\ActionCommand.cs" />
+    <Compile Include="GrblCore\Comands\Command.cs" />
+    <Compile Include="GrblCore\Comms.cs" />
+    <Compile Include="GrblCore\Config\AppConfig.cs" />
+    <Compile Include="GrblCore\ContentManager.cs" />
+    <Compile Include="GrblCore\EltimaStream.cs" />
+    <Compile Include="GrblCore\GCode.cs" />
+    <Compile Include="GrblCore\GCodeEmulator.cs" />
+    <Compile Include="GrblCore\GCodeJob.cs" />
+    <Compile Include="GrblCore\GCodeParser.cs" />
+    <Compile Include="GrblCore\Grbl.cs" />
+    <Compile Include="ViewModels\GrblViewModel.cs" />
+    <Compile Include="GrblCore\HelperClasses.cs" />
+    <Compile Include="GrblCore\KeypressHandler.cs" />
+    <Compile Include="GrblCore\Machine.cs" />
+    <Compile Include="GrblCore\MeasureViewModel.cs" />
+    <Compile Include="GrblCore\NGCExpr.cs" />
+    <Compile Include="GrblCore\SerialStream.cs" />
+    <Compile Include="GrblCore\TelnetStream.cs" />
+    <Compile Include="GrblCore\WebsocketStream.cs" />
+    <Compile Include="GrblCore\YModem.cs" />
     <Compile Include="ViewModels\Probling\ProbingViewModel.cs" />
     <Compile Include="Controls\Probing\Program.cs" />
     <Compile Include="Controls\Probing\RotationControl.xaml.cs">
@@ -381,6 +403,7 @@
     <Compile Include="Utility\Controller.cs" />
     <Compile Include="Utility\DPIProvider.cs" />
     <Compile Include="ViewModels\JogConfigControlViewModel.cs" />
+    <Compile Include="ViewModels\RenderViewModel.cs" />
     <Compile Include="ViewModels\UIJoggingViewModel.cs" />
     <Compile Include="ViewModels\VirtualKeyboardViewModel.cs" />
     <Compile Include="Views\HomeViewPortrait.xaml.cs">
@@ -677,6 +700,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="GrblCore\LibStrings.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\HomeViewPortrait.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -729,6 +756,7 @@
     <None Include="app.config" />
     <None Include="Controls\app.config" />
     <None Include="Controls\packages.config" />
+    <None Include="GrblCore\packages.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -883,6 +911,7 @@
   <ItemGroup>
     <Resource Include="Resources\Render\XYZOn.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\MaterialDesignThemes.4.10.0-ci317\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.4.10.0-ci317\build\MaterialDesignThemes.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

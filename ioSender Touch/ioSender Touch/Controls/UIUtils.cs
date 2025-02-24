@@ -45,8 +45,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using CNC.Core;
-using LibStrings = CNC.Core.Config.LibStrings;
+using ioSenderTouch.GrblCore;
+using LibStrings = ioSenderTouch.GrblCore.Config.LibStrings;
 
 namespace ioSenderTouch.Controls
 {

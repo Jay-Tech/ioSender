@@ -38,21 +38,23 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 using System;
-using System.Linq;
-using System.Windows.Media;
 using System.Collections.ObjectModel;
-using System.Windows.Input;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using CNC.Core.Comands;
+using System.Windows.Input;
+using System.Windows.Media;
+using ioSenderTouch.GrblCore;
+using ioSenderTouch.GrblCore.Comands;
 using Color = System.Windows.Media.Color;
 
-namespace CNC.Core
+namespace ioSenderTouch.ViewModels
 {
     public class GrblViewModel : MeasureViewModel
     {
+        public ContentManager ContentManager { get; set; }
         public event EventHandler GrblInitialized;
 
         private string _tool,
@@ -114,7 +116,7 @@ namespace CNC.Core
         private HomedState _homedState = HomedState.Unknown;
         private GrblEncoderMode _encoder_ovr = GrblEncoderMode.Unknown;
         private StreamingState _streamingState;
-        public SpindleState _spindleStatePrev = Core.SpindleState.Off;
+        public SpindleState _spindleStatePrev = GrblCore.SpindleState.Off;
 
         private Thread pollThread = null;
 
@@ -143,6 +145,8 @@ namespace CNC.Core
         private bool _aAxisEnbaled;
         private bool _hasToolTable;
         private bool _toolChangeInProgress;
+        private HomeViewModel _homeViewModel;
+        private RenderViewModel _renderVm;
 
 
         public delegate void GrblResetHandler();
@@ -273,9 +277,9 @@ namespace CNC.Core
 
         public GrblViewModel()
         {
+            RenderVM = new RenderViewModel();
             _a = _pn = _fs = _sc = _tool = string.Empty;
             Clear();
-
             Keyboard = new KeypressHandler(this);
             Keyboard.LoadMappings("KeyMap0");
             MDICommand = new ActionCommand<string>(ExecuteMDI);
@@ -316,6 +320,28 @@ namespace CNC.Core
             SetToolCommand();
         }
 
+        public HomeViewModel HomeViewModel
+        {
+            get => _homeViewModel;
+            set
+            {
+                if (Equals(value, _homeViewModel)) return;
+                _homeViewModel = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public RenderViewModel RenderVM
+        {
+            get => _renderVm;
+            set
+            {
+                if (Equals(value, _renderVm)) return;
+                _renderVm = value;
+                OnPropertyChanged();
+            }
+        }
+
         private void SpindleOverRidePrecent(object obj)
         {
             if (obj is string speed)
@@ -324,7 +350,6 @@ namespace CNC.Core
             }
 
         }
-
 
         public void SetShutDown(object obj)
         {
@@ -463,7 +488,7 @@ namespace CNC.Core
 
         private void WorkPositionOffset_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(Core.Position))
+            if (e.PropertyName == nameof(GrblCore.Position))
                 OnPropertyChanged(nameof(WorkPositionOffset));
         }
 
@@ -474,25 +499,25 @@ namespace CNC.Core
 
         private void ToolOffset_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(Core.Position))
+            if (e.PropertyName == nameof(GrblCore.Position))
                 OnPropertyChanged(nameof(ToolOffset));
         }
 
         private void ProbePosition_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(Core.Position))
+            if (e.PropertyName == nameof(GrblCore.Position))
                 OnPropertyChanged(nameof(ProbePosition));
         }
 
         private void Position_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(Core.Position))
+            if (e.PropertyName == nameof(GrblCore.Position))
                 OnPropertyChanged(nameof(Position));
         }
 
         private void MachinePosition_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(Core.Position))
+            if (e.PropertyName == nameof(GrblCore.Position))
                 OnPropertyChanged(nameof(MachinePosition));
         }
 
@@ -503,9 +528,9 @@ namespace CNC.Core
 
         private void SpindleState_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            _rpmDisplay = _spindleStatePrev == Core.SpindleState.Off ? _rpmInput : _rpm;
-            if (!(SpindleState.Value.HasFlag(Core.SpindleState.Off | Core.SpindleState.CW) ||
-                  SpindleState.Value.HasFlag(Core.SpindleState.Off | Core.SpindleState.CCW)))
+            _rpmDisplay = _spindleStatePrev == GrblCore.SpindleState.Off ? _rpmInput : _rpm;
+            if (!(SpindleState.Value.HasFlag(GrblCore.SpindleState.Off | GrblCore.SpindleState.CW) ||
+                  SpindleState.Value.HasFlag(GrblCore.SpindleState.Off | GrblCore.SpindleState.CCW)))
             {
                 OnPropertyChanged(nameof(SpindleState));
                 OnPropertyChanged(nameof(RPM));
@@ -721,12 +746,12 @@ namespace CNC.Core
         {
             get
             {
-                return Signals.Value.HasFlag(Core.Signals.LimitX) ||
-                       Signals.Value.HasFlag(Core.Signals.LimitY) ||
-                       Signals.Value.HasFlag(Core.Signals.LimitZ) ||
-                       Signals.Value.HasFlag(Core.Signals.LimitA) ||
-                       Signals.Value.HasFlag(Core.Signals.LimitB) ||
-                       Signals.Value.HasFlag(Core.Signals.LimitC);
+                return Signals.Value.HasFlag(GrblCore.Signals.LimitX) ||
+                       Signals.Value.HasFlag(GrblCore.Signals.LimitY) ||
+                       Signals.Value.HasFlag(GrblCore.Signals.LimitZ) ||
+                       Signals.Value.HasFlag(GrblCore.Signals.LimitA) ||
+                       Signals.Value.HasFlag(GrblCore.Signals.LimitB) ||
+                       Signals.Value.HasFlag(GrblCore.Signals.LimitC);
             }
         }
 
@@ -1026,10 +1051,10 @@ namespace CNC.Core
         }
 
         public EnumFlags<SpindleState> SpindleState { get; private set; } =
-            new EnumFlags<SpindleState>(Core.SpindleState.Off);
+            new EnumFlags<SpindleState>(GrblCore.SpindleState.Off);
 
-        public EnumFlags<Signals> Signals { get; private set; } = new EnumFlags<Signals>(Core.Signals.Off);
-        public EnumFlags<Signals> OptionalSignals { get; set; } = new EnumFlags<Signals>(Core.Signals.Off);
+        public EnumFlags<Signals> Signals { get; private set; } = new EnumFlags<Signals>(GrblCore.Signals.Off);
+        public EnumFlags<Signals> OptionalSignals { get; set; } = new EnumFlags<Signals>(GrblCore.Signals.Off);
         public EnumFlags<AxisFlags> AxisScaled { get; private set; } = new EnumFlags<AxisFlags>(AxisFlags.None);
 
         public string FileName
@@ -1304,7 +1329,7 @@ namespace CNC.Core
             }
         }
 
-        public EnumFlags<THCSignals> THCSignals { get; private set; } = new EnumFlags<THCSignals>(Core.THCSignals.Off);
+        public EnumFlags<THCSignals> THCSignals { get; private set; } = new EnumFlags<THCSignals>(GrblCore.THCSignals.Off);
 
         #region A - Spindle, Coolant and Tool change status
 
@@ -1378,7 +1403,7 @@ namespace CNC.Core
                     else if (!IsGrblHAL && (_a == "S" || _a == "C")) // Hack for legacy Grbl no informing about spindle going off
                     {
                         _a = "";
-                        SpindleState.Value = Core.SpindleState.Off;
+                        SpindleState.Value = GrblCore.SpindleState.Off;
                     }
 
                     if (double.IsNaN(ActualRPM))
@@ -1685,7 +1710,7 @@ namespace CNC.Core
 
         private bool canReset()
         {
-            return !(GrblState.State == GrblStates.Door || (GrblState.State == GrblStates.Alarm && GrblState.Substate == 11) || Signals.Value.HasFlag(Core.Signals.EStop));
+            return !(GrblState.State == GrblStates.Door || (GrblState.State == GrblStates.Alarm && GrblState.Substate == 11) || Signals.Value.HasFlag(GrblCore.Signals.EStop));
         }
 
         private bool Set(string parameter, string value)
@@ -1732,14 +1757,14 @@ namespace CNC.Core
                         if (_a == "")
                         {
                             Mist = Flood = IsToolChanging = false;
-                            SpindleState.Value = Core.SpindleState.Off;
+                            SpindleState.Value = GrblCore.SpindleState.Off;
                         }
                         else
                         {
                             Mist = value.Contains("M");
                             Flood = value.Contains("F");
                             IsToolChanging = value.Contains("T");
-                            SpindleState.Value = value.Contains("S") ? Core.SpindleState.CW : (value.Contains("C") ? Core.SpindleState.CCW : Core.SpindleState.Off);
+                            SpindleState.Value = value.Contains("S") ? GrblCore.SpindleState.CW : (value.Contains("C") ? GrblCore.SpindleState.CCW : GrblCore.SpindleState.Off);
                         }
                     }
                     break;
@@ -1827,8 +1852,8 @@ namespace CNC.Core
                                 s |= (1 << i);
                         }
                         Signals.Value = (Signals)s;
-                        if (Signals.Value.HasFlag(Core.Signals.EStop) && !OptionalSignals.Value.HasFlag(Core.Signals.EStop))
-                            OptionalSignals.Value |= Core.Signals.EStop;
+                        if (Signals.Value.HasFlag(GrblCore.Signals.EStop) && !OptionalSignals.Value.HasFlag(GrblCore.Signals.EStop))
+                            OptionalSignals.Value |= GrblCore.Signals.EStop;
                         //                        CanReset = canReset();
                     }
                     break;

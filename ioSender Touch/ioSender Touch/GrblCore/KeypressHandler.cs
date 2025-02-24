@@ -44,9 +44,9 @@ using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Xml.Serialization;
+using ioSenderTouch.ViewModels;
 
-
-namespace CNC.Core
+namespace ioSenderTouch.GrblCore
 {
     public class KeypressHandler
     {
@@ -153,9 +153,9 @@ namespace CNC.Core
 
             try
             {
-                if (File.Exists(CNC.Core.Resources.Path + FileName))
+                if (File.Exists(Resources.Path + FileName))
                 {
-                    StreamReader reader = new StreamReader(CNC.Core.Resources.Path + FileName);
+                    StreamReader reader = new StreamReader(Resources.Path + FileName);
                     keymappings = (List<KeypressHandlerFn>)xs.Deserialize(reader);
                     reader.Close();
 

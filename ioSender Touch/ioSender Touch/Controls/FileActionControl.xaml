@@ -4,9 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="clr-namespace:ioSenderTouch.Controls"
-             xmlns:cnccore="clr-namespace:CNC.Core;assembly=CNC.Core"
+             xmlns:viewModels="clr-namespace:ioSenderTouch.ViewModels"
              mc:Ignorable="d"  
-             d:DataContext="{d:DesignInstance Type=cnccore:GrblViewModel,IsDesignTimeCreatable=True}"
+             d:DataContext="{d:DesignInstance Type=viewModels:GrblViewModel,IsDesignTimeCreatable=True}"
              d:DesignHeight="36" d:DesignWidth="145" >
     <UserControl.Resources>
         <controls:LogicalNotConverter x:Key="BooleanConverter" />

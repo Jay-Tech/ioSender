@@ -5,9 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:local="clr-namespace:ioSenderTouch.Controls"
-             xmlns:core="clr-namespace:CNC.Core;assembly=CNC.Core"
+             xmlns:viewModels="clr-namespace:ioSenderTouch.ViewModels"
              d:DesignHeight="1080" d:DesignWidth="1920"
-             d:DataContext="{d:DesignInstance Type=core:GrblViewModel, IsDesignTimeCreatable=True}"
+             d:DataContext="{d:DesignInstance Type=viewModels:GrblViewModel, IsDesignTimeCreatable=True}"
              mc:Ignorable="d"
              Focusable="True">
     <UserControl.Resources>
@@ -29,24 +29,23 @@
     <DockPanel Name="DockPanelMain">
         <Border Height="35"  BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Top">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Content="Job" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Button_Click_2"  Width="140" Margin="1,0,1,0" ></Button>
+                <Button Content="Job" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding HomeViewModel.ChangeView}" CommandParameter="jobView"  Width="140" Margin="1,0,1,0" ></Button>
                 <Button Content="Probe" IsEnabled="{Binding IsJobRunning, Converter={StaticResource InvertBooleanConverter }, Mode=TwoWay}" Visibility="{Binding  Path= HasProbing,Converter={StaticResource IsVisibleConverter}}" HorizontalContentAlignment="Center"
-                        VerticalContentAlignment="Center" Click="Button_Click_1"  Width="140" Margin="1,0,1,0" ></Button>
-                <Button Content="SD Card" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Button_ClickSDView" Visibility="{Binding  Path= HasSDCard,Converter={StaticResource IsVisibleConverter}}"  
+                        VerticalContentAlignment="Center" Command="{Binding HomeViewModel.ChangeView}" CommandParameter="probeView"  Width="140" Margin="1,0,1,0" ></Button>
+                <Button Content="SD Card" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding HomeViewModel.ChangeView}" CommandParameter="sdCardView" Visibility="{Binding  Path= HasSDCard,Converter={StaticResource IsVisibleConverter}}"  
                         IsEnabled="{Binding IsJobRunning, Converter={StaticResource InvertBooleanConverter}}" 
                         Width="140" Margin="1,0,1,0" ></Button>
-                <Button Content="Offset" IsEnabled="{Binding IsJobRunning, Converter={StaticResource InvertBooleanConverter}}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Button_Click_4"
+                <Button Content="Offset" IsEnabled="{Binding IsJobRunning, Converter={StaticResource InvertBooleanConverter}}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding HomeViewModel.ChangeView}" CommandParameter="offsetView"
                         Width="140" Margin="1,0,1,0" ></Button>
-                <Button Content="Utility" IsEnabled="{Binding IsJobRunning, Converter={StaticResource InvertBooleanConverter}}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Button_Click_Utility" 
+                <Button Content="Utility" IsEnabled="{Binding IsJobRunning, Converter={StaticResource InvertBooleanConverter}}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding HomeViewModel.ChangeView}" CommandParameter="utilityView"
                         Width="140" Margin="1,0,1,0" ></Button>
-                <Button Content="Tools" IsEnabled="{Binding IsJobRunning, Converter={StaticResource InvertBooleanConverter}}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Button_Click_Tools" 
+                <Button Content="Tools" IsEnabled="{Binding IsJobRunning, Converter={StaticResource InvertBooleanConverter}}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding HomeViewModel.ChangeView}" CommandParameter="toolsView"
                         Visibility="{Binding  Path= HasToolTable,Converter={StaticResource IsVisibleConverter}}" Width="140" Margin="1,0,1,0" ></Button>
-                <Button Content="Grbl Settings" IsEnabled="{Binding IsJobRunning, Converter={StaticResource InvertBooleanConverter}}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Button_Click"
+                <Button Content="Grbl Settings" IsEnabled="{Binding IsJobRunning, Converter={StaticResource InvertBooleanConverter}}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding HomeViewModel.ChangeView}" CommandParameter="grblSettingsView"
                         Width="140" Margin="1,0,1,0"  ></Button>
-                <Button Content="App Settings" IsEnabled="{Binding IsJobRunning,  Converter={StaticResource InvertBooleanConverter}}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Button_Click_3"
+                <Button Content="App Settings" IsEnabled="{Binding IsJobRunning,  Converter={StaticResource InvertBooleanConverter}}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding HomeViewModel.ChangeView}" CommandParameter="appSettingsView"
                         Width="140" Margin="1,0,1,0" ></Button>
-                <Button Content="Quick Probe" IsEnabled="{Binding IsJobRunning,  Converter={StaticResource InvertBooleanConverter}}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Button_Click_5"
-                        Width="140" Margin="1,0,1,0" ></Button>
+                
             </StackPanel>
         </Border>
         <Border Name="MainControlBorder" Height="320"  BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Bottom">
@@ -71,11 +70,15 @@
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0" VerticalAlignment ="Top" Height="35"  Grid.RowSpan="2" >
-                <Button  Name="btnShowConsole" Content="Console" Click="ButtonBase_OnClick"   Visibility="{Binding Path=IsFileLoaded, Converter= {StaticResource IsVisibleConverter}}"></Button>
+                <Button  Name="btnShowConsole" Content="{Binding HomeViewModel.ConsoleModeText}"
+                         Command="{Binding HomeViewModel.SwitchConsoleCommand}"  
+                         Visibility="{Binding Path=IsFileLoaded, Converter= {StaticResource IsVisibleConverter}}"></Button>
             </StackPanel>
-            <local:ConsoleControl Grid.Row="1" x:Name="ConsoleDisplayControl" Margin="2,5,0,0" Grid.ColumnSpan="2" />
+            <local:ConsoleControl Grid.Row="1" x:Name="ConsoleDisplayControl" 
+                                  Visibility="{Binding Path= HomeViewModel.ShowGCodeConsole, Converter= {StaticResource BoolToNotVisibleConverter}}"
+                                  Margin="2,5,0,0" Grid.ColumnSpan="2" />
             <local:GCodeListControl Grid.Row="1" x:Name ="CodeListControl" Margin="2,5,0,0" 
-                                    Visibility="{Binding Path=IsFileLoaded, Converter= {StaticResource IsVisibleConverter}}" 
+                                    Visibility="{Binding Path= HomeViewModel.ShowGCodeConsole, Converter= {StaticResource IsVisibleConverter}}" 
                                     Grid.ColumnSpan="2"/>
             <!--<controls:MDIControl Grid.Row="2" x:Name="MdiControl" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="Auto" Height="Auto" Margin="5,3,0,5"/>-->
         </Grid>
@@ -93,7 +96,7 @@
             </Grid>
         </Border>
         <Border  BorderBrush="Black" BorderThickness="1"  DockPanel.Dock="Right">
-            <ContentControl Name="CenterView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></ContentControl>
+            <ContentControl Name="CenterView" Content="{Binding HomeViewModel.View}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></ContentControl>
         </Border>
     </DockPanel>
 </UserControl>

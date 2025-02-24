@@ -5,9 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ioSenderTouch.Controls"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:core="clr-namespace:CNC.Core;assembly=CNC.Core"
+             xmlns:viewModels="clr-namespace:ioSenderTouch.ViewModels"
              mc:Ignorable="d" 
-             d:DataContext="{d:DesignInstance Type=core:GrblViewModel, IsDesignTimeCreatable=True}"
+             d:DataContext="{d:DesignInstance Type=viewModels:GrblViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="45" d:DesignWidth="Auto">
 
     <UserControl.Resources>

@@ -40,7 +40,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 using System;
 using System.Windows.Threading;
 
-namespace CNC.Core
+namespace ioSenderTouch.GrblCore
 {
     public delegate void DataReceivedHandler(string data);
 

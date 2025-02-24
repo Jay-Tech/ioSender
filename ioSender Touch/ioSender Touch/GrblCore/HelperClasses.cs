@@ -1,21 +1,19 @@
-﻿
-
-using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Globalization;
-using System.Windows.Markup;
+﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Windows;
-using System.Diagnostics.Contracts;
-using System.Threading;
 using System.Collections.Concurrent;
-using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.IO;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Markup;
 
-namespace CNC.Core
+namespace ioSenderTouch.GrblCore
 {
     public class LibStrings
     {
@@ -26,7 +24,7 @@ namespace CNC.Core
             if (resource.Source == null)
                 try
                 {
-                    resource.Source = new Uri("pack://application:,,,/CNC.Core;Component/LibStrings.xaml", UriKind.Absolute);
+                    resource.Source = new Uri("pack://application:,,,/GrblCore/LibStrings.xaml", UriKind.Absolute); 
                 }
                 catch
                 {

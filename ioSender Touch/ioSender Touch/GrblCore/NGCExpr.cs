@@ -59,7 +59,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace CNC.Core
+namespace ioSenderTouch.GrblCore
 {
     public class NGCExpr
     {

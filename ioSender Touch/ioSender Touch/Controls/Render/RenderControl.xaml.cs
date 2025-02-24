@@ -40,8 +40,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Windows.Input;
-using CNC.Core;
-using CNC.Core.Config;
+using ioSenderTouch.GrblCore;
+using ioSenderTouch.GrblCore.Config;
+using ioSenderTouch.ViewModels;
 
 namespace ioSenderTouch.Controls.Render
 {
@@ -64,7 +65,6 @@ namespace ioSenderTouch.Controls.Render
 
         private void File_FileLoaded(object sender, bool fileLoaded)
         {
-
             if (fileLoaded)
             {
                 Open(GCode.File.Tokens);
@@ -73,15 +73,7 @@ namespace ioSenderTouch.Controls.Render
             {
                 Close();
             }
-
         }
-
-        private void SettingsChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-
-        {
-            textOverlay.Visibility = AppConfig.Settings.GCodeViewer.ShowTextOverlay ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden;
-        }
-
 
         public Machine MachineView
         {
@@ -98,8 +90,6 @@ namespace ioSenderTouch.Controls.Render
             gcodeView.Render(tokens);
             //gcodeView.ShowPosition();
         }
-
-        #region Keypresshandlers
 
         private bool ToggleGrid(Key key)
         {
@@ -127,8 +117,6 @@ namespace ioSenderTouch.Controls.Render
             return true;
         }
 
-        #endregion
-
         private void ResetView_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             gcodeView.ResetView();
@@ -146,8 +134,6 @@ namespace ioSenderTouch.Controls.Render
 
         private void RenderControl_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            textOverlay.Visibility = AppConfig.Settings.GCodeViewer.ShowTextOverlay ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden;
-
             if (!keyboardMappingsOk && DataContext is GrblViewModel)
             {
                 KeypressHandler keyboard = _grblViewModel.Keyboard;

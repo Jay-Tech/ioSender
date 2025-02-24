@@ -37,16 +37,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
 
-using System;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using System.IO.Ports;
-using System.Windows.Threading;
-using System.IO;
-using System.Collections.ObjectModel;
-
-namespace CNC.Core
+namespace ioSenderTouch.GrblCore
 {
 #if USEELTIMA
     public class EltimaStream : StreamComms

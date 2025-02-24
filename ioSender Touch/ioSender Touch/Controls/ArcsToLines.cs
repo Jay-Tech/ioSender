@@ -40,8 +40,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 using System;
 using System.Collections.Generic;
 using System.Windows.Media.Media3D;
-using CNC.Core;
-using CNC.Core.Config;
+using ioSenderTouch.GrblCore;
+using ioSenderTouch.GrblCore.Config;
+using Action = ioSenderTouch.GrblCore.Action;
 
 namespace ioSenderTouch.Controls
 {
@@ -128,12 +129,12 @@ namespace ioSenderTouch.Controls
 
                 List<string> gc = GCodeParser.TokensToGCode(toolPath, AppConfig.Settings.Base.AutoCompress);
 
-                ioSenderTouch.Controls.GCode.File.AddBlock(string.Format("Arcs to lines transform applied: {0}", ioSenderTouch.Controls.GCode.File.Model.FileName), CNC.Core.Action.New);
+                ioSenderTouch.Controls.GCode.File.AddBlock(string.Format("Arcs to lines transform applied: {0}", ioSenderTouch.Controls.GCode.File.Model.FileName), Action.New);
 
                 foreach (string block in gc)
-                    ioSenderTouch.Controls.GCode.File.AddBlock(block, CNC.Core.Action.Add);
+                    ioSenderTouch.Controls.GCode.File.AddBlock(block, Action.Add);
 
-                ioSenderTouch.Controls.GCode.File.AddBlock("", CNC.Core.Action.End);
+                ioSenderTouch.Controls.GCode.File.AddBlock("", Action.End);
             }
         }
 

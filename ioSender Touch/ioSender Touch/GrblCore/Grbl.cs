@@ -41,18 +41,19 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Globalization;
-using System.IO;
-using System.Diagnostics;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
+using System.Linq;
 using System.Threading;
-using System.Windows.Threading;
 using System.Windows;
+using System.Windows.Threading;
+using ioSenderTouch.ViewModels;
 using Color = System.Windows.Media.Color;
 
-namespace CNC.Core
+namespace ioSenderTouch.GrblCore
 {
     public delegate void GCodePushHandler(string gcode, Action action);
 

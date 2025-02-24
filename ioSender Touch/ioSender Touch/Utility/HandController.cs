@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using CNC.Core;
 using ioSenderTouch.Controls;
 using System.Threading;
 using System.Runtime;
@@ -11,7 +10,9 @@ using System.Globalization;
 using System.Text;
 using System.Windows.Markup;
 using System.Text.RegularExpressions;
-using CNC.Core.Config;
+using ioSenderTouch.GrblCore;
+using ioSenderTouch.GrblCore.Config;
+using ioSenderTouch.ViewModels;
 
 
 namespace ioSenderTouch.Utility

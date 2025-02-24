@@ -4,9 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="clr-namespace:ioSenderTouch.Controls"
-             mc:Ignorable="d" 
-             xmlns:core="clr-namespace:CNC.Core;assembly=CNC.Core"
-             d:DataContext="{d:DesignInstance Type=core:GrblViewModel, IsDesignTimeCreatable=True}"
+             xmlns:viewModels="clr-namespace:ioSenderTouch.ViewModels"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance Type=viewModels:GrblViewModel, IsDesignTimeCreatable=True}"
              Loaded="OnLoaded" Visibility="Collapsed" IsVisibleChanged="OnVisibleChanged"
              d:DesignHeight="40" d:DesignWidth="210">
     <UserControl.Resources>
@@ -14,14 +14,7 @@
         <controls:FeedSpeedToStringConverter x:Key="FeedSpeedConverter" />
     </UserControl.Resources>
     <StackPanel Orientation="Vertical">
-        <TextBlock HorizontalAlignment="Right" FontSize="20" Margin="0,0,3,0">
-            <TextBlock.Text>
-                <MultiBinding Converter="{StaticResource PositionConverter}">
-                    <Binding Path="Position" Mode="OneWay"/>
-                    <Binding Path="Format" Mode="OneWay"/>
-                </MultiBinding>
-            </TextBlock.Text>
-        </TextBlock>
+      
         <!--<TextBlock HorizontalAlignment="Right">
             <TextBlock.Text>
                 <MultiBinding Converter="{StaticResource PositionConverter}">
@@ -30,6 +23,14 @@
                 </MultiBinding>
             </TextBlock.Text>
         </TextBlock>-->
+        <TextBlock HorizontalAlignment="Right" FontSize="20" Margin="0,0,3,0">
+            <TextBlock.Text>
+                <MultiBinding Converter="{StaticResource PositionConverter}">
+                    <Binding Path="Position" Mode="OneWay"/>
+                    <Binding Path="Format" Mode="OneWay"/>
+                </MultiBinding>
+            </TextBlock.Text>
+        </TextBlock>
         <TextBlock HorizontalAlignment="Right" FontSize="18" Margin="0,0,3,0">
             <TextBlock.Text>
                 <MultiBinding Converter="{StaticResource FeedSpeedConverter}">

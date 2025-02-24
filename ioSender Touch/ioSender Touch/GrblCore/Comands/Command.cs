@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace CNC.Core.Comands
+namespace ioSenderTouch.GrblCore.Comands
 {
    public class Command : ICommand
     {

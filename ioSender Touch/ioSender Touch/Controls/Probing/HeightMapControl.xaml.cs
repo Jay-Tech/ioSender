@@ -40,8 +40,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 using System;
 using System.Windows;
 using System.Windows.Controls;
-using CNC.Core;
 using HelixToolkit.Wpf;
+using ioSenderTouch.GrblCore;
 using ioSenderTouch.ViewModels.Probling;
 using Microsoft.Win32;
 

@@ -42,7 +42,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media.Media3D;
 
-namespace CNC.Core
+namespace ioSenderTouch.GrblCore
 {
     public struct RunAction
     {

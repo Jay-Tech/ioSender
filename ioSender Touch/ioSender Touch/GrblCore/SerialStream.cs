@@ -38,16 +38,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 using System;
+using System.Collections.ObjectModel;
+using System.IO.Ports;
 using System.Linq;
+using System.Management;
 using System.Text;
 using System.Windows.Forms;
-using System.IO;
-using System.IO.Ports;
-using System.Management;
 using System.Windows.Threading;
-using System.Collections.ObjectModel;
 
-namespace CNC.Core
+namespace ioSenderTouch.GrblCore
 {
     public class SerialStream : StreamComms
     {

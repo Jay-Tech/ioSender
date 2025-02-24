@@ -9,7 +9,7 @@
 using System;
 using System.Windows.Input;
 
-namespace CNC.Core
+namespace ioSenderTouch.GrblCore
 {
     /// <summary>
     /// An ActionCommand is an ICommand which executes an Action with a specific parameter type.

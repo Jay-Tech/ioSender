@@ -40,7 +40,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
-using CNC.Core;
+using ioSenderTouch.GrblCore;
+using ioSenderTouch.ViewModels;
 using ioSenderTouch.ViewModels.Probling;
 
 namespace ioSenderTouch.Controls.Probing

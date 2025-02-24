@@ -40,7 +40,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 using System.IO;
 using System.Threading;
 
-namespace CNC.Core
+namespace ioSenderTouch.GrblCore
 {
     public class YModem
     {

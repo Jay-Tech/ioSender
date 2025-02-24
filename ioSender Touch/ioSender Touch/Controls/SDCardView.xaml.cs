@@ -45,8 +45,10 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using CNC.Core;
+using ioSenderTouch.GrblCore;
+using ioSenderTouch.ViewModels;
 using Microsoft.Win32;
+using Action = ioSenderTouch.GrblCore.Action;
 
 namespace ioSenderTouch.Controls
 {
@@ -188,7 +190,7 @@ namespace ioSenderTouch.Controls
                     _viewModel.SuspendProcessing = true;
                     _viewModel.Message = string.Format((string)FindResource("Downloading"), (string)currentFile["Name"]);
 
-                    GCode.File.AddBlock((string)currentFile["Name"], CNC.Core.Action.New);
+                    GCode.File.AddBlock((string)currentFile["Name"], Action.New);
 
                     new Thread(() =>
                     {
@@ -205,7 +207,7 @@ namespace ioSenderTouch.Controls
 
                     _viewModel.SuspendProcessing = false;
 
-                    GCode.File.AddBlock(string.Empty, CNC.Core.Action.End);
+                    GCode.File.AddBlock(string.Empty, Action.End);
                 }
 
                 _viewModel.Message = string.Empty;

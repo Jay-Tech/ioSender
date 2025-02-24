@@ -39,13 +39,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.IO;
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Media.Media3D;
 
-namespace CNC.Core
+namespace ioSenderTouch.GrblCore
 {
     public enum Action
     {

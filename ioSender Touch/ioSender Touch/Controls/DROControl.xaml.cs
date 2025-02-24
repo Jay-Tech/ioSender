@@ -44,7 +44,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using CNC.Core;
+using ioSenderTouch.GrblCore;
+using ioSenderTouch.ViewModels;
 
 namespace ioSenderTouch.Controls;
 
@@ -70,9 +71,6 @@ public partial class DROControl : UserControl
     {
         InitializeComponent();
     }
-
-        
-
     private void DRO_Loaded(object sender, RoutedEventArgs e)
     {
         if (!keyboardMappingsOk && DataContext is GrblViewModel)

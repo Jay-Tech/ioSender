@@ -39,14 +39,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Threading;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using System.Xml.Serialization;
-using static CNC.Core.GCodeParser;
+using static ioSenderTouch.GrblCore.GCodeParser;
 
-namespace CNC.Core.Config
+namespace ioSenderTouch.GrblCore.Config
 {
     public class LibStrings
     {
@@ -58,7 +57,9 @@ namespace CNC.Core.Config
                 try
                 {
 
-                    resource.Source = new Uri("pack://application:,,,/CNC.Core;Component/LibStrings.xaml", UriKind.Absolute);
+                    // resource.Source = new Uri("pack://application:,,,/ioSenderTouch.GrblCore;Component/LibStrings.xaml", UriKind.Absolute);
+                    resource.Source = new Uri("pack://application:,,,/GrblCore/LibStrings.xaml",
+                        UriKind.Absolute);
                 }
                 catch
                 {

@@ -2924,7 +2924,7 @@ namespace ioSenderTouch.GrblCore
 
             if (RTCommand == GrblConstants.CMD_STATUS_REPORT_ALL)
             {
-                //RTCommand = GrblLegacy.ConvertRTCommand(GrblConstants.CMD_STATUS_REPORT);
+                RTCommand = GrblLegacy.ConvertRTCommand(GrblConstants.CMD_STATUS_REPORT);
             }
 
         }

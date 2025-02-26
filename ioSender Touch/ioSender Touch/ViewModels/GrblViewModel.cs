@@ -359,7 +359,7 @@ namespace ioSenderTouch.ViewModels
             }
             catch (Exception e)
             {
-                Application.Current.Shutdown(); 
+                Application.Current.Shutdown();
             }
         }
 
@@ -371,7 +371,7 @@ namespace ioSenderTouch.ViewModels
 
         private void SetDefaults()
         {
-            SpindleOverRideValue = 10;
+            SpindleOverRideValue = 1;
             FeedOverRideValue = 10;
             RPMOverride = 0;
         }
@@ -2313,7 +2313,7 @@ namespace ioSenderTouch.ViewModels
 
         public void SettingsLoaded()
         {
-            MeasurementUnit = GrblSettings.GetInteger(GrblSetting.ReportInches) != 1? "mm":"in";
+            MeasurementUnit = GrblSettings.GetInteger(GrblSetting.ReportInches) != 1 ? "mm" : "in";
             var result = GrblSettings.Get(grblHALSetting.HomingEnable).Value;
             var bitValue = (byte)int.Parse(result);
             IsIndividualHomingEnabled = ((bitValue & 0x02) == 0x02);

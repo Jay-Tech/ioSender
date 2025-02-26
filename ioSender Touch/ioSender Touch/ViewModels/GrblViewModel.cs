@@ -147,6 +147,7 @@ namespace ioSenderTouch.ViewModels
         private bool _toolChangeInProgress;
         private HomeViewModel _homeViewModel;
         private RenderViewModel _renderVm;
+        private string _setSpindleSpeed;
 
 
         public delegate void GrblResetHandler();
@@ -2346,6 +2347,17 @@ namespace ioSenderTouch.ViewModels
             {
                 if (value == _hasToolTable) return;
                 _hasToolTable = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string SetSpindleSpeed
+        {
+            get => _setSpindleSpeed;
+            set
+            {
+                if (value == _setSpindleSpeed) return;
+                _setSpindleSpeed = value;
                 OnPropertyChanged();
             }
         }

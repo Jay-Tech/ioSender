@@ -129,7 +129,7 @@ namespace ioSenderTouch.Controls
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
             if (!(DataContext is GrblViewModel p)) return;
-            var command = FormattableString.Invariant( $"S{cvRPM.Value}");
+            var command = FormattableString.Invariant( $"S{p.SetSpindleSpeed}");
             p.ExecuteCommand(command);
         }
     }

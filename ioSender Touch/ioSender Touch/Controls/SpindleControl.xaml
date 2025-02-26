@@ -5,6 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:controls="clr-namespace:ioSenderTouch.Controls"
+             xmlns:viewModels="clr-namespace:ioSenderTouch.ViewModels"
+             d:DataContext="{d:DesignInstance Type=viewModels:GrblViewModel, IsDesignTimeCreatable=True}"
              mc:Ignorable="d"
              x:Name="root" d:DesignWidth="270">
     <UserControl.Resources>
@@ -109,10 +111,10 @@
                     Content="Off"  Width="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="35" Margin="0,5,2,2" Click="rbSpindle_Click"/>
             <StackPanel  Grid.Row="2" Orientation="Horizontal" Margin="0,5,0,0" >
                 <Label x:Uid="lbl_rpm" x:Name="lblRPM" Content="RPM" HorizontalContentAlignment="Right" VerticalAlignment="Center" Height="28" Width="40"/>
-                <controls:NumericTextBox x:Name="cvRPM" Value="{Binding RPM, Mode=TwoWay}" MinWidth="90" VerticalContentAlignment="Center"
+                <controls:NumericTextBox x:Name="cvRPM" Value="{Binding SetSpindleSpeed, Mode=TwoWay}" MinWidth="90" VerticalContentAlignment="Center"
                                       IsEnabled="{Binding IsJobRunning, Converter={StaticResource LogicalNotConverter}}"
                                           Format="####0" HorizontalAlignment="Left" TextWrapping="NoWrap" VerticalAlignment="Center"/>
-                <TextBlock FontSize="16"  Margin="5,0,0,0"  Height="22" TextAlignment="Left"  MinWidth="100" Text= "{Binding ActualRPM, StringFormat={}RPM:{0}}" ></TextBlock>
+                <TextBlock FontSize="16"  Margin="5,0,0,0"  Height="22" TextAlignment="Left"  MinWidth="100" Text= "{Binding  ProgrammedRPM, StringFormat={}RPM:{0}}" ></TextBlock>
             </StackPanel>
             <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button  Height="35" Width="100" Margin="0,5,0,0" HorizontalAlignment="Center" Content="Set RPM"  Click="ButtonBase_OnClick"></Button>

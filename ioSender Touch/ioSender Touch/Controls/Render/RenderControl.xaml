@@ -105,7 +105,7 @@
                 <TextBlock.Text>
                     <MultiBinding Converter="{StaticResource FeedSpeedConverter}">
                         <Binding Path="FeedRate" Mode="OneWay"/>
-                        <Binding Path="RPM" Mode="OneWay"/>
+                            <Binding Path="ProgrammedRPM" Mode="OneWay"/>
                     </MultiBinding>
                 </TextBlock.Text>
             </TextBlock>

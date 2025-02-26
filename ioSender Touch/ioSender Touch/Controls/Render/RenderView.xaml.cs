@@ -46,24 +46,23 @@ using ioSenderTouch.ViewModels;
 
 namespace ioSenderTouch.Controls.Render
 {
-    public partial class RenderControl : UserControl
+    public partial class RenderView : UserControl
     {
         private readonly GrblViewModel _grblViewModel;
         private static bool keyboardMappingsOk = false;
         private readonly RenderViewModel _model;
 
-        public RenderControl()
+        public RenderView()
         {
             InitializeComponent();
         }
-        public RenderControl(GrblViewModel grblViewModel, ContentManager manager)
+        public RenderView(GrblViewModel grblViewModel, ContentManager manager)
         {
             _grblViewModel = grblViewModel;
             DataContext = _grblViewModel;
             _grblViewModel.RenderVM = _model = new RenderViewModel(grblViewModel);
             InitializeComponent();
-            manager.RegisterViewAndModel("jobView", _model);
-            // GCode.File.FileLoaded += File_FileLoaded;
+            manager.RegisterViewAndModel(nameof(RenderView), _model);
             grblViewModel.GrblInitialized += GrblViewModel_GrblInitialized;
         }
 

@@ -325,8 +325,8 @@
     <Compile Include="Controls\Render\RenderConfigControl.xaml.cs">
       <DependentUpon>RenderConfigControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Render\RenderControl.xaml.cs">
-      <DependentUpon>RenderControl.xaml</DependentUpon>
+    <Compile Include="Controls\Render\RenderView.xaml.cs">
+      <DependentUpon>RenderView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Render\Renderer.xaml.cs">
       <DependentUpon>Renderer.xaml</DependentUpon>
@@ -640,7 +640,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\Render\RenderControl.xaml">
+    <Page Include="Controls\Render\RenderView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

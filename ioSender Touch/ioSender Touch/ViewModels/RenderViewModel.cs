@@ -619,6 +619,7 @@ namespace ioSenderTouch.ViewModels
             job.ACKPending = job.CurrLine = 0;
             job.CurrentRow = job.NextRow = null;
             model.RunTime = JobTimer.RunTime;
+            model.IsJobRunning = false;
             JobTimer.Stop();
             model.IsJobRunning = false;
             IsEnabled = !grblState.MPG;
@@ -660,6 +661,7 @@ namespace ioSenderTouch.ViewModels
                         else if (GCode.File.IsLoaded)
                         {
                             model.Message = model.RunTime = string.Empty;
+                            model.IsJobRunning = true;
                             if (model.IsSDCardJob)
                             {
                                 Comms.com.WriteCommand(GrblConstants.CMD_SDCARD_RUN + model.FileName.Substring(7));

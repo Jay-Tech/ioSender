@@ -1,36 +1,41 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace ioSenderTouch.GrblCore;
 
 public class ContentManager
 {
-    private readonly Dictionary<string, IActiveViewModel> _uiElementCollection = [];
+    private readonly Dictionary<string, IActiveViewModel> _activeViewModelCollection = [];
 
 
     public void RegisterViewAndModel(string viewName, IActiveViewModel vm)
     {
-        if (!_uiElementCollection.ContainsKey(viewName))
+        if (!_activeViewModelCollection.ContainsKey(viewName))
         {
-            _uiElementCollection.Add(viewName, vm);
+            _activeViewModelCollection.Add(viewName, vm);
         }
     }
     public bool SetActiveUiElement(string name)
     {
-        if (_uiElementCollection.ContainsKey(name))
+        if (_activeViewModelCollection.ContainsKey(name))
         {
-            foreach (var element in _uiElementCollection)
+            if (_activeViewModelCollection.Any(item => item.Key.Equals(name) && item.Value.Active))
             {
-                if (element.Key == name)
+                return true;
+            }
+            foreach (var viewModel in _activeViewModelCollection)
+            {
+                if (viewModel.Key == name)
                 {
-                    element.Value.Active = true;
-                    element.Value.Activated();
+                    viewModel.Value.Active = true;
+                    viewModel.Value.Activated();
                     
                 }
                 else
                 {
-                    if (!element.Value.Active || element.Key == name) continue;
-                    element.Value.Active = false;
-                    element.Value.Deactivated();
+                    if (!viewModel.Value.Active || viewModel.Key == name) continue;
+                    viewModel.Value.Active = false;
+                    viewModel.Value.Deactivated();
                 }
             }
             return true;

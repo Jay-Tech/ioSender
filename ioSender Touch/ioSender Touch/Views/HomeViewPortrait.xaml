@@ -31,10 +31,10 @@
         <Border Height="35"  BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Top">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Content="Job" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  
-                        Command="{Binding HomeViewModel.ChangeView}" CommandParameter="jobView"
+                        Command="{Binding HomeViewModel.ChangeView}" CommandParameter="RenderView"
                         Width="140" Margin="1,0,1,0" ></Button>
                 <Button Content="Probe" Visibility="{Binding  Path= HasProbing,Converter={StaticResource IsVisibleConverter}}" 
-                        Command="{Binding HomeViewModel.ChangeView}" CommandParameter="probeView"
+                        Command="{Binding HomeViewModel.ChangeView}" CommandParameter="ProbingView"
                         HorizontalContentAlignment="Center"
                         VerticalContentAlignment="Center"   Width="140" Margin="1,0,1,0" ></Button>
                 <Button Content="SD Card" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  

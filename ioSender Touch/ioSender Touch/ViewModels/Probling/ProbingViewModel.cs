@@ -123,6 +123,7 @@ namespace ioSenderTouch.ViewModels.Probling
 
         public Program Program;
         private string _unit;
+        private bool _active;
 
         public ProbingViewModel (GrblViewModel grblmodel, ProbingProfiles profile )
         {
@@ -670,7 +671,17 @@ namespace ioSenderTouch.ViewModels.Probling
         }
         public double WorkpieceHeight { get { return _workpieceHeight; } set { _workpieceHeight = value; OnPropertyChanged(); } }
 
-        public bool Active { get; set; }
+        public bool Active
+        {
+            get => _active;
+            set
+            {
+                if (value == _active) return;
+                _active = value;
+                OnPropertyChanged();
+            }
+        }
+
         public string Name { get; }
         public void Activated()
         {

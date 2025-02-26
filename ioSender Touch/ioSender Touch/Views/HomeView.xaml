@@ -29,9 +29,9 @@
     <DockPanel Name="DockPanelMain">
         <Border Height="35"  BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Top">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Content="Job" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding HomeViewModel.ChangeView}" CommandParameter="jobView"  Width="140" Margin="1,0,1,0" ></Button>
+                <Button Content="Job" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding HomeViewModel.ChangeView}" CommandParameter="RenderView"  Width="140" Margin="1,0,1,0" ></Button>
                 <Button Content="Probe" IsEnabled="{Binding IsJobRunning, Converter={StaticResource InvertBooleanConverter }, Mode=TwoWay}" Visibility="{Binding  Path= HasProbing,Converter={StaticResource IsVisibleConverter}}" HorizontalContentAlignment="Center"
-                        VerticalContentAlignment="Center" Command="{Binding HomeViewModel.ChangeView}" CommandParameter="probeView"  Width="140" Margin="1,0,1,0" ></Button>
+                        VerticalContentAlignment="Center" Command="{Binding HomeViewModel.ChangeView}" CommandParameter="ProbingView"  Width="140" Margin="1,0,1,0" ></Button>
                 <Button Content="SD Card" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding HomeViewModel.ChangeView}" CommandParameter="sdCardView" Visibility="{Binding  Path= HasSDCard,Converter={StaticResource IsVisibleConverter}}"  
                         IsEnabled="{Binding IsJobRunning, Converter={StaticResource InvertBooleanConverter}}" 
                         Width="140" Margin="1,0,1,0" ></Button>

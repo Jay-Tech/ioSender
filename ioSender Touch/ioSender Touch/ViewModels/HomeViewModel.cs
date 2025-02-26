@@ -26,7 +26,7 @@ namespace ioSenderTouch.ViewModels
         private GrblViewModel _model;
         private Controller _controller = null;
         private ToolView _toolView;
-        private RenderControl _renderView;
+        private RenderView _renderView;
         private ProbingView _probeView;
         private SDCardView _sdView;
         
@@ -80,7 +80,7 @@ namespace ioSenderTouch.ViewModels
             SwitchConsoleCommand = new Command(SwitchConsole);
             _model = grblViewModel;
             _contentManager = _model.ContentManager;
-            _renderView = new RenderControl(_model, _contentManager);
+            _renderView = new RenderView(_model, _contentManager);
             _grblSettingView = new GrblConfigView(_model);
             _grblAppSettings = new AppConfigView(_model);
             _offsetView = new OffsetView(_model);
@@ -94,7 +94,7 @@ namespace ioSenderTouch.ViewModels
             var gamepad = new HandController(_model);
             ConsoleModeText = "Console";
             View = _renderView;
-            _contentManager.SetActiveUiElement("jobView");
+            _contentManager.SetActiveUiElement(nameof(RenderView));
         }
 
         private void AppConfiguationLoaded(object sender, EventArgs e)
@@ -146,7 +146,6 @@ namespace ioSenderTouch.ViewModels
             {
                 _model.HasProbing = true;
                 _probeView = new ProbingView(_model, _contentManager);
-                _probeView.Activate(true);
 
             }
         }
@@ -185,7 +184,8 @@ namespace ioSenderTouch.ViewModels
 
         private void SetNewView(object x)
         {
-            switch (x.ToString())
+            var newView = x.ToString();
+            switch (newView)
             {
                 case "offsetView":
                     View = _offsetView;
@@ -199,7 +199,7 @@ namespace ioSenderTouch.ViewModels
                 case "appSettingsView":
                     View  = _grblAppSettings;
                     break;
-                case "probeView":
+                case nameof(ProbingView):
                     View = _probeView;
                     break;
                 case "utilityView":
@@ -211,14 +211,13 @@ namespace ioSenderTouch.ViewModels
                 case "renderView":
                     View = _renderView;
                     break;
-                case "jobView":
+                case nameof(RenderView):
                     View = _renderView;
                     break;
                 default:  View = _renderView;
                     break;
             }
-
-            _contentManager.SetActiveUiElement(x.ToString());
+            _contentManager.SetActiveUiElement(newView);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

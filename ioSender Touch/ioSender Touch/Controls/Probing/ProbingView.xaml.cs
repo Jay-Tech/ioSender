@@ -78,10 +78,19 @@ namespace ioSenderTouch.Controls.Probing
             InitializeComponent();
             profiles.Load();
             DataContext = model = new ProbingViewModel(_grblViewModel, profiles);
-            contentManager.RegisterViewAndModel("probeView", model);
+            contentManager.RegisterViewAndModel(nameof(ProbingView), model);
             this.LostFocus += ProbingView_LostFocus;
             this.IsVisibleChanged += ProbingView_IsVisibleChanged;
-           
+            model.PropertyChanged += Model_PropertyChanged;
+
+        }
+
+        private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(model.Active))
+            {
+                Activate(model.Active);
+            }
         }
 
         private void ProbingView_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -274,7 +283,7 @@ namespace ioSenderTouch.Controls.Probing
 
         private void ProbingView_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-           // showProbeProperties();
+            // showProbeProperties();
         }
         private void showProbeProperties()
         {
@@ -290,7 +299,7 @@ namespace ioSenderTouch.Controls.Probing
             else
                 height = probeProperties.ActualHeight;
 
-           // probeProperties.Visibility = (dp.ActualHeight - t1.ActualHeight - Jog.ActualHeight + probeProperties.ActualHeight) > height ? Visibility.Visible : Visibility.Collapsed;
+            // probeProperties.Visibility = (dp.ActualHeight - t1.ActualHeight - Jog.ActualHeight + probeProperties.ActualHeight) > height ? Visibility.Visible : Visibility.Collapsed;
         }
         #region Methods and properties required by CNCView interface
 

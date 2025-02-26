@@ -111,7 +111,7 @@
             </TextBlock>
             </StackPanel>
             <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="22" Margin="3,50,0,0" Foreground="Red" Opacity=".9"  
-                       Visibility="{Binding Path=IsTloReferenceSet, Converter={StaticResource IsNotVisibleConverter}}">
+                       Visibility="{Binding Path=IsTloReferenceSet, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <TextBlock.Text>
                     <MultiBinding Converter="{StaticResource ToolWithOffsetStringConverter}">
                         <Binding Path="Tool" StringFormat="Tool:{0}" Mode="OneWay"/>
@@ -121,10 +121,10 @@
             </TextBlock>
             <StackPanel VerticalAlignment="Top" HorizontalAlignment="Center" Margin="5,5"  >
                 <Label MouseDoubleClick="Control_OnMouseDoubleClick"  Content="Tool Change" 
-                       Visibility="{Binding ToolChangeInProgress,  Converter={StaticResource IsNotVisibleConverter}}" FontSize="100" 
+                       Visibility="{Binding ToolChangeInProgress,  Converter={StaticResource BooleanToVisibilityConverter}}" FontSize="100" 
                        HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="Red" Opacity=".5"></Label>
                 <Label Content="MPG ACTIVE"  HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="Red" Opacity=".5"
-                       Visibility="{Binding IsMPGActive,  Converter={StaticResource IsNotVisibleConverter}}" FontSize="100"/>
+                       Visibility="{Binding IsMPGActive,  Converter={StaticResource BooleanToVisibilityConverter}}" FontSize="100"/>
             </StackPanel>
             <Grid  VerticalAlignment="Top"  Margin="0,5,5,5"  HorizontalAlignment="Right" >
                 <Grid.RowDefinitions>

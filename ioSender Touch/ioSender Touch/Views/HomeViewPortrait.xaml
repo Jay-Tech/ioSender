@@ -6,6 +6,8 @@
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:local="clr-namespace:ioSenderTouch.Controls"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:viewModels="clr-namespace:ioSenderTouch.ViewModels"
+             d:DataContext="{d:DesignInstance Type=viewModels:GrblViewModel, IsDesignTimeCreatable=True}"
              mc:Ignorable="d"
              Focusable="True">
 
@@ -28,7 +30,8 @@
     <DockPanel Name="DockPanelMain">
         <Border Height="35"  BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Top">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Content="Job" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  Command="{Binding HomeViewModel.ChangeView}" CommandParameter="jobView"
+                <Button Content="Job" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  
+                        Command="{Binding HomeViewModel.ChangeView}" CommandParameter="jobView"
                         Width="140" Margin="1,0,1,0" ></Button>
                 <Button Content="Probe" Visibility="{Binding  Path= HasProbing,Converter={StaticResource IsVisibleConverter}}" 
                         Command="{Binding HomeViewModel.ChangeView}" CommandParameter="probeView"
@@ -88,7 +91,7 @@
         </Border>
         <Border Name="RightMenuBorder" BorderBrush="Black" BorderThickness="1" Width="250" DockPanel.Dock="Right">
             <StackPanel Name ="RightStackPanel">
-                <local:JobControl x:Name="GCodeSender" Margin="3,3,0,5" Width="244" Height="245" VerticalAlignment="Top"/>
+                <!--<local:JobControl x:Name="GCodeSender" Margin="3,3,0,5" Width="244" Height="245" VerticalAlignment="Top"/>-->
                 <local:CoolantControl x:Name="coolantControl" Margin="3,5,3,3"   VerticalAlignment="Top" Height="150" Width="Auto"/>
                 <local:UtilityMacroControl Margin="3,5,3,3" Height="150" ></local:UtilityMacroControl>
                 <local:WorkParametersControlTouch x:Name="workParametersControl"  Margin="3,3,0,5"

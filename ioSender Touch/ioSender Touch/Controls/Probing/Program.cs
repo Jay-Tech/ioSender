@@ -57,7 +57,7 @@ namespace ioSenderTouch.Controls.Probing
             if (resource.Source == null)
                 try
                 {
-                    resource.Source = new Uri("pack://application:,,,/ioSenderTouch.Controls.Probing;Component/LibStrings.xaml", UriKind.Absolute);
+                    resource.Source = new Uri("pack://application:,,,/Controls/Probing/LibStrings.xaml", UriKind.Absolute);
                 }
                 catch
                 {

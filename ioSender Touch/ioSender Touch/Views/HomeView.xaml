@@ -90,9 +90,9 @@
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="*" ></RowDefinition>
                 </Grid.RowDefinitions>
-                <local:JobControl x:Name="GCodeSender" Margin="3,3,0,5" Width="244" VerticalAlignment="Top"/>
-                <local:CoolantControl Grid.Row="1" x:Name="coolantControl" Margin="3,3,3,3"   VerticalAlignment="Top" Height="Auto" Width="Auto"/>
-                <local:UtilityMacroControl Grid.Row="2" Margin="3,3,3,3" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch"></local:UtilityMacroControl>
+                <!--<local:JobControl x:Name="GCodeSender" Margin="3,3,0,5" Width="244" VerticalAlignment="Top"/>-->
+                <local:CoolantControl Grid.Row="0" x:Name="coolantControl" Margin="3,3,3,3"   VerticalAlignment="Top" Height="Auto" Width="Auto"/>
+                <local:UtilityMacroControl Grid.Row="1" Margin="3,3,3,3" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch"></local:UtilityMacroControl>
             </Grid>
         </Border>
         <Border  BorderBrush="Black" BorderThickness="1"  DockPanel.Dock="Right">

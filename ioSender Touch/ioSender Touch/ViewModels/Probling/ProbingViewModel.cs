@@ -74,7 +74,7 @@ namespace ioSenderTouch.ViewModels.Probling
         public AxisFlags AxisFlags { get; private set; } = AxisFlags.None;
     }
 
-    public class ProbingViewModel : ViewModelBase
+    public class ProbingViewModel : ViewModelBase, IActiveViewModel
     {
         public enum CoordMode
         {
@@ -124,8 +124,9 @@ namespace ioSenderTouch.ViewModels.Probling
         public Program Program;
         private string _unit;
 
-        public ProbingViewModel (GrblViewModel grblmodel, ProbingProfiles profile)
+        public ProbingViewModel (GrblViewModel grblmodel, ProbingProfiles profile )
         {
+            Name = nameof(ProbingViewModel);
             Grbl = grblmodel;
             _grblmodel = grblmodel;
             _grblmodel.GrblUnitChanged += _grblmodel_GrblUnitChnaged1; ;
@@ -669,5 +670,16 @@ namespace ioSenderTouch.ViewModels.Probling
         }
         public double WorkpieceHeight { get { return _workpieceHeight; } set { _workpieceHeight = value; OnPropertyChanged(); } }
 
+        public bool Active { get; set; }
+        public string Name { get; }
+        public void Activated()
+        {
+
+        }
+
+        public void Deactivated()
+        {
+
+        }
     }
 }

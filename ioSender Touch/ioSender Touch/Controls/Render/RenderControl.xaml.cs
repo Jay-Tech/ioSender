@@ -50,16 +50,26 @@ namespace ioSenderTouch.Controls.Render
     {
         private readonly GrblViewModel _grblViewModel;
         private static bool keyboardMappingsOk = false;
+        private readonly RenderViewModel _model;
 
         public RenderControl()
         {
             InitializeComponent();
         }
-        public RenderControl(GrblViewModel grblViewModel)
+        public RenderControl(GrblViewModel grblViewModel, ContentManager manager)
         {
             _grblViewModel = grblViewModel;
             DataContext = _grblViewModel;
+            _grblViewModel.RenderVM = _model = new RenderViewModel(grblViewModel);
             InitializeComponent();
+            manager.RegisterViewAndModel("jobView", _model);
+            // GCode.File.FileLoaded += File_FileLoaded;
+            grblViewModel.GrblInitialized += GrblViewModel_GrblInitialized;
+        }
+
+        private void GrblViewModel_GrblInitialized(object sender, System.EventArgs e)
+        {
+            GCode.File.Model = _grblViewModel;
             GCode.File.FileLoaded += File_FileLoaded;
         }
 

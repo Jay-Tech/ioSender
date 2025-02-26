@@ -133,10 +133,10 @@
                     <RowDefinition Height="50"></RowDefinition>
                     <RowDefinition Height="50"></RowDefinition>
                 </Grid.RowDefinitions>
-                <Button Grid.Row="0" FontSize="20" Height="40" MaxWidth="150" Opacity=".6" Margin="5,0" Content="Start"></Button>
-                <Button Grid.Row="1" FontSize="20" Height="40" MaxWidth="150" Opacity=".6"   Margin="5,0" Content="Feed Hold" ></Button>
-                <Button Grid.Row="2" FontSize="20" Height="40"  MaxWidth="150" Opacity=".6" Margin="5,0"  Content="Stop" ></Button>
-                <Button Grid.Row="3" FontSize="20" Height="40" MaxWidth="150" Opacity=".6" Margin="5,0" Content="Rewind" ></Button>
+                <Button x:Name="StartButton" Grid.Row="0" FontSize="20" IsEnabled="{Binding RenderVM.EnableStart}" Command="{Binding RenderVM.StartJobCommand}" Height="40" MaxWidth="150"  Margin="5,0" Content="Start"></Button>
+                <Button x:Name="HoldButton" Grid.Row="1" FontSize="20" IsEnabled="{Binding RenderVM.EnableHold}" Command="{Binding RenderVM.HoldJobCommand}" Height="40" MaxWidth="150"    Margin="5,0" Content="Feed Hold" ></Button>
+                <Button x:Name="StopButton" Grid.Row="2" FontSize="20" IsEnabled="{Binding RenderVM.EnableStop}" Command="{Binding RenderVM.StopJobCommand}" Height="40"  MaxWidth="150" Margin="5,0"  Content="Stop" ></Button>
+                <Button x:Name="RewindButton" Grid.Row="3" FontSize="20" IsEnabled="{Binding RenderVM.EnableRewind}" Command="{Binding RenderVM.RewindJobCommand}" Height="40" MaxWidth="150"  Margin="5,0" Content="Rewind" ></Button>
             </Grid>
 
         </Grid>

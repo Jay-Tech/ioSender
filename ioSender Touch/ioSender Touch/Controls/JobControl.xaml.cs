@@ -106,13 +106,13 @@ namespace ioSenderTouch.Controls
         public JobControl()
         {
             InitializeComponent();
-            DataContextChanged += JobControl_DataContextChanged;
+            //DataContextChanged += JobControl_DataContextChanged;
             grblState.State = GrblStates.Unknown;
             grblState.Substate = 0;
             grblState.MPG = false;
             job.PgmEndLine = -1;
-            AppConfig.Settings.OnConfigFileLoaded += Settings_OnConfigFileLoaded;
-            this.Loaded += JobControl_Loaded;
+            //AppConfig.Settings.OnConfigFileLoaded += Settings_OnConfigFileLoaded;
+            //this.Loaded += JobControl_Loaded;
             Name = nameof(JobControl);
         }
 
@@ -192,7 +192,7 @@ namespace ioSenderTouch.Controls
                 model.PropertyChanged += OnDataContextPropertyChanged;
                 model.OnRealtimeStatusProcessed += RealtimeStatusProcessed;
                 model.OnCommandResponseReceived += ResponseReceived;
-                GCode.File.Model = model;
+               // GCode.File.Model = model;
             }
         }
 

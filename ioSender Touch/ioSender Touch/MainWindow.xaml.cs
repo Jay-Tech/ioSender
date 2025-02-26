@@ -20,7 +20,7 @@ namespace ioSenderTouch
 {
     public partial class MainWindow : Window
     {
-        private const string Version = "1.0.1.6";
+        private const string Version = "2.0.0";
         private const string App_Name = "IO Sender Touch";
 
         private readonly GrblViewModel _viewModel;
@@ -35,6 +35,7 @@ namespace ioSenderTouch
             var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config" + Path.DirectorySeparatorChar);
             GrblCore.Resources.Path = path;
             InitializeComponent();
+            
             Title = string.Format(Title, Version);
             _viewModel = DataContext as GrblViewModel ?? new GrblViewModel();
             _viewModel.ContentManager = new ContentManager();
@@ -64,6 +65,7 @@ namespace ioSenderTouch
                 MenuBorder.Child = menu;
                 MenuBorder.DataContext = _viewModel;
             }
+            
             this.Closing += MainWindow_Closing;
         }
 

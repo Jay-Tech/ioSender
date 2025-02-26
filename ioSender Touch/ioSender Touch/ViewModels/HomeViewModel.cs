@@ -23,8 +23,6 @@ namespace ioSenderTouch.ViewModels
     public class HomeViewModel : INotifyPropertyChanged
     {
 
-        private bool? initOK = null;
-        private bool isBooted = false;
         private GrblViewModel _model;
         private Controller _controller = null;
         private ToolView _toolView;
@@ -82,12 +80,11 @@ namespace ioSenderTouch.ViewModels
             SwitchConsoleCommand = new Command(SwitchConsole);
             _model = grblViewModel;
             _contentManager = _model.ContentManager;
-            _renderView = new RenderControl(_model);
+            _renderView = new RenderControl(_model, _contentManager);
             _grblSettingView = new GrblConfigView(_model);
             _grblAppSettings = new AppConfigView(_model);
             _offsetView = new OffsetView(_model);
             _utilityView = new UtilityView(_model);
-          
             AppConfig.Settings.OnConfigFileLoaded += AppConfiguationLoaded;
             _controller = new Controller(_model, AppConfig.Settings);
             _controller.SetupAndOpen(Application.Current.Dispatcher);
@@ -95,8 +92,9 @@ namespace ioSenderTouch.ViewModels
             BuildOptionalUi();
             GCode.File.FileLoaded += File_FileLoaded;
             var gamepad = new HandController(_model);
-            View = _renderView;
             ConsoleModeText = "Console";
+            View = _renderView;
+            _contentManager.SetActiveUiElement("jobView");
         }
 
         private void AppConfiguationLoaded(object sender, EventArgs e)
@@ -147,7 +145,7 @@ namespace ioSenderTouch.ViewModels
             if (GrblInfo.HasProbe && GrblSettings.ReportProbeCoordinates)
             {
                 _model.HasProbing = true;
-                _probeView = new ProbingView(_model);
+                _probeView = new ProbingView(_model, _contentManager);
                 _probeView.Activate(true);
 
             }
@@ -155,7 +153,6 @@ namespace ioSenderTouch.ViewModels
 
         private bool InitSystem()
         {
-            initOK = true;
             int timeout = 5;
 
             using (new UIUtils.WaitCursor())
@@ -217,9 +214,11 @@ namespace ioSenderTouch.ViewModels
                 case "jobView":
                     View = _renderView;
                     break;
+                default:  View = _renderView;
+                    break;
             }
 
-            _contentManager.SetActiveUiElement(nameof(View));
+            _contentManager.SetActiveUiElement(x.ToString());
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

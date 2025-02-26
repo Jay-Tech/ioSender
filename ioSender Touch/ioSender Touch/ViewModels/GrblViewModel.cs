@@ -277,7 +277,6 @@ namespace ioSenderTouch.ViewModels
 
         public GrblViewModel()
         {
-            RenderVM = new RenderViewModel();
             _a = _pn = _fs = _sc = _tool = string.Empty;
             Clear();
             Keyboard = new KeypressHandler(this);

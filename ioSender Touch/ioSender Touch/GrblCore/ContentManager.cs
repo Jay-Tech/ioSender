@@ -7,11 +7,11 @@ public class ContentManager
     private readonly Dictionary<string, IActiveViewModel> _uiElementCollection = [];
 
 
-    public void RegisterViewAndModel(string viewName, IActiveViewModel name)
+    public void RegisterViewAndModel(string viewName, IActiveViewModel vm)
     {
-        if (!_uiElementCollection.ContainsKey(name.Name))
+        if (!_uiElementCollection.ContainsKey(viewName))
         {
-            _uiElementCollection.Add(name.Name, name);
+            _uiElementCollection.Add(viewName, vm);
         }
     }
     public bool SetActiveUiElement(string name)

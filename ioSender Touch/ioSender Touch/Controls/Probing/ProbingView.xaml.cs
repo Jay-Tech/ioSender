@@ -72,12 +72,13 @@ namespace ioSenderTouch.Controls.Probing
             profiles.Load();
 
         }
-        public ProbingView(GrblViewModel grbl)
+        public ProbingView(GrblViewModel grbl, ContentManager contentManager)
         {
             _grblViewModel = grbl;
             InitializeComponent();
             profiles.Load();
             DataContext = model = new ProbingViewModel(_grblViewModel, profiles);
+            contentManager.RegisterViewAndModel("probeView", model);
             this.LostFocus += ProbingView_LostFocus;
             this.IsVisibleChanged += ProbingView_IsVisibleChanged;
            
@@ -195,7 +196,7 @@ namespace ioSenderTouch.Controls.Probing
 
         private bool StartProbe(Key key)
         {
-
+            if (!model.Active) return false;
             focusedControl = Keyboard.FocusedElement;
             getView(tab.SelectedItem as TabItem)?.Start(model.PreviewEnable);
 

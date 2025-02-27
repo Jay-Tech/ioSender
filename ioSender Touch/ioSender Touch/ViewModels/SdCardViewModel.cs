@@ -430,7 +430,6 @@ namespace ioSenderTouch.ViewModels
 
                 while (res == null)
                     EventUtils.DoEvents();
-                var worked = re
                 model.Silent = false;
 
                 dataTable.AcceptChanges();

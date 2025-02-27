@@ -32,7 +32,8 @@
                 <Button Content="Job" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding HomeViewModel.ChangeView}" CommandParameter="RenderView"  Width="140" Margin="1,0,1,0" ></Button>
                 <Button Content="Probe" IsEnabled="{Binding IsJobRunning, Converter={StaticResource InvertBooleanConverter }, Mode=TwoWay}" Visibility="{Binding  Path= HasProbing,Converter={StaticResource IsVisibleConverter}}" HorizontalContentAlignment="Center"
                         VerticalContentAlignment="Center" Command="{Binding HomeViewModel.ChangeView}" CommandParameter="ProbingView"  Width="140" Margin="1,0,1,0" ></Button>
-                <Button Content="SD Card" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding HomeViewModel.ChangeView}" CommandParameter="sdCardView" Visibility="{Binding  Path= HasSDCard,Converter={StaticResource IsVisibleConverter}}"  
+                <Button Content="SD Card" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding HomeViewModel.ChangeView}" 
+                        CommandParameter="SDCardView" Visibility="{Binding  Path= HasSDCard,Converter={StaticResource IsVisibleConverter}}"  
                         IsEnabled="{Binding IsJobRunning, Converter={StaticResource InvertBooleanConverter}}" 
                         Width="140" Margin="1,0,1,0" ></Button>
                 <Button Content="Offset" IsEnabled="{Binding IsJobRunning, Converter={StaticResource InvertBooleanConverter}}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding HomeViewModel.ChangeView}" CommandParameter="offsetView"

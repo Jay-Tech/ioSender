@@ -4,9 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:viewModels="clr-namespace:ioSenderTouch.ViewModels"
+             
+             d:DataContext="{d:DesignInstance Type=viewModels:SdCardViewModel, IsDesignTimeCreatable=True}"
              mc:Ignorable="d" 
-             d:DesignHeight="515" d:DesignWidth="875"
-             Loaded="SDCardView_Loaded">
+             d:DesignHeight="515" d:DesignWidth="875">
     <UserControl.Resources>
         <system:String x:Uid="str_notConnection" x:Key="NoConnection">No connection.</system:String>
         <system:String x:Uid="str_uploading" x:Key="Uploading">Uploading...</system:String>
@@ -19,28 +21,32 @@
         <system:String x:Uid="str_illegalName" x:Key="IllegalName">File: {0}\n!,?,~ and SPACE is not supported in filenames, please rename.</system:String>
     </UserControl.Resources>
     <Grid>
-        <DataGrid x:Uid="dgr_sdcard" x:Name="dgrSDCard" ItemsSource="{Binding}" IsReadOnly="True" HorizontalAlignment="Left" Margin="30,30,0,0" VerticalAlignment="Top" Height="450" Width="380"
+        <DataGrid x:Uid="dgr_sdcard" x:Name="dgrSDCard" ItemsSource="{Binding  GrblSdCard.Files}" IsReadOnly="True" 
+                  HorizontalAlignment="Left" Margin="30,30,0,0" VerticalAlignment="Top" Height="450" Width="380"
                   SelectionMode="Single" SelectionUnit="FullRow" AutoGenerateColumns="False"
                   CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False" CanUserSortColumns="False" CanUserAddRows="False"
-                  SelectionChanged="dgrSDCard_SelectionChanged" MouseDoubleClick="dgrSDCard_MouseDoubleClick"
+                  SelectedItem="{Binding SelectedFile}"
                   ToolTip="Right click for menu, double click to run file.">
             <DataGrid.Columns>
-                <DataGridTextColumn x:Uid="hdr_name" Header="Name" Binding="{Binding Name}" Width="*"/>
-                <DataGridTextColumn x:Uid="hdr_size" Header="Size" Binding="{Binding Size}" Width="100"/>
+                <DataGridTextColumn x:Uid="hdr_name" Header="Name" Binding="{Binding GrblSdCard.Name}" Width="*"/>
+                <DataGridTextColumn x:Uid="hdr_size" Header="Size" Binding="{Binding GrblSdCard.Size}" Width="100"/>
                 <!--
                 <DataGridTextColumn Header="Remark" Binding="{Binding Invalid}" Width="*"/>
                 -->
             </DataGrid.Columns>
             <DataGrid.ContextMenu>
                 <ContextMenu x:Name="ctxMenu">
-                    <MenuItem x:Uid="mnu_run" Header="Run" Click="Run_Click" />
-                    <MenuItem x:Uid="mnu_downloadRun" Header="D_ownload and run" Click="DownloadRun_Click" />
+                    <MenuItem x:Uid="mnu_run" Header="Run"  Command="{Binding RunCommand}" />
+                    <MenuItem x:Uid="mnu_downloadRun" Header="D_ownload and run"  Command="{Binding DownLoadRunCommand}" />
                     <MenuItem x:Uid="mnu_enableRewind" Header="Enable rewind" IsEnabled="{Binding Path=CanRewind}" IsChecked="{Binding Path=Rewind, Mode=TwoWay}" IsCheckable="True" />
-                    <MenuItem x:Uid="mnu_viewAll" Header="View all" IsEnabled="{Binding Path=CanViewAll}" IsChecked="{Binding ViewAll, Mode=TwoWay}" IsCheckable="True" Click="ViewAll_Click"/>
-                    <MenuItem x:Uid="mnu_delete" Header="Delete" IsEnabled="{Binding Path=CanDelete}" Click="Delete_Click" />
+                    <MenuItem x:Uid="mnu_viewAll" Header="View all" IsEnabled="{Binding Path=CanViewAll}" IsChecked="{Binding ViewAll, Mode=TwoWay}" IsCheckable="True" Command="{Binding ViewAllCommand}"/>
+                    <MenuItem x:Uid="mnu_delete" Header="Delete" IsEnabled="{Binding Path=CanDelete}" Command="{Binding DeleteCommand}" />
                 </ContextMenu>
             </DataGrid.ContextMenu>
+            <DataGrid.InputBindings>
+                <MouseBinding Gesture="LeftDoubleClick" Command="{Binding RunNowCommand }" />
+            </DataGrid.InputBindings>
         </DataGrid>
-        <Button x:Uid="btn_upload" Content="Upload" IsEnabled="{Binding Path=CanUpload, RelativeSource={RelativeSource AncestorType=UserControl}}" HorizontalAlignment="Left" Margin="428,460,0,0" VerticalAlignment="Top" Width="75" Click="Upload_Click"/>
+        <Button x:Uid="btn_upload" Content="Upload" IsEnabled="{Binding Path=CanUpload}" HorizontalAlignment="Left" Margin="428,460,0,0" VerticalAlignment="Top" Width="75" Command="{Binding UploadCommand}"/>
     </Grid>
 </UserControl>

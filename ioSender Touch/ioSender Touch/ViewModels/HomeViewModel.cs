@@ -100,10 +100,12 @@ namespace ioSenderTouch.ViewModels
         private void AppConfiguationLoaded(object sender, EventArgs e)
         {
             _model.PollingInterval = AppConfig.Settings.Base.PollInterval;
-            var controls = new ObservableCollection<UserControl>();
+            var controls = new ObservableCollection<UserControl>
+            {
+                new BasicConfigControl(),
+                new ProbingConfigControl()
+            };
 
-            controls.Add(new BasicConfigControl());
-            controls.Add(new ProbingConfigControl());
             if (AppConfig.Settings.JogMetric.Mode != JogConfig.JogMode.Keypad)
             {
                 controls.Add(new JogUiConfigControl(_model));
@@ -136,7 +138,7 @@ namespace ioSenderTouch.ViewModels
         {
             if (_model.HasSDCard)
             {
-                _sdView = new SDCardView(_model);
+                _sdView = new SDCardView(_model, _contentManager);
             }
             if (_model.HasToolTable)
             {
@@ -190,7 +192,7 @@ namespace ioSenderTouch.ViewModels
                 case "offsetView":
                     View = _offsetView;
                     break;
-                case "sdCardView":
+                case nameof(SDCardView):
                     View = _sdView;
                     break;
                 case "grblSettingsView":

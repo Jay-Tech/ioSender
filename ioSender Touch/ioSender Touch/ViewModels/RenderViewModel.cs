@@ -3,12 +3,11 @@ using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using CNC.Core.Comands;
 using ioSenderTouch.Controls;
 using ioSenderTouch.GrblCore;
+using ioSenderTouch.GrblCore.Comands;
 using ioSenderTouch.GrblCore.Config;
 
 namespace ioSenderTouch.ViewModels

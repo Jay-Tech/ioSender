@@ -618,8 +618,7 @@ namespace ioSenderTouch.ViewModels
             bool ok;
             string ucmd = command.ToUpper();
 
-            if ((ok = !(GrblState.State == GrblStates.Tool &&
-                        !(ucmd.StartsWith("$J=") || ucmd == "$TPW" || ucmd.Contains("G10L20")))))
+            if (ok = !(GrblState.State == GrblStates.Tool && !(ucmd.StartsWith("$J=") || ucmd == "$TPW" || ucmd.Contains("G10L20"))))
                 MDI = command;
             else
                 Message = LibStrings.FindResource("JoggingOnly");

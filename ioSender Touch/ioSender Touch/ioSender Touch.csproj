@@ -404,6 +404,7 @@
     <Compile Include="Utility\DPIProvider.cs" />
     <Compile Include="ViewModels\JogConfigControlViewModel.cs" />
     <Compile Include="ViewModels\RenderViewModel.cs" />
+    <Compile Include="ViewModels\SdCardViewModel.cs" />
     <Compile Include="ViewModels\UIJoggingViewModel.cs" />
     <Compile Include="ViewModels\VirtualKeyboardViewModel.cs" />
     <Compile Include="Views\HomeViewPortrait.xaml.cs">
@@ -763,12 +764,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\CNC Core\CNC Core\CNC Core.csproj">
-      <Project>{f245ff89-a838-4d6e-aa40-92cfd3d072d3}</Project>
-      <Name>CNC Core</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="App.ico" />

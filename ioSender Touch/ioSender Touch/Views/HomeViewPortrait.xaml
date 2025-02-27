@@ -38,11 +38,11 @@
                         HorizontalContentAlignment="Center"
                         VerticalContentAlignment="Center"   Width="140" Margin="1,0,1,0" ></Button>
                 <Button Content="SD Card" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  
-                        Command="{Binding HomeViewModel.ChangeView}" CommandParameter="offsetView"
+                        Command="{Binding HomeViewModel.ChangeView}" CommandParameter="SDCardView"
                         Visibility="{Binding  Path= HasSDCard,Converter={StaticResource IsVisibleConverter}}"
                         Width="140" Margin="1,0,1,0" ></Button>
                 <Button Content="Offset" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
-                        Command="{Binding HomeViewModel.ChangeView}" CommandParameter="sdCardView" 
+                        Command="{Binding HomeViewModel.ChangeView}" CommandParameter="offsetView" 
                         Width="140" Margin="1,0,1,0" ></Button>
                 <Button Content="Utility" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
                         Command="{Binding HomeViewModel.ChangeView}" CommandParameter="utilityView"

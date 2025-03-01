@@ -45,7 +45,7 @@ namespace ioSenderTouch.Controls
 {
     public partial class WorkParametersControlTouch : UserControl
     {
-        public new bool IsFocused => cbxTool.IsFocused || cbxOffset.IsFocused;
+        //public new bool IsFocused => cbxTool.IsFocused || cbxOffset.IsFocused;
 
         public WorkParametersControlTouch()
         {

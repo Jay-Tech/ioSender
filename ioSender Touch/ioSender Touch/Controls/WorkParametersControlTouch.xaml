@@ -10,62 +10,61 @@
         <controls:LogicalNotConverter x:Key="BooleanConverter" />
         <controls:BoolToVisibleConverter x:Key="IsVisibleConverter" />
     </UserControl.Resources>
-    <GroupBox x:Uid="grp_workparams" x:Name="grpWorkParams" Header="Work Parameters" IsEnabled="{Binding Path=IsJobRunning, Converter={StaticResource BooleanConverter}}" 
-              HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="Auto">
-        <Grid Name="Main" Height="Auto" VerticalAlignment="Stretch">
+    <GroupBox x:Uid="grp_workparams" x:Name="grpWorkParams" Header="Work Parameters" 
+              IsEnabled="{Binding Path=IsJobRunning, Converter={StaticResource BooleanConverter}}" 
+              HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Grid Name="Main" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Grid.RowDefinitions>
-                <RowDefinition Height="60"></RowDefinition>
+                <RowDefinition Height="50"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Grid HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Stretch"  Width="235">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="55"/>
-                    <ColumnDefinition Width="70"/>
-                    <ColumnDefinition Width="45"/>
-                    <ColumnDefinition Width="75"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="34"/>
-                    <RowDefinition Height="24"/>
-                </Grid.RowDefinitions>
-                <Label Grid.Row="0" Grid.Column="0" x:Uid="lbl_offset" x:Name="lblOffset" Content="Offset:" HorizontalContentAlignment="Center" HorizontalAlignment="Right" VerticalAlignment="Center" Height="26" Margin="0,6,1,2" Width="52" />
-                <ComboBox x:Name="cbxOffset" Grid.Row="0" Grid.Column="1" DisplayMemberPath="Code" SelectedValuePath="Code" ItemsSource="{Binding Path=CoordinateSystems}" SelectedValue="{Binding Path=WorkCoordinateSystem, Mode=OneWay}" HorizontalAlignment="Left" VerticalAlignment="Center" Width="59" Height="22" SelectionChanged="cbxOffset_SelectionChanged" Margin="4,6,0,6"/>
-                <Label x:Uid="lbl_tool" x:Name="lblTool" Content="Tool:" Grid.Column="2" HorizontalContentAlignment="Right" HorizontalAlignment="Right" VerticalAlignment="Center" Height="26" Width="45" Margin="0,4"
-                       Grid.Row="0" />
-                <Border x:Name="bgTool" Grid.Column="4" HorizontalAlignment="Left" VerticalAlignment="Center" CornerRadius="2" Width="60" Height="30" Margin="0,2,-9,2"
+            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Label  x:Uid="lbl_offset" x:Name="lblOffset" Content="Offset:" HorizontalContentAlignment="Center" 
+                             HorizontalAlignment="Left" VerticalAlignment="Center" Height="26" 
+                             Margin="0,6,1,2" Width="52" />
+                <ComboBox x:Name="cbxOffset"  DisplayMemberPath="Code" SelectedValuePath="Code" 
+                               ItemsSource="{Binding Path=CoordinateSystems}" 
+                               SelectedValue="{Binding Path=WorkCoordinateSystem, Mode=OneWay}" 
+                               HorizontalAlignment="Left" VerticalAlignment="Center" MinWidth="80"
+                               MinHeight="28" SelectionChanged="cbxOffset_SelectionChanged" 
+                               Margin="4,6,0,6"/>
+            </StackPanel>
+
+            <!--<Label x:Uid="lbl_tool" x:Name="lblTool" Content="Tool:" Grid.Column="2" HorizontalContentAlignment="Right" HorizontalAlignment="Right" VerticalAlignment="Center" Height="26" Width="45" Margin="0,4"
+                       Grid.Row="0" />-->
+            <!--<Border x:Name="bgTool" Grid.Column="4" HorizontalAlignment="Left" VerticalAlignment="Center" CornerRadius="2" Width="60" Height="30" Margin="0,2,-9,2"
                         Grid.Row="0">
                     <controls:NumericComboBox x:Name="cbxTool" IsEditable="False" DisplayMemberPath="Code" SelectedValuePath="Code" ItemsSource="{Binding Path=Tools}" SelectedValue="{Binding Path=Tool, Mode=OneWay}" 
                                            Grid.Column="3" Format="##0" HorizontalAlignment="Left" VerticalAlignment="Center" Width="60" Height="22" Margin="0,4" SelectionChanged="cbxTool_SelectionChanged"/>
-                </Border>
-                <controls:LEDControl x:Uid="lbl_tlo" Grid.Row="1" Grid.Column="1" Label="TLO" IsSet="{Binding Path=IsToolOffsetActive, Mode=OneWay}" Visibility="{Binding Path=IsParserStateLive, Converter={StaticResource IsVisibleConverter}}" Margin="8,0,1,0"/>
-                <controls:LEDControl x:Uid="lbl_tlo_refd" Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="2" Label="TLO ref'd" IsSet="{Binding Path=IsTloReferenceSet, Mode=OneWay}" Margin="6,0,8,0"/>
-            </Grid>
-            <Grid Grid.Row="1" VerticalAlignment="Stretch" Height="Auto">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition  Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <UniformGrid Grid.Column="0" Rows="3" Margin="3,0,3,0" VerticalAlignment="Stretch" Height="Auto">
-                    <!--<Grid.RowDefinitions>
-                        <RowDefinition Height="*"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
-                    </Grid.RowDefinitions>-->
-                    <Button Grid.Row="0" Name="G54" Content="G54" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="Auto" Command="{Binding Path= WcsCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}" Margin="0,2"></Button>
-                    <Button Grid.Row="1" Name="G56" Content="G56" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="Auto" Command="{Binding Path= WcsCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}" Margin="0,2"></Button>
-                    <Button Grid.Row="2" Name="G58" Content="G58" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="Auto" Command="{Binding Path= WcsCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}" Margin="0,2"></Button>
+                </Border>-->
+            <!--<controls:LEDControl x:Uid="lbl_tlo" Grid.Row="1" Grid.Column="1" Label="TLO" 
+                                     IsSet="{Binding Path=IsToolOffsetActive, Mode=OneWay}"
+                                     Visibility="{Binding Path=IsParserStateLive, Converter={StaticResource IsVisibleConverter}}" 
+                                     Margin="8,0,1,0"/>
+                <controls:LEDControl x:Uid="lbl_tlo_refd" Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="2" Label="TLO ref'd" 
+                                     IsSet="{Binding Path=IsTloReferenceSet, Mode=OneWay}" Margin="6,0,8,0"/>-->
+            
+               
+                <UniformGrid Grid.Row="1" Grid.Column="0" Columns="2" Rows="3" Margin="3,0,3,0" VerticalAlignment="Stretch" Height="Auto">
+                    <Button Name="G54" Content="G54" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="Auto" 
+                            Command="{Binding Path= WcsCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}" 
+                            Margin="2,2"></Button>
+                    <Button  Name="G55" Content="G55" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="Auto" 
+                            Command="{Binding Path= WcsCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}" 
+                            Margin="2,2"></Button>
+                    <Button  Name="G56" Content="G56" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="Auto" 
+                            Command="{Binding Path= WcsCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}" 
+                            Margin="2,2"></Button>
+                    <Button  Name="G57" Content="G57" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="Auto" 
+                            Command="{Binding Path= WcsCommand}"  CommandParameter="{Binding RelativeSource={RelativeSource Self}}" 
+                            Margin="2,2"></Button>
+                    <Button  Name="G58" Content="G58" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="Auto" 
+                            Command="{Binding Path= WcsCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}" 
+                            Margin="2,2"></Button>
+                    <Button  Name="G59" Content="G59" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="Auto" 
+                            Command="{Binding Path= WcsCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}" 
+                            Margin="2,2"></Button>
                 </UniformGrid>
-                <UniformGrid Grid.Column="1"  Rows="3" Margin="3,0,3,0" VerticalAlignment="Stretch" Height="Auto">
-                    <!--<Grid.RowDefinitions>
-                        <RowDefinition Height="*"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
-                        <RowDefinition Height="*"></RowDefinition>
-                    </Grid.RowDefinitions>-->
-                    <Button Grid.Row="0" Name="G55" Content="G55" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="Auto" Command="{Binding Path= WcsCommand}"  CommandParameter="{Binding RelativeSource={RelativeSource Self}}" Margin="0,2"></Button>
-                    <Button Grid.Row="1" Name="G57" Content="G57" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="Auto" Command="{Binding Path= WcsCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}" Margin="0,2"></Button>
-                    <Button Grid.Row="2" Name="G59" Content="G59" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="Auto" Command="{Binding Path= WcsCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}" Margin="0,2"></Button>
-                </UniformGrid>
             </Grid>
-        </Grid>
     </GroupBox>
 </UserControl>

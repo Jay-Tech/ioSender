@@ -49,8 +49,8 @@
             <StackPanel Name="MainStackPanel"  Orientation="Horizontal" Margin="0,0,0,0" >
                 <local:MDIControl  x:Name="MdiControl" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="415" Height="Auto" Margin="5,3,0,5"/>
                 <local:DROControl x:Name="DRO" HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="3,3,0,5"  VerticalContentAlignment="Stretch"/>
-                <local:WorkParametersControlTouch x:Name="workParametersControl"  Margin="3,3,0,5"
-                                                     Height="Auto"  VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
+                <local:WorkParametersControlTouch x:Name="workParametersControl"  Margin="3,3,0,5" 
+                                                     Height="Auto" Width="256" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
 
                 <local:FeedControl  x:Name="feedControl"  HorizontalAlignment="Center"  VerticalAlignment="Stretch"  Margin="3,3,0,5" Width="260" Height="Auto" />
                 <local:JogControl x:Name="jogControl" Margin="3,3,0,5" Height="Auto" HorizontalAlignment="Stretch" Width="395" VerticalAlignment="Stretch" />

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
@@ -129,6 +130,12 @@ namespace ioSenderTouch.ViewModels
             grblState.MPG = false;
             job.PgmEndLine = -1;
             SetInitialState();
+            model.GrblInitialized += Model_GrblInitialized;
+        }
+
+        private void Model_GrblInitialized(object sender, EventArgs e)
+        {
+            serialSize = Math.Min(AppConfig.Settings.Base.MaxBufferSize, GrblInfo.SerialBufferSize);
         }
 
         private void SetInitialState()
@@ -172,7 +179,6 @@ namespace ioSenderTouch.ViewModels
             ShowOverlay = AppConfig.Settings.GCodeViewer.ShowTextOverlay;
             ForegroundColor = AppConfig.Settings.GCodeViewer.BlackBackground ?
                 Brushes.White : Brushes.Black;
-            serialSize = Math.Min(AppConfig.Settings.Base.MaxBufferSize, serialSize);
             var uiSettings = AppConfig.Settings.AppUiSettings;
             if (uiSettings.EnableStopLightTheme)
             {

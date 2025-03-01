@@ -43,7 +43,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using System.Xml.Serialization;
-using static ioSenderTouch.GrblCore.GCodeParser;
+
 
 namespace ioSenderTouch.GrblCore.Config
 {
@@ -58,7 +58,7 @@ namespace ioSenderTouch.GrblCore.Config
                 {
 
                     // resource.Source = new Uri("pack://application:,,,/ioSenderTouch.GrblCore;Component/LibStrings.xaml", UriKind.Absolute);
-                    resource.Source = new Uri("pack://application:,,,/GrblCore/LibStrings.xaml",
+                     resource.Source = new Uri("pack://application:,,,/GrblCore/LibStrings.xaml",
                         UriKind.Absolute);
                 }
                 catch
@@ -254,7 +254,7 @@ namespace ioSenderTouch.GrblCore.Config
         private Color _uIColor;
         private int _width = 1920;
         private int _height = 1080;
-
+        private bool _enableLightTheme;
 
 
         public bool EnableToolBar
@@ -264,6 +264,17 @@ namespace ioSenderTouch.GrblCore.Config
             {
                 if (value == _enableToolBar) return;
                 _enableToolBar = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool EnableLightTheme
+        {
+            get => _enableLightTheme;
+            set
+            {
+                if (value == _enableLightTheme) return;
+                _enableLightTheme = value;
                 OnPropertyChanged();
             }
         }
@@ -350,7 +361,7 @@ namespace ioSenderTouch.GrblCore.Config
     {
         private int _pollInterval = 200, /* ms*/  _maxBufferSize = 300;
         private bool _useBuffering = false, _keepMdiFocus = true, _filterOkResponse = false, _saveWindowSize = false, _autoCompress = false;
-        private CommandIgnoreState _ignoreM6 = CommandIgnoreState.No, _ignoreM7 = CommandIgnoreState.No, _ignoreM8 = CommandIgnoreState.No, _ignoreG61G64 = CommandIgnoreState.Strip;
+        private GCodeParser.CommandIgnoreState _ignoreM6 = GCodeParser.CommandIgnoreState.No, _ignoreM7 = GCodeParser.CommandIgnoreState.No, _ignoreM8 = GCodeParser.CommandIgnoreState.No, _ignoreG61G64 = GCodeParser.CommandIgnoreState.Strip;
         private string _theme = "default";
 
 
@@ -369,11 +380,11 @@ namespace ioSenderTouch.GrblCore.Config
         public bool AutoCompress { get { return _autoCompress; } set { _autoCompress = value; OnPropertyChanged(); } }
 
         [XmlIgnore]
-        public CommandIgnoreState[] CommandIgnoreStates { get { return (CommandIgnoreState[])Enum.GetValues(typeof(CommandIgnoreState)); } }
-        public CommandIgnoreState IgnoreM6 { get { return _ignoreM6; } set { _ignoreM6 = value; OnPropertyChanged(); } }
-        public CommandIgnoreState IgnoreM7 { get { return _ignoreM7; } set { _ignoreM7 = value; OnPropertyChanged(); } }
-        public CommandIgnoreState IgnoreM8 { get { return _ignoreM8; } set { _ignoreM8 = value; OnPropertyChanged(); } }
-        public CommandIgnoreState IgnoreG61G64 { get { return _ignoreG61G64; } set { _ignoreG61G64 = value; OnPropertyChanged(); } }
+        public GCodeParser.CommandIgnoreState[] CommandIgnoreStates { get { return (GCodeParser.CommandIgnoreState[])Enum.GetValues(typeof(GCodeParser.CommandIgnoreState)); } }
+        public GCodeParser.CommandIgnoreState IgnoreM6 { get { return _ignoreM6; } set { _ignoreM6 = value; OnPropertyChanged(); } }
+        public GCodeParser.CommandIgnoreState IgnoreM7 { get { return _ignoreM7; } set { _ignoreM7 = value; OnPropertyChanged(); } }
+        public GCodeParser.CommandIgnoreState IgnoreM8 { get { return _ignoreM8; } set { _ignoreM8 = value; OnPropertyChanged(); } }
+        public GCodeParser.CommandIgnoreState IgnoreG61G64 { get { return _ignoreG61G64; } set { _ignoreG61G64 = value; OnPropertyChanged(); } }
         public ObservableCollection<Macro> Macros { get; set; } = new ObservableCollection<Macro>();
         public JogConfig JogMetric { get; set; } = new JogConfig();
         public JogConfig JogImperial { get; set; } = new JogConfig();

@@ -69,6 +69,7 @@ namespace ioSenderTouch.Controls
         public static LogicalAndConverter LogicalAndConverter = new LogicalAndConverter();
         public static LogicalOrConverter LogicalOrConverter = new LogicalOrConverter();
         public static BoolToVisibleConverter BoolToVisibleConverter = new BoolToVisibleConverter();
+        public static BoolToNotVisibleConverter BoolToNotVisibleConverter = new BoolToNotVisibleConverter();
         public static IsAxisVisibleConverter HasAxisConverter = new IsAxisVisibleConverter();
         public static IsSignalVisibleConverter IsSignalVisibleConverter = new IsSignalVisibleConverter();
         public static EnumValueToBooleanConverter EnumValueToBooleanConverter = new EnumValueToBooleanConverter();
@@ -184,7 +185,7 @@ namespace ioSenderTouch.Controls
     {
         public object Convert(object[] value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value[0] is int && value[1] is int ? (string.Format((int)value[1] == 0 ? Converters.numBlocks : Converters.blockOfBlocks, value[1], value[0])) : string.Empty;
+            return value[0] is int && value[1] is int ? (string.Format((int)value[1] == 0 ? $"Blocks:{value[0]}" : $"Block: {value[1]}/{value[0]}")) : string.Empty;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
@@ -845,7 +846,7 @@ namespace ioSenderTouch.Controls
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value is bool && (bool)value ? Visibility.Visible : Visibility.Collapsed;
+            return value is true ? Visibility.Visible : Visibility.Collapsed;
         }
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {

@@ -148,6 +148,7 @@ namespace ioSenderTouch.ViewModels
         private HomeViewModel _homeViewModel;
         private RenderViewModel _renderVm;
         private string _setSpindleSpeed;
+        private int _rxBufferSize;
 
 
         public delegate void GrblResetHandler();
@@ -1452,8 +1453,18 @@ namespace ioSenderTouch.ViewModels
         public int PlanBufferSize { get { return GrblInfo.PlanBufferSize; } }
         public int PlanBufferAvailable { get { return int.Parse(_pb_avail); } }
 
-        public int RxBufferSize { get { return GrblInfo.SerialBufferSize; } }
-        public int RxBufferAvailable { get { return int.Parse(_rxb_avail); } }
+        public int RxBufferSize
+        {
+            get => _rxBufferSize;
+            set
+            {
+                if (value == _rxBufferSize) return;
+                _rxBufferSize = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int RxBufferAvailable => int.Parse(_rxb_avail);
 
         #endregion
 
@@ -2187,7 +2198,7 @@ namespace ioSenderTouch.ViewModels
                                         _message = LibStrings.FindResource("ContResetUnlock");
                                         break;
                                 }
-                                Message = (msg == "Reset to continue" ? string.Empty : msg + ", ") + _message;
+                               // Message = (msg == "Reset to continue" ? string.Empty : msg + ", ") + _message;
                             }
                             else
                                 Message = msg;

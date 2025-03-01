@@ -910,7 +910,9 @@ namespace ioSenderTouch.GrblCore
         public static string Options { get; private set; } = string.Empty;
         public static string NewOptions { get; private set; } = string.Empty;
         public static string TrinamicDrivers { get; private set; } = string.Empty;
+
         public static int SerialBufferSize { get; private set; } = 128;
+
         public static int PlanBufferSize { get; private set; } = 16;
         public static bool ReportProbeResult { get; internal set; } = false;
         public static bool ForceSetOrigin { get; private set; } = false;
@@ -1215,7 +1217,7 @@ namespace ioSenderTouch.GrblCore
                         if (s.Length > 1)
                             PlanBufferSize = int.Parse(s[1], CultureInfo.InvariantCulture);
                         if (s.Length > 2)
-                            SerialBufferSize = int.Parse(s[2], CultureInfo.InvariantCulture);
+                            Grbl.GrblViewModel.RxBufferSize = SerialBufferSize = int.Parse(s[2], CultureInfo.InvariantCulture);
                         if (s.Length > 3 && NumAxes != int.Parse(s[3], CultureInfo.InvariantCulture))
                         {
                             NumAxes = int.Parse(s[3], CultureInfo.InvariantCulture);

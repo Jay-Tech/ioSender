@@ -43,19 +43,23 @@ namespace ioSenderTouch.Controls
         private void GCodeListControl_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (sender is GrblViewModel) switch (e.PropertyName)
-            {
-                case nameof(GrblViewModel.ScrollPosition):
-                    int sp = ((GrblViewModel)sender).ScrollPosition;
-                    grdGCode.SelectedIndex = sp;
-                    grdGCode.UpdateLayout();
-                    grdGCode.ScrollIntoView(grdGCode.SelectedItem);
+                {
+                    case nameof(GrblViewModel.ScrollPosition):
+                        int sp = ((GrblViewModel)sender).ScrollPosition;
+                        grdGCode.SelectedIndex = sp;
+                        grdGCode.UpdateLayout();
+                        if (grdGCode?.SelectedItem != null)
+                        {
+                            grdGCode.ScrollIntoView(grdGCode.SelectedItem);
+                        }
+
                         break;
-                    //if (sp == 0)
-                    //    scroll.ScrollToTop();
-                    //else
-                    //    scroll.ScrollToVerticalOffset(sp);
-                    //break;
-            }
+                        //if (sp == 0)
+                        //    scroll.ScrollToTop();
+                        //else
+                        //    scroll.ScrollToVerticalOffset(sp);
+                        //break;
+                }
         }
     }
 }

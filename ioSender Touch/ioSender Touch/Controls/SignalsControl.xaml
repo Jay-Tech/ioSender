@@ -12,8 +12,6 @@
                 <ResourceDictionary Source="SharedStyles.xaml"/>
                 <ResourceDictionary>
                     <Style TargetType="controls:SignalControl">
-                        <Setter Property="Width" Value="18"/>
-                        <Setter Property="Height" Value="35"/>
                         <Setter Property="VerticalAlignment" Value="Center"/>
                         <Setter Property="Padding" Value="0"/>
                     </Style>
@@ -46,34 +44,6 @@
                             </Setter.Value>
                         </Setter>
                     </Style>
-                    <Style x:Key="MotorWarningVisibleStyle">
-                        <Setter Property="Control.Visibility">
-                            <Setter.Value>
-                                <MultiBinding Converter="{StaticResource IsSignalVisibleConverter}">
-                                    <Binding Path="OptionalSignals" />
-                                    <Binding>
-                                        <Binding.Source>
-                                            <grblCore:Signals>MotorWarning</grblCore:Signals>
-                                        </Binding.Source>
-                                    </Binding>
-                                </MultiBinding>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                    <Style x:Key="BlockDeleteVisibleStyle">
-                        <Setter Property="Control.Visibility">
-                            <Setter.Value>
-                                <MultiBinding Converter="{StaticResource IsSignalVisibleConverter}">
-                                    <Binding Path="OptionalSignals" />
-                                    <Binding>
-                                        <Binding.Source>
-                                            <grblCore:Signals>BlockDelete</grblCore:Signals>
-                                        </Binding.Source>
-                                    </Binding>
-                                </MultiBinding>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
                     <Style x:Key="OptionalStopVisibleStyle">
                         <Setter Property="Control.Visibility">
                             <Setter.Value>
@@ -92,29 +62,17 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Border x:Uid="grp_signals" x:Name="grpSignals" HorizontalAlignment="Left" VerticalAlignment="Top" Height="45" Width="200" Margin="0,0,0,0">
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" Width="Auto">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="1,0,1,0" VerticalAlignment="Center" Width="Auto">
             <controls:SignalControl Label="X" IsSet="{Binding Path=Signals[(grblCore:Signals)LimitX], Mode=OneWay}"/>
             <controls:SignalControl Label="Y" IsSet="{Binding Path=Signals[(grblCore:Signals)LimitY], Mode=OneWay}" Style="{StaticResource YAxisVisibleStyle}"/>
             <controls:SignalControl Label="Z" IsSet="{Binding Path=Signals[(grblCore:Signals)LimitZ], Mode=OneWay}" Style="{StaticResource ZAxisVisibleStyle}"/>
             <controls:SignalControl Label="{Binding Path=AxisLetter.A, Mode=OneWay}" IsSet="{Binding Path=Signals[(grblCore:Signals)LimitA], Mode=OneWay}" Style="{StaticResource AAxisVisibleStyle}"/>
-            <!--<local:SignalControl Label="{Binding Path=AxisLetter.B, Mode=OneWay}" IsSet="{Binding Path=Signals[(core:Signals)LimitB], Mode=OneWay}" Style="{StaticResource BAxisVisibleStyle}"/>-->
-            <!--<local:SignalControl Label="{Binding Path=AxisLetter.C, Mode=OneWay}" IsSet="{Binding Path=Signals[(core:Signals)LimitC], Mode=OneWay}" Style="{StaticResource CAxisVisibleStyle}"/>-->
-            <!--<local:SignalControl Label="U" IsSet="{Binding Path=Signals[(core:Signals)LimitU], Mode=OneWay}" Style="{StaticResource UAxisVisibleStyle}"/>
-            <local:SignalControl Label="V" IsSet="{Binding Path=Signals[(core:Signals)LimitV], Mode=OneWay}" Style="{StaticResource VAxisVisibleStyle}"/>
-            <local:SignalControl Label="W" IsSet="{Binding Path=Signals[(core:Signals)LimitW], Mode=OneWay}" Style="{StaticResource WAxisVisibleStyle}"/>-->
-            <!--<local:SignalControl x:Uid="lbl_signalMotorWarning" Label="W" ToolTip="Motor warning" IsSet="{Binding Path=Signals[(core:Signals)MotorWarning], Mode=OneWay}" Style="{StaticResource MotorWarningVisibleStyle}"/>
-            <local:SignalControl x:Uid="lbl_signalBlockDelete" Label="B" ToolTip="Block delete" IsSet="{Binding Path=Signals[(core:Signals)BlockDelete], Mode=OneWay}" Style="{StaticResource BlockDeleteVisibleStyle}"/>
-            <local:SignalControl x:Uid="lbl_signalOptionalStop" Label="O" ToolTip="Optional stop" IsSet="{Binding Path=Signals[(core:Signals)OptionalStop], Mode=OneWay}" Style="{StaticResource OptionalStopVisibleStyle}"/>-->
             <controls:SignalControl x:Uid="lbl_signalFeedHold" Label="H" ToolTip="Feed hold" IsSet="{Binding Path=Signals[(grblCore:Signals)Hold], Mode=OneWay}"  Margin="10,0,0,0"/>
             <controls:SignalControl x:Uid="lbl_signalCycleStart" Label="S" ToolTip="Cycle start" IsSet="{Binding Path=Signals[(grblCore:Signals)CycleStart], Mode=OneWay}"/>
             <controls:SignalControl x:Uid="lbl_signalReset" Label="R" ToolTip="Reset" IsSet="{Binding Path=Signals[(grblCore:Signals)Reset], Mode=OneWay}"/>
             <controls:SignalControl x:Uid="lbl_signalEStop" Label="E" ToolTip="E-Stop" IsSet="{Binding Path=Signals[(grblCore:Signals)EStop], Mode=OneWay}" Style="{StaticResource EStopVisibleStyle}"/>
             <controls:SignalControl x:Uid="lbl_signalSafetyDoor" Label="D" ToolTip="Safety door" IsSet="{Binding Path=Signals[(grblCore:Signals)SafetyDoor], Mode=OneWay}" Style="{StaticResource DoorOpenVisibleStyle}"/>
             <controls:SignalControl x:Uid="lbl_signalProbe" Label="P" ToolTip="Probe" IsSet="{Binding Path=Signals[(grblCore:Signals)Probe], Mode=OneWay}" />
-            <!--<local:SignalControl x:Uid="lbl_signalMotorWarning" Label="W" ToolTip="Motor warning" IsSet="{Binding Path=Signals[(core:Signals)MotorWarning], Mode=OneWay}" Style="{StaticResource MotorWarningVisibleStyle}"/>
-            <local:SignalControl x:Uid="lbl_signalBlockDelete" Label="B" ToolTip="Block delete" IsSet="{Binding Path=Signals[(core:Signals)BlockDelete], Mode=OneWay}" Style="{StaticResource BlockDeleteVisibleStyle}"/>
-            <local:SignalControl x:Uid="lbl_signalOptionalStop" Label="O" ToolTip="Optional stop" IsSet="{Binding Path=Signals[(core:Signals)OptionalStop], Mode=OneWay}" Style="{StaticResource OptionalStopVisibleStyle}"/>-->
-        </StackPanel>
-    </Border>
+            <!--<controls:SignalControl x:Uid="lbl_signalOptionalStop" Label="O" ToolTip="Optional stop" IsSet="{Binding Path=Signals[(grblCore:Signals)OptionalStop], Mode=OneWay}" Style="{StaticResource OptionalStopVisibleStyle}"/>-->
+    </StackPanel>
 </UserControl>

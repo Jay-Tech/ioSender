@@ -11,11 +11,16 @@
     </UserControl.Resources>
     <GroupBox  x:Uid="grp_coolant" x:Name="grpCoolant" Header="Coolant" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" MinHeight="135" Height="Auto">
         <StackPanel HorizontalAlignment="Stretch" Margin="0,0,0,0" Grid.Row="1"  VerticalAlignment="Top" Width="Auto" Height="Auto">
-            <Button BorderThickness="3"   x:Uid="lbl_flood" BorderBrush="{Binding Path=Flood, Converter={StaticResource SelectedConverter}}" Height="45" x:Name="chkFlood" MinWidth="170"  Tag="Flood" Content="Flood"  VerticalContentAlignment="Center" 
+            <Button BorderThickness="3"   x:Uid="lbl_flood" BorderBrush="{Binding Path=Flood, Converter={StaticResource SelectedConverter}}" 
+                    Height="45" x:Name="chkFlood" 
+                    MinWidth="170"  Tag="Flood" Content="Flood"  VerticalContentAlignment="Center" 
                     HorizontalAlignment="Stretch" Margin="0,4"  VerticalAlignment="Center"  Click="chkBox_Click"/>
-            <Button  BorderThickness="3" BorderBrush="{Binding Path=Mist, Converter={StaticResource SelectedConverter}}" x:Uid="lbl_mist" Height="45" x:Name="chkMist"   Tag="Mist" Content="Mist" MinWidth="170" 
+            <Button  BorderThickness="3" BorderBrush="{Binding Path=Mist, Converter={StaticResource SelectedConverter}}" 
+                     x:Uid="lbl_mist" Height="45" x:Name="chkMist"   Tag="Mist" Content="Mist" MinWidth="170" 
                      HorizontalAlignment="Stretch" Margin="0,4" VerticalAlignment="Center" Click="chkBox_Click"/>
-            <Button x:Uid="lbl_fan" Height="45" x:Name="chkFan" MinWidth="170"  Tag="Fan" Content="Fan"  Visibility="{Binding Path=HasFans, Mode=OneWay, Converter={StaticResource IsVisibleConverter}}"   BorderBrush="{Binding Path=Flood, Converter={StaticResource SelectedConverter}}"
+            <Button x:Uid="lbl_fan" Height="45" x:Name="chkFan" MinWidth="170"  Tag="Fan" Content="Fan" 
+                    Visibility="{Binding Path=HasFans, Mode=OneWay, Converter={StaticResource IsVisibleConverter}}"   
+                    BorderBrush="{Binding Path=Fan, Converter={StaticResource SelectedConverter}}"
                     BorderThickness="3"  Margin="0,4"  HorizontalAlignment="Stretch"  VerticalAlignment="Center" Click="chkBox_Click"/>
         </StackPanel>
     </GroupBox>

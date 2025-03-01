@@ -9,7 +9,7 @@
              d:DataContext="{d:DesignInstance Type=viewModels:GrblViewModel, IsDesignTimeCreatable=True}"
              mc:Ignorable="d" d:DesignWidth="270">
     <Grid Margin="0,0,0,0">
-        <GroupBox x:Uid="grp_feedrate" x:Name="grpFeedRate" Header="Feed rate" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="Auto" Width="Auto">
+        <GroupBox x:Uid="grp_feedrate" x:Name="grpFeedRate" Header="Feed Rate" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="Auto" Width="Auto">
             <Grid HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch"  Width="Auto" Margin="0,0,0,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="55"/>
@@ -33,14 +33,22 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions >
-                    <Button   Tag="Plus" Name ="IncreaseSpindle" Height="Auto" Width="Auto" HorizontalAlignment="Stretch" Margin="0,0,0,0" Command="{ Binding FeedOverRide}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}">
+                    <Button   Tag="Plus" Name ="IncreaseSpindle" Height="Auto" Width="Auto"
+                              HorizontalAlignment="Stretch" Margin="0,0,0,0" 
+                              Command="{ Binding FeedOverRide}" 
+                              CommandParameter="{Binding RelativeSource={RelativeSource Self}}">
                         <materialDesign:PackIcon  Height="30" Width="30" Kind="Plus" />
                     </Button>
-                    <Button Grid.Column="1" Tag="Minus" Name ="DecreaseSpindle" Height="Auto" Width="Auto" HorizontalAlignment="Stretch" Margin="10,0,0,0" Command="{ Binding FeedOverRide}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}"
+                    <Button Grid.Column="1" Tag="Minus" Name ="DecreaseSpindle" Height="Auto" Width="Auto" 
+                            HorizontalAlignment="Stretch" Margin="10,0,0,0" 
+                            Command="{ Binding FeedOverRide}" 
+                            CommandParameter="{Binding RelativeSource={RelativeSource Self}}"
                             Grid.Row="0" >
                         <materialDesign:PackIcon Height="30" Width="30" Kind="MinusThick" />
                     </Button>
-                    <Button Grid.Column="2" Name="Reset" Width="60" Height="Auto" HorizontalAlignment="Stretch"   Command="{ Binding FeedOverRideReset}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}"
+                    <Button Grid.Column="2" Name="Reset" Width="60" Height="Auto" HorizontalAlignment="Stretch"   
+                            Command="{ Binding FeedOverRideReset}" 
+                            CommandParameter="{Binding RelativeSource={RelativeSource Self}}"
                             Grid.Row="0" >
                         <materialDesign:PackIcon Height="25" Width="25" Kind="Cached" />
                     </Button>
@@ -79,8 +87,10 @@
                                 Grid.Row="0" >
                         <materialDesign:PackIcon Height="25" Width="25" Kind="Minus" />
                     </Button>
-                    <Button Grid.Column="4" Name="ResetRapid" Width="60" Height="Auto" HorizontalAlignment="Stretch"   Command="{ Binding RapidOverRideReset}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}"
-                                Grid.Row="0" Margin="9,0" >
+                    <Button Grid.Column="4" Name="ResetRapid" Width="60" Height="Auto" HorizontalAlignment="Stretch"   
+                            Command="{ Binding RapidOverRideReset}" 
+                            CommandParameter="{Binding RelativeSource={RelativeSource Self}}"
+                                Grid.Row="0" Margin="3,0" >
                         <materialDesign:PackIcon Height="25" Width="25" Kind="Cached" />
                     </Button>
                 </Grid>

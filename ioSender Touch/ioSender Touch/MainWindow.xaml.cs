@@ -12,6 +12,7 @@ using ioSenderTouch.GrblCore.Config;
 using ioSenderTouch.Utility;
 using ioSenderTouch.ViewModels;
 using ioSenderTouch.Views;
+using MaterialDesignColors;
 using MaterialDesignThemes.Wpf;
 
 
@@ -41,6 +42,7 @@ namespace ioSenderTouch
             _viewModel.ContentManager = new ContentManager();
             BaseWindowTitle = Title;
             AppConfig.Settings.OnConfigFileLoaded += Settings_OnConfigFileLoaded;
+            
             _viewModel.PropertyChanged += _viewModel_PropertyChanged;
             if (SystemInformation.ScreenOrientation == ScreenOrientation.Angle90 || SystemInformation.ScreenOrientation == ScreenOrientation.Angle270)
             {
@@ -69,6 +71,8 @@ namespace ioSenderTouch
             this.Closing += MainWindow_Closing;
         }
 
+      
+
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             Comms.com.DataReceived -= ((GrblViewModel)DataContext).DataReceived;
@@ -89,20 +93,7 @@ namespace ioSenderTouch
             _viewModel.LoadComplete();
         }
 
-        private void SetPrimaryColor(Color color)
-        {
-            try
-            {
-                PaletteHelper paletteHelper = new PaletteHelper();
-                var theme = paletteHelper.GetTheme();
-                theme.SetPrimaryColor(color);
-                paletteHelper.SetTheme(theme);
-            }
-            catch (Exception)
-            {
-
-            }
-        }
+        
         private void Settings_OnConfigFileLoaded(object sender, EventArgs e)
         {
             _viewModel.DisplayMenuBar = AppConfig.Settings.AppUiSettings.EnableToolBar;
@@ -112,8 +103,42 @@ namespace ioSenderTouch
             Left = 0;
             Top = 0;
             SetUpKeyBoard();
+            AppConfig.Settings.Base.AppUISettings.PropertyChanged += AppUISettings_PropertyChanged;
+        }
+        private void AppUISettings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(AppUiSettingsConfig.UIColor))
+            {
+                SetPrimaryColor(AppConfig.Settings.Base.AppUISettings.UIColor);
+            }
+            if (e.PropertyName == nameof(AppUiSettingsConfig.EnableLightTheme))
+            {
+                SetTheme(AppConfig.Settings.Base.AppUISettings.EnableLightTheme);
+            }
         }
 
+        private void SetTheme(bool lightTheme)
+        {
+            var paletteHelper = new PaletteHelper();
+            var theme = paletteHelper.GetTheme();
+            theme.SetBaseTheme(lightTheme ? BaseTheme.Light : BaseTheme.Dark);
+            paletteHelper.SetTheme(theme);
+        }
+        private void SetPrimaryColor(Color primaryColor)
+        {
+            try
+            {
+                PaletteHelper paletteHelper = new PaletteHelper();
+                var theme = paletteHelper.GetTheme();
+                theme.SetPrimaryColor(primaryColor);
+                theme.SetBaseTheme(AppConfig.Settings.Base.AppUISettings.EnableLightTheme ? BaseTheme.Light : BaseTheme.Dark);
+                paletteHelper.SetTheme(theme);
+            }
+            catch (Exception)
+            {
+
+            }
+        }
         private void _viewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(GrblViewModel.IsMetric))

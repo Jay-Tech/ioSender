@@ -11,40 +11,36 @@
              mc:Ignorable="d"
              Focusable="True">
     <UserControl.Resources>
-        <system:String x:Uid="str_msgWait" x:Key="MsgWaiting">Waiting for controller ({0})...</system:String>
-        <system:String x:Uid="str_msgNoCommAlarm" x:Key="MsgNoCommAlarm">Controller is not able to communicate due to alarm {0}, attempting a soft reset.</system:String>
-        <system:String x:Uid="str_msgResetFailed" x:Key="MsgResetFailed">Controller soft reset failed, exiting.</system:String>
-        <system:String x:Uid="str_msgEStop" x:Key="MsgEStop">E-Stop active! - clear before continuing...</system:String>
-        <system:String x:Uid="str_msgEStopExit" x:Key="MsgEStopExit">E-Stop still active, exit?</system:String>
-        <system:String x:Uid="str_msgHome" x:Key="MsgHome">Homing cycle required, &lt;Home&gt; to continue</system:String>
-        <system:String x:Uid="str_msgDoorOpen" x:Key="MsgDoorOpen">Door is open, close door and continue?</system:String>
-        <system:String x:Uid="str_msgDoorExit" x:Key="MsgDoorExit">Door is still open, exit?</system:String>
-        <system:String x:Uid="str_msgDoorPersist" x:Key="MsgDoorPersist">Door state cannot be cleared with &lt;Reset&gt;</system:String>
-        <system:String x:Uid="str_msgNoComm" x:Key="MsgNoComm">Controller is in {0} state and cannot respond, try a soft reset?</system:String>
-        <system:String x:Uid="str_msgResetExit" x:Key="MsgResetExit">Controller soft reset failed, exiting.</system:String>
-        <system:String x:Uid="str_msgNoResponse" x:Key="MsgNoResponse">Controller is not responding!</system:String>
         <local:BoolToNotVisibleConverter x:Key="BoolToNotVisibleConverter"/>
-        <local:BoolToVisibleConverter x:Key="IsVisibleConverter" />
+        <local:BoolToVisibleConverter x:Key="BoolToVisibleConverter" />
+        <local:LogicalNotConverter x:Key="LogicalNotConverter" />
     </UserControl.Resources>
     <DockPanel Name="DockPanelMain">
         <Border Height="35"  BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Top">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Content="Job" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding HomeViewModel.ChangeView}" CommandParameter="RenderView"  Width="140" Margin="1,0,1,0" ></Button>
-                <Button Content="Probe" IsEnabled="{Binding IsJobRunning, Converter={StaticResource InvertBooleanConverter }, Mode=TwoWay}" Visibility="{Binding  Path= HasProbing,Converter={StaticResource IsVisibleConverter}}" HorizontalContentAlignment="Center"
+                <Button Content="Job" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding HomeViewModel.ChangeView}" 
+                        CommandParameter="RenderView"  Width="140" Margin="1,0,1,0" ></Button>
+                <Button Content="Probe" IsEnabled="{Binding IsJobRunning, Converter={StaticResource LogicalNotConverter }, Mode=TwoWay}" 
+                        Visibility="{Binding  Path= HasProbing,Converter={StaticResource BoolToVisibleConverter}}" HorizontalContentAlignment="Center"
                         VerticalContentAlignment="Center" Command="{Binding HomeViewModel.ChangeView}" CommandParameter="ProbingView"  Width="140" Margin="1,0,1,0" ></Button>
                 <Button Content="SD Card" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding HomeViewModel.ChangeView}" 
-                        CommandParameter="SDCardView" Visibility="{Binding  Path= HasSDCard,Converter={StaticResource IsVisibleConverter}}"  
-                        IsEnabled="{Binding IsJobRunning, Converter={StaticResource InvertBooleanConverter}}" 
+                        CommandParameter="SDCardView" Visibility="{Binding  Path= HasSDCard,Converter={StaticResource BoolToVisibleConverter}}"  
+                        IsEnabled="{Binding IsJobRunning, Converter={StaticResource LogicalNotConverter}}" 
                         Width="140" Margin="1,0,1,0" ></Button>
-                <Button Content="Offset" IsEnabled="{Binding IsJobRunning, Converter={StaticResource InvertBooleanConverter}}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding HomeViewModel.ChangeView}" CommandParameter="offsetView"
+                <Button Content="Offset" IsEnabled="{Binding IsJobRunning, Converter={StaticResource LogicalNotConverter}}" 
+                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding HomeViewModel.ChangeView}" CommandParameter="offsetView"
                         Width="140" Margin="1,0,1,0" ></Button>
-                <Button Content="Utility" IsEnabled="{Binding IsJobRunning, Converter={StaticResource InvertBooleanConverter}}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding HomeViewModel.ChangeView}" CommandParameter="utilityView"
+                <Button Content="Utility" IsEnabled="{Binding IsJobRunning, Converter={StaticResource LogicalNotConverter}}" 
+                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding HomeViewModel.ChangeView}" CommandParameter="utilityView"
                         Width="140" Margin="1,0,1,0" ></Button>
-                <Button Content="Tools" IsEnabled="{Binding IsJobRunning, Converter={StaticResource InvertBooleanConverter}}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding HomeViewModel.ChangeView}" CommandParameter="toolsView"
-                        Visibility="{Binding  Path= HasToolTable,Converter={StaticResource IsVisibleConverter}}" Width="140" Margin="1,0,1,0" ></Button>
-                <Button Content="Grbl Settings" IsEnabled="{Binding IsJobRunning, Converter={StaticResource InvertBooleanConverter}}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding HomeViewModel.ChangeView}" CommandParameter="grblSettingsView"
+                <Button Content="Tools" IsEnabled="{Binding IsJobRunning, Converter={StaticResource LogicalNotConverter}}" 
+                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding HomeViewModel.ChangeView}" CommandParameter="toolsView"
+                        Visibility="{Binding  Path= HasToolTable,Converter={StaticResource BoolToVisibleConverter}}" Width="140" Margin="1,0,1,0" ></Button>
+                <Button Content="Grbl Settings" IsEnabled="{Binding IsJobRunning, Converter={StaticResource LogicalNotConverter}}" 
+                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding HomeViewModel.ChangeView}" CommandParameter="grblSettingsView"
                         Width="140" Margin="1,0,1,0"  ></Button>
-                <Button Content="App Settings" IsEnabled="{Binding IsJobRunning,  Converter={StaticResource InvertBooleanConverter}}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding HomeViewModel.ChangeView}" CommandParameter="appSettingsView"
+                <Button Content="App Settings" IsEnabled="{Binding IsJobRunning,  Converter={StaticResource LogicalNotConverter}}" 
+                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding HomeViewModel.ChangeView}" CommandParameter="appSettingsView"
                         Width="140" Margin="1,0,1,0" ></Button>
                 
             </StackPanel>
@@ -73,13 +69,13 @@
             <StackPanel Grid.Row="0" VerticalAlignment ="Top" Height="35"  Grid.RowSpan="2" >
                 <Button  Name="btnShowConsole" Content="{Binding HomeViewModel.ConsoleModeText}"
                          Command="{Binding HomeViewModel.SwitchConsoleCommand}"  
-                         Visibility="{Binding Path=IsFileLoaded, Converter= {StaticResource IsVisibleConverter}}"></Button>
+                         Visibility="{Binding Path=IsFileLoaded, Converter= {StaticResource BoolToVisibleConverter}}"></Button>
             </StackPanel>
             <local:ConsoleControl Grid.Row="1" x:Name="ConsoleDisplayControl" 
                                   Visibility="{Binding Path= HomeViewModel.ShowGCodeConsole, Converter= {StaticResource BoolToNotVisibleConverter}}"
                                   Margin="2,5,0,0" Grid.ColumnSpan="2" />
             <local:GCodeListControl Grid.Row="1" x:Name ="CodeListControl" Margin="2,5,0,0" 
-                                    Visibility="{Binding Path= HomeViewModel.ShowGCodeConsole, Converter= {StaticResource IsVisibleConverter}}" 
+                                    Visibility="{Binding Path= HomeViewModel.ShowGCodeConsole, Converter= {StaticResource BoolToVisibleConverter}}" 
                                     Grid.ColumnSpan="2"/>
             <!--<controls:MDIControl Grid.Row="2" x:Name="MdiControl" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="Auto" Height="Auto" Margin="5,3,0,5"/>-->
         </Grid>

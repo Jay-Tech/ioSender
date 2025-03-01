@@ -11,23 +11,19 @@
         mc:Ignorable="d"
         d:DesignHeight="1080"
         d:DesignWidth="1920"
-        WindowStyle="None"
         WindowStartupLocation="Manual" 
         ResizeMode="NoResize"
         Loaded="Window_Load"
         Icon="App.ico" 
         Name ="AppMainWindow"
+        WindowStyle="None"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         Background="{DynamicResource MaterialDesignPaper}"
         TextElement.FontWeight="Medium"
         TextElement.FontSize="14"
+        Style="{StaticResource MaterialDesignWindow}"
         FontFamily="{materialDesign:MaterialDesignFont}">
     <Window.Resources>
-        <system:String x:Uid="str_mnuRotate" x:Key="MenuRotate">Rotate</system:String>
-        <system:String x:Uid="str_mnuArcsToLines" x:Key="MenuArcsToLines">Arcs to lines</system:String>
-        <system:String x:Uid="str_mnuCompress" x:Key="MenuCompress">Compress (experimental)</system:String>
-        <system:String x:Uid="str_mnuDragKnife" x:Key="MenuDragKnife">Add drag knife moves</system:String>
-        <system:String x:Uid="str_jogStep" x:Key="JogStep">JogMetric step: {0}</system:String>
         <system:String x:Uid="str_runTime" x:Key="RunTime">Run time: {0}</system:String>
         <controls:BlocksToStringConverter x:Key="BlocksToStringConverter" />
         <controls:LogicalNotConverter x:Key="BooleanConverter" />

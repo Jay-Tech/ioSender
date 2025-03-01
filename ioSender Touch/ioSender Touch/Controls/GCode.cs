@@ -73,7 +73,7 @@ namespace ioSenderTouch.Controls
         private List<GCodeTransformer> Transformers = new List<GCodeTransformer>();
 
         private static readonly Lazy<GCode> file = new Lazy<GCode>(() => new GCode());
-        public event EventHandler<bool> FileLoaded; 
+        public event EventHandler<bool> FileLoaded;
         public event GCodeJob.ToolChangedHandler ToolChanged = null;
 
         private GCode()
@@ -94,10 +94,10 @@ namespace ioSenderTouch.Controls
                 if (filename == "")
                     Model.ProgramLimits.Clear();
                 else foreach (int i in AxisFlags.All.ToIndices())
-                {
-                    Model.ProgramLimits.MinValues[i] = Model.ConvertMM2Current(Program.BoundingBox.Min[i]);
-                    Model.ProgramLimits.MaxValues[i] = Model.ConvertMM2Current(Program.BoundingBox.Max[i]);
-                }
+                    {
+                        Model.ProgramLimits.MinValues[i] = Model.ConvertMM2Current(Program.BoundingBox.Min[i]);
+                        Model.ProgramLimits.MaxValues[i] = Model.ConvertMM2Current(Program.BoundingBox.Max[i]);
+                    }
 
                 Model.FileName = filename;
             }
@@ -128,7 +128,7 @@ namespace ioSenderTouch.Controls
             return ok;
         }
 
-        private string getConversionTypes ()
+        private string getConversionTypes()
         {
             string types = string.Empty;
             foreach (var converter in Converters)
@@ -181,7 +181,7 @@ namespace ioSenderTouch.Controls
         {
             Program.AddBlock(block, action);
 
-            if(action == Action.End)
+            if (action == Action.End)
                 Model.Blocks = Blocks;
         }
 
@@ -192,9 +192,13 @@ namespace ioSenderTouch.Controls
 
         public void ClearStatus()
         {
+
             foreach (DataRow row in Program.Data.Rows)
                 if ((string)row["Sent"] != string.Empty)
+                {
                     row["Sent"] = string.Empty;
+                }
+
         }
 
         public void Drag(object sender, DragEventArgs e)
@@ -225,7 +229,7 @@ namespace ioSenderTouch.Controls
         {
             Program.CloseFile();
             Model.Blocks = Blocks;
-            FileLoaded?.Invoke(this,false);
+            FileLoaded?.Invoke(this, false);
         }
 
         public void Open()
@@ -245,7 +249,7 @@ namespace ioSenderTouch.Controls
                 filename = file.FileName;
             }
 
-            if(filename != string.Empty)
+            if (filename != string.Empty)
                 Load(filename);
 
             Model.Blocks = Blocks;
@@ -257,7 +261,8 @@ namespace ioSenderTouch.Controls
             {
                 var filetypes = converter.FileExtensions.Split(',');
 
-                foreach (var filetype in filetypes) {
+                foreach (var filetype in filetypes)
+                {
                     if (filename.EndsWith(filetype))
                     {
                         var loader = (IGCodeConverter)Activator.CreateInstance(converter.Type);
@@ -272,7 +277,7 @@ namespace ioSenderTouch.Controls
 
                 if (Program.LoadFile(filename))
                 {
-                    FileLoaded?.Invoke(this,true);
+                    FileLoaded?.Invoke(this, true);
                 }
             }
 

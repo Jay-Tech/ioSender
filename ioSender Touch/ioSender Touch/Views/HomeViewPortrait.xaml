@@ -12,18 +12,6 @@
              Focusable="True">
 
     <UserControl.Resources>
-        <system:String x:Uid="str_msgWait" x:Key="MsgWaiting">Waiting for controller ({0})...</system:String>
-        <system:String x:Uid="str_msgNoCommAlarm" x:Key="MsgNoCommAlarm">Controller is not able to communicate due to alarm {0}, attempting a soft reset.</system:String>
-        <system:String x:Uid="str_msgResetFailed" x:Key="MsgResetFailed">Controller soft reset failed, exiting.</system:String>
-        <system:String x:Uid="str_msgEStop" x:Key="MsgEStop">E-Stop active! - clear before continuing...</system:String>
-        <system:String x:Uid="str_msgEStopExit" x:Key="MsgEStopExit">E-Stop still active, exit?</system:String>
-        <system:String x:Uid="str_msgHome" x:Key="MsgHome">Homing cycle required, &lt;Home&gt; to continue</system:String>
-        <system:String x:Uid="str_msgDoorOpen" x:Key="MsgDoorOpen">Door is open, close door and continue?</system:String>
-        <system:String x:Uid="str_msgDoorExit" x:Key="MsgDoorExit">Door is still open, exit?</system:String>
-        <system:String x:Uid="str_msgDoorPersist" x:Key="MsgDoorPersist">Door state cannot be cleared with &lt;Reset&gt;</system:String>
-        <system:String x:Uid="str_msgNoComm" x:Key="MsgNoComm">Controller is in {0} state and cannot respond, try a soft reset?</system:String>
-        <system:String x:Uid="str_msgResetExit" x:Key="MsgResetExit">Controller soft reset failed, exiting.</system:String>
-        <system:String x:Uid="str_msgNoResponse" x:Key="MsgNoResponse">Controller is not responding!</system:String>
         <local:BoolToNotVisibleConverter x:Key="BoolToNotVisibleConverter"/>
         <local:BoolToVisibleConverter x:Key="IsVisibleConverter" />
     </UserControl.Resources>
@@ -92,12 +80,12 @@
         <Border Name="RightMenuBorder" BorderBrush="Black" BorderThickness="1" Width="250" DockPanel.Dock="Right">
             <StackPanel Name ="RightStackPanel">
                 <!--<local:JobControl x:Name="GCodeSender" Margin="3,3,0,5" Width="244" Height="245" VerticalAlignment="Top"/>-->
-                <local:CoolantControl x:Name="coolantControl" Margin="3,5,3,3"   VerticalAlignment="Top" Height="150" Width="Auto"/>
+                <local:CoolantControl x:Name="coolantControl" Margin="3,5,3,3"   VerticalAlignment="Top" Height="160" Width="Auto"/>
                 <local:UtilityMacroControl Margin="3,5,3,3" Height="150" ></local:UtilityMacroControl>
                 <local:WorkParametersControlTouch x:Name="workParametersControl"  Margin="3,3,0,5"
                                                      Height="300"  VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
                 <local:FeedControl  x:Name="feedControl"  HorizontalAlignment="Center" VerticalAlignment="Stretch"   Margin="3,3,0,5" Width="240" Height="240" />
-                <local:SpindleControl x:Name="spindleControl" HorizontalAlignment="Stretch" Margin="3,3,3,5" Width="240" Height="305"  VerticalAlignment="Stretch"/>
+                <local:SpindleControl x:Name="spindleControl" HorizontalAlignment="Stretch" Margin="3,3,3,0" Width="240" Height="310"  VerticalAlignment="Stretch"/>
             </StackPanel>
         </Border>
         <Border Name="FillBorder" BorderBrush="Black" BorderThickness="1" DockPanel.Dock="Right">

@@ -62,7 +62,7 @@ namespace ioSenderTouch.Controls
         }
         private static void OnIsSetChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            (d as SignalControl).btnLED.Background = (bool)e.NewValue ? LEDOn : LEDOff;
+            ((SignalControl)d).btnLED.Background = (bool)e.NewValue ? LEDOn : LEDOff;
         }
 
         public static readonly DependencyProperty LabelProperty = DependencyProperty.Register(nameof(Label), typeof(string), typeof(SignalControl), new PropertyMetadata());

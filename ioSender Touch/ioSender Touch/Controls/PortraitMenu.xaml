@@ -41,8 +41,8 @@
             <Label  Name="JogFeed" Content="{Binding MeasurementUnit}" ContentStringFormat="Jog Feed {0}:"  BorderThickness="1" FontSize="16" Margin="5,0,0,0"  VerticalAlignment="Center"  HorizontalContentAlignment="Center"/>
             <Label  Name="JogFeedUnit" Content="{Binding JogRate}" FontSize="16"  VerticalAlignment="Center" HorizontalAlignment="Left"  HorizontalContentAlignment="Left"/>
             <Label  Name="WCS" Content="{Binding WorkCoordinateSystem}"  ContentStringFormat="WCS:{0}"  Margin="5,0,0,0" BorderThickness="1" FontSize="16"  VerticalAlignment="Center"  HorizontalContentAlignment="Left"/>
-            <local:SignalsControl VerticalAlignment="Top" Width="140" Margin="5,0,0,0" ></local:SignalsControl>
-            <Label  Name="ToolNumber" Content="{Binding Tool}" ContentStringFormat="Tool#: {0}" VerticalAlignment="Center"  BorderThickness="1" FontSize="16" Margin="5,0,0,0" HorizontalContentAlignment="Center"/>
+            <local:SignalsControl VerticalAlignment="Center"  Margin="5,0,0,0" ></local:SignalsControl>
+            <Label  Name="ToolNumber" Content="{Binding Tool}" ContentStringFormat="Tool: {0}" VerticalAlignment="Center"  BorderThickness="1" FontSize="16" Margin="5,0,0,0" HorizontalContentAlignment="Center"/>
 
         </StackPanel>
         <Button Grid.Column="2"  FontSize="12" VerticalContentAlignment="Center" 
@@ -52,7 +52,7 @@
                         BorderBrush="Red"
                         Content="{Binding AlarmConText}"
                         Background="Red" Command="{ Binding ClearAlarmCommand}"
-                        Visibility="{Binding ShowAlarmButton, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Visibility="{Binding ShowAlarmButton, Converter={StaticResource BoolVisibleConverter}}"
                         Style="{StaticResource MaterialDesignRaisedButton}" />
 
         <StackPanel  Grid.Column="3"  Margin="0,0,0,0" VerticalAlignment="Center" Width="130"

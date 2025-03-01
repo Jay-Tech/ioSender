@@ -51,7 +51,7 @@
                 <Label  Name="WCSLabel" Content="WCS:"  BorderThickness="1" FontSize="20" HorizontalContentAlignment="Center"  VerticalAlignment="Center" Margin="20,0,0,0"/>
                 <Label  Name="WCS" Content="{Binding WorkCoordinateSystem}"  BorderThickness="1" FontSize="20"  VerticalAlignment="Center"  HorizontalContentAlignment="Center"/>
                 <Label  Name="Signals" Content="Signal Status:"  BorderThickness="1" FontSize="20" VerticalAlignment="Center" HorizontalContentAlignment="Center"  Margin="20,0,0,0"/>
-                <local:SignalsControl VerticalAlignment="Top"></local:SignalsControl>
+                <local:SignalsControl VerticalAlignment="Center"></local:SignalsControl>
                 <Label  Name="Tool" Content="Tool Number:"  BorderThickness="1" FontSize="20" HorizontalContentAlignment="Center"  VerticalAlignment="Center" Margin="5,0,0,0"/>
                 <Label  Name="ToolNumber" Content="{Binding Tool}" VerticalAlignment="Center"  BorderThickness="1" FontSize="20" HorizontalContentAlignment="Center"/>
 
@@ -63,7 +63,7 @@
                         BorderBrush="Red"
                         Content="{Binding AlarmConText}"
                         Background="Red" Command="{ Binding ClearAlarmCommand}"
-                        Visibility="{Binding ShowAlarmButton, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Visibility="{Binding ShowAlarmButton, Converter={StaticResource BoolVisibleConverter}}"
                         Style="{StaticResource MaterialDesignRaisedButton}" />
 
             <StackPanel  Grid.Column="3"  Margin="0,0,0,0" VerticalAlignment="Center" 

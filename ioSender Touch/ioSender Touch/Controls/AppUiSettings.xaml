@@ -13,6 +13,7 @@
             <StackPanel>
                 <CheckBox Name="StopLight" IsChecked="{Binding AppUISettings.EnableStopLightTheme}" materialDesign:CheckBoxAssist.CheckBoxSize="30" Content="StopLight Theme"  ></CheckBox>
                 <CheckBox Name="ToolBar" IsChecked="{Binding AppUISettings.EnableToolBar}" materialDesign:CheckBoxAssist.CheckBoxSize="30" Content="Window Tool Bar" ></CheckBox>
+                <CheckBox Name="LightTheme" IsChecked="{Binding AppUISettings.EnableLightTheme}" materialDesign:CheckBoxAssist.CheckBoxSize="30" Content="Light Theme" ></CheckBox>
                 <Label Name="ColorPicker" Content="UI Color Selection"></Label>
                 <render:ColorPicker HorizontalAlignment="Left" SelectedColor="{Binding AppUISettings.UIColor, Mode=TwoWay}"></render:ColorPicker>
             </StackPanel>

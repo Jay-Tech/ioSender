@@ -16,6 +16,7 @@
         <controls:HomedStateToBooleanConverter x:Key="IsHomed" />
         <controls:LogicalNotConverter x:Key="IsNotRunningConverter" />
         <controls:BoolToVisibleConverter x:Key="IsVisibleConverter" />
+        <controls:BoolToNotVisibleConverter x:Key="BoolToNotVisibleConverter" />
         <controls:ToolWithOffsetStringConverter x:Key="ToolWithOffsetStringConverter" />
         <controls:LogicalNotConverter x:Key="IsNotVisibleConverter">
             <controls:LogicalNotConverter.FinalConverter>
@@ -90,8 +91,8 @@
         </StackPanel>
         <Grid DockPanel.Dock="Top">
             <render:Renderer x:Name="gcodeView"/>
-           
-            <StackPanel Visibility="{Binding RenderVM.ShowOverlay, Converter={StaticResource BooleanToVisibilityConverter}}" 
+
+            <StackPanel Visibility="{Binding RenderVM.ShowOverlay, Converter={StaticResource IsVisibleConverter}}" 
                         Orientation="Vertical"  HorizontalAlignment="left" VerticalAlignment="Top" Margin="5,5">
                 <TextBlock Foreground="{Binding RenderVM.ForegroundColor}"  HorizontalAlignment="Left" FontSize="20" Margin="3,0,0,0">
                 <TextBlock.Text>
@@ -111,7 +112,7 @@
             </TextBlock>
             </StackPanel>
             <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="22" Margin="3,50,0,0" Foreground="Red" Opacity=".9"  
-                       Visibility="{Binding Path=IsTloReferenceSet, Converter={StaticResource BooleanToVisibilityConverter}}">
+                       Visibility="{Binding Path=IsTloReferenceSet, Converter={StaticResource IsVisibleConverter}}">
                 <TextBlock.Text>
                     <MultiBinding Converter="{StaticResource ToolWithOffsetStringConverter}">
                         <Binding Path="Tool" StringFormat="Tool:{0}" Mode="OneWay"/>
@@ -121,10 +122,10 @@
             </TextBlock>
             <StackPanel VerticalAlignment="Top" HorizontalAlignment="Center" Margin="5,5"  >
                 <Label MouseDoubleClick="Control_OnMouseDoubleClick"  Content="Tool Change" 
-                       Visibility="{Binding ToolChangeInProgress,  Converter={StaticResource BooleanToVisibilityConverter}}" FontSize="100" 
+                       Visibility="{Binding ToolChangeInProgress,  Converter={StaticResource IsVisibleConverter}}" FontSize="100" 
                        HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="Red" Opacity=".5"></Label>
                 <Label Content="MPG ACTIVE"  HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="Red" Opacity=".5"
-                       Visibility="{Binding IsMPGActive,  Converter={StaticResource BooleanToVisibilityConverter}}" FontSize="100"/>
+                       Visibility="{Binding IsMPGActive,  Converter={StaticResource IsVisibleConverter}}" FontSize="100"/>
             </StackPanel>
             <Grid  VerticalAlignment="Top"  Margin="0,5,5,5"  HorizontalAlignment="Right" >
                 <Grid.RowDefinitions>

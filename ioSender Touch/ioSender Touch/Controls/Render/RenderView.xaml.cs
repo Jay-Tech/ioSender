@@ -38,6 +38,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows.Controls;
 using System.Windows.Input;
 using ioSenderTouch.GrblCore;
@@ -88,6 +89,8 @@ namespace ioSenderTouch.Controls.Render
         {
             get { return gcodeView.Machine; }
         }
+
+       
 
         public void Close()
         {

@@ -49,54 +49,29 @@ namespace ioSenderTouch.Controls
     public partial class AppConfigView : UserControl
     {
        
-        private GrblViewModel grblmodel;
+        private GrblViewModel _grblModel;
+        private readonly AppConfigViewModel _vModel;
 
-        public AppConfigView(GrblViewModel grblViewModel)
+        public AppConfigView(GrblViewModel grblViewModel, ContentManager contentManager)
         {
 
             InitializeComponent();
-            grblmodel = grblViewModel;
-            var appsettings = AppConfig.Settings;
+            _grblModel = grblViewModel;
+             _vModel = new AppConfigViewModel();
+            contentManager.RegisterViewAndModel("appSettingsView", _vModel);
         }
-
 
         public AppConfigView()
         {
             InitializeComponent();
         }
 
-        private ObservableCollection<UserControl> ConfigControls { get; set; }
-
-        #region Methods and properties required by CNCView interface
-
-     
-        public bool CanEnable { get { return true; } }
-
-   
-        public void CloseFile()
+        public void Setup(ObservableCollection<UserControl> controls)
         {
-        }
-
-        public void Setup(ObservableCollection<UserControl> controls, AppConfig profile)
-        {
-            if (profile.Base == null) return;
-            DataContext = profile.Base;
+            DataContext = _vModel.ConfigBase;
             xx.ItemsSource = controls;
         }
 
-        #endregion
 
-        private void btnSave_Click(object sender, RoutedEventArgs e)
-        {
-            if (AppConfig.Settings.Save())
-                Grbl.GrblViewModel.Message = LibStrings.FindResource("SettingsSaved");
-        }
-
-        private void btnSaveKeyMap_Click(object sender, RoutedEventArgs e)
-        {
-            string filename = GrblCore.Resources.Path + string.Format("KeyMap{0}.xml", (int)AppConfig.Settings.JogMetric.Mode);
-            if (Grbl.GrblViewModel.Keyboard.SaveMappings(filename))
-                Grbl.GrblViewModel.Message = string.Format(LibStrings.FindResource("KeymappingsSaved"), filename);
-        }
     }
 }

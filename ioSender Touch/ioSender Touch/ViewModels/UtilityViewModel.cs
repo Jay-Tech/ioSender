@@ -19,7 +19,7 @@ using ioSenderTouch.Utility;
 
 namespace ioSenderTouch.ViewModels
 {
-    public class UtilityViewModel : INotifyPropertyChanged
+    public class UtilityViewModel : INotifyPropertyChanged, IActiveViewModel
     {
         private string _instructions =
             "-Load spindle with center point bit\n such 90 degrees chamfer bit or pointed dial.\n\r" +
@@ -121,7 +121,7 @@ namespace ioSenderTouch.ViewModels
                 }
             }
         }
-       
+
         public string Unit
         {
             get => _unit;
@@ -270,7 +270,7 @@ namespace ioSenderTouch.ViewModels
             get => _calibrationUnitPerMin;
             set
             {
-                
+
                 if (value == _calibrationUnitPerMin) return;
                 _calibrationUnitPerMin = $"{value}/min";
                 OnPropertyChanged();
@@ -289,6 +289,7 @@ namespace ioSenderTouch.ViewModels
         }
         public UtilityViewModel(GrblViewModel grblViewModel)
         {
+            Name = nameof(UtilityViewModel);
             _grblViewModel = grblViewModel;
             ShowView = new Command(SetView);
             CalibrationResultsCommand = new Command(CreateCalibrationResults);
@@ -486,7 +487,7 @@ namespace ioSenderTouch.ViewModels
                 var index = 1;
                 var jobComplete = false;
                 var cancellationToken = new CancellationToken();
-              
+
                 _grblViewModel.Poller.SetState(0);
 
                 void ProcessSettings(string response)
@@ -530,10 +531,10 @@ namespace ioSenderTouch.ViewModels
             }
             catch (Exception ex)
             {
-               
+
                 _grblViewModel.Poller.SetState(200);
                 Console.WriteLine(ex);
-               
+
             }
         }
 
@@ -548,8 +549,6 @@ namespace ioSenderTouch.ViewModels
             CalibrationUnit = CalibrationUnitPerMin = _usingInchesCalibration ? "inch" : "mm";
         }
 
-      
-
         private void CreateCalibrationJob(object x)
         {
             HypothesesTriangle = _calibrationTriangle.CalculateTriangle(LengthA, LengthB);
@@ -560,19 +559,19 @@ namespace ioSenderTouch.ViewModels
             double safeHeight;
             if (_usingInchesCalibration)
             {
-                 lengthA = HypothesesTriangle.SideA * Inches_To_MM;
-                 lengthB = HypothesesTriangle.SideB * Inches_To_MM;
-                 feedRate = FeedRateCalibration * Inches_To_MM;
-                 depth = DepthCalibration * Inches_To_MM;
-                 safeHeight = Z_Safe_Height_IN;
+                lengthA = HypothesesTriangle.SideA * Inches_To_MM;
+                lengthB = HypothesesTriangle.SideB * Inches_To_MM;
+                feedRate = FeedRateCalibration * Inches_To_MM;
+                depth = DepthCalibration * Inches_To_MM;
+                safeHeight = Z_Safe_Height_IN;
             }
             else
             {
-                 lengthA = HypothesesTriangle.SideA;
-                 lengthB = HypothesesTriangle.SideB;
-                 feedRate = FeedRateCalibration;
-                 depth = DepthCalibration;
-                 safeHeight = Z_Safe_Height_MM;
+                lengthA = HypothesesTriangle.SideA;
+                lengthB = HypothesesTriangle.SideB;
+                feedRate = FeedRateCalibration;
+                depth = DepthCalibration;
+                safeHeight = Z_Safe_Height_MM;
             }
             var gCodeJob = _triangleGcode.CreateJob(lengthA, lengthB, feedRate,
                  depth, safeHeight);
@@ -606,7 +605,7 @@ namespace ioSenderTouch.ViewModels
             {
                 MeasurementResults += "Gantry is Square\n\r";
             }
-            MeasurementResults += $"Move Left Axis: { leftDelta}\n or Right Axis: { delta}";
+            MeasurementResults += $"Move Left Axis: {leftDelta}\n or Right Axis: {delta}";
             MeasurementResults += _usingInchesCalibration ? " Inches" : " MM";
         }
 
@@ -623,6 +622,18 @@ namespace ioSenderTouch.ViewModels
             field = value;
             OnPropertyChanged(propertyName);
             return true;
+        }
+
+        public bool Active { get; set; }
+        public string Name { get; }
+        public void Activated()
+        {
+
+        }
+
+        public void Deactivated()
+        {
+
         }
     }
 }

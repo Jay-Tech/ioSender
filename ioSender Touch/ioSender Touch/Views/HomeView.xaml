@@ -28,10 +28,12 @@
                         IsEnabled="{Binding IsJobRunning, Converter={StaticResource LogicalNotConverter}}" 
                         Width="140" Margin="1,0,1,0" ></Button>
                 <Button Content="Offset" IsEnabled="{Binding IsJobRunning, Converter={StaticResource LogicalNotConverter}}" 
-                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding HomeViewModel.ChangeView}" CommandParameter="offsetView"
+                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding HomeViewModel.ChangeView}" 
+                        CommandParameter="offsetView"
                         Width="140" Margin="1,0,1,0" ></Button>
                 <Button Content="Utility" IsEnabled="{Binding IsJobRunning, Converter={StaticResource LogicalNotConverter}}" 
-                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding HomeViewModel.ChangeView}" CommandParameter="utilityView"
+                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding HomeViewModel.ChangeView}"
+                        CommandParameter="utilityView"
                         Width="140" Margin="1,0,1,0" ></Button>
                 <Button Content="Tools" IsEnabled="{Binding IsJobRunning, Converter={StaticResource LogicalNotConverter}}" 
                         HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Command="{Binding HomeViewModel.ChangeView}" CommandParameter="toolsView"
@@ -93,7 +95,8 @@
             </Grid>
         </Border>
         <Border  BorderBrush="Black" BorderThickness="1"  DockPanel.Dock="Right">
-            <ContentControl Name="CenterView" Content="{Binding HomeViewModel.View}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></ContentControl>
+            <ContentControl Name="CenterView" Content="{Binding HomeViewModel.View}" 
+                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></ContentControl>
         </Border>
     </DockPanel>
 </UserControl>

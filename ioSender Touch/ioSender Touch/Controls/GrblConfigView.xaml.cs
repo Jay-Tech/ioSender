@@ -46,10 +46,8 @@ using System.Windows;
 using System.Windows.Controls;
 using ioSenderTouch.GrblCore;
 using ioSenderTouch.ViewModels;
-using Application = System.Windows.Application;
-using MessageBox = System.Windows.MessageBox;
-using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
-using UserControl = System.Windows.Controls.UserControl;
+using Microsoft.Win32;
+
 
 namespace ioSenderTouch.Controls
 {
@@ -60,15 +58,19 @@ namespace ioSenderTouch.Controls
 
         private string retval;
 
-        public GrblConfigView(GrblViewModel model)
+        public GrblConfigView(GrblViewModel model, ContentManager contentManager)
         {
             InitializeComponent();
             _model = model;
+            var vModel = new WidgetViewModel();
+            contentManager.RegisterViewAndModel("grblSettingsView", vModel);
+            DataContext = vModel;
         }
 
         private void ConfigView_Loaded(object sender, RoutedEventArgs e)
         {
-            DataContext = new WidgetViewModel();
+           
+            
             dgrSettings.Visibility = GrblInfo.HasEnums ? Visibility.Collapsed : Visibility.Visible;
             treeView.Visibility = !GrblInfo.HasEnums ? Visibility.Collapsed : Visibility.Visible;
             details.Visibility = GrblInfo.HasEnums && curSetting == null ? Visibility.Hidden : Visibility.Visible;

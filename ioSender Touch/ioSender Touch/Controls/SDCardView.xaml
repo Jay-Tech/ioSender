@@ -5,48 +5,63 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:viewModels="clr-namespace:ioSenderTouch.ViewModels"
-             
              d:DataContext="{d:DesignInstance Type=viewModels:SdCardViewModel, IsDesignTimeCreatable=True}"
              mc:Ignorable="d" 
              d:DesignHeight="515" d:DesignWidth="875">
     <UserControl.Resources>
-        <system:String x:Uid="str_notConnection" x:Key="NoConnection">No connection.</system:String>
-        <system:String x:Uid="str_uploading" x:Key="Uploading">Uploading...</system:String>
-        <system:String x:Uid="str_downloading" x:Key="Downloading">Downloading {0}...</system:String>
-        <system:String x:Uid="str_downloadAndRun" x:Key="DownloandRun">Download and run {0}?</system:String>
-        <system:String x:Uid="str_transferDone" x:Key="TransferDone">Transfer done.</system:String>
-        <system:String x:Uid="str_transferAborted" x:Key="TransferAborted">Transfer aborted.</system:String>
-        <system:String x:Uid="str_transferring" x:Key="Transferring">Transferred {0} of {1} bytes...</system:String>
-        <system:String x:Uid="str_deleteFile" x:Key="DeleteFile">Delete {0}?</system:String>
-        <system:String x:Uid="str_illegalName" x:Key="IllegalName">File: {0}\n!,?,~ and SPACE is not supported in filenames, please rename.</system:String>
+        <ResourceDictionary>
+
+        </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
-        <DataGrid x:Uid="dgr_sdcard" x:Name="dgrSDCard" ItemsSource="{Binding  GrblSdCard.Files}" IsReadOnly="True" 
-                  HorizontalAlignment="Left" Margin="30,30,0,0" VerticalAlignment="Top" Height="450" Width="380"
-                  SelectionMode="Single" SelectionUnit="FullRow" AutoGenerateColumns="False"
-                  CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False" CanUserSortColumns="False" CanUserAddRows="False"
-                  SelectedItem="{Binding SelectedFile}"
-                  ToolTip="Right click for menu, double click to run file.">
-            <DataGrid.Columns>
-                <DataGridTextColumn x:Uid="hdr_name" Header="Name" Binding="{Binding GrblSdCard.Name}" Width="*"/>
-                <DataGridTextColumn x:Uid="hdr_size" Header="Size" Binding="{Binding GrblSdCard.Size}" Width="100"/>
-                <!--
-                <DataGridTextColumn Header="Remark" Binding="{Binding Invalid}" Width="*"/>
-                -->
-            </DataGrid.Columns>
-            <DataGrid.ContextMenu>
-                <ContextMenu x:Name="ctxMenu">
-                    <MenuItem x:Uid="mnu_run" Header="Run"  Command="{Binding RunCommand}" />
-                    <MenuItem x:Uid="mnu_downloadRun" Header="D_ownload and run"  Command="{Binding DownLoadRunCommand}" />
-                    <MenuItem x:Uid="mnu_enableRewind" Header="Enable rewind" IsEnabled="{Binding Path=CanRewind}" IsChecked="{Binding Path=Rewind, Mode=TwoWay}" IsCheckable="True" />
-                    <MenuItem x:Uid="mnu_viewAll" Header="View all" IsEnabled="{Binding Path=CanViewAll}" IsChecked="{Binding ViewAll, Mode=TwoWay}" IsCheckable="True" Command="{Binding ViewAllCommand}"/>
-                    <MenuItem x:Uid="mnu_delete" Header="Delete" IsEnabled="{Binding Path=CanDelete}" Command="{Binding DeleteCommand}" />
-                </ContextMenu>
-            </DataGrid.ContextMenu>
-            <DataGrid.InputBindings>
-                <MouseBinding Gesture="LeftDoubleClick" Command="{Binding RunNowCommand }" />
-            </DataGrid.InputBindings>
-        </DataGrid>
-        <Button x:Uid="btn_upload" Content="Upload" IsEnabled="{Binding Path=CanUpload}" HorizontalAlignment="Left" Margin="428,460,0,0" VerticalAlignment="Top" Width="75" Command="{Binding UploadCommand}"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" ></RowDefinition>
+            <RowDefinition Height="Auto" ></RowDefinition>
+        </Grid.RowDefinitions>
+        <ListView Grid.Row="0" Width="Auto"  SelectedItem="{Binding SelectedFile}"
+            ItemsSource="{Binding GCodeFiles}">
+            <ListView.View>
+                <GridView >
+                    <GridViewColumn 
+                        DisplayMemberBinding="{Binding Id}"
+                        Header="ID" Width="100" />
+                    <GridViewColumn
+                        DisplayMemberBinding="{Binding FileName}"
+                        Header="Name" Width="200" />
+                    <GridViewColumn
+                        DisplayMemberBinding="{Binding FileSize}"
+                        Header="Size" Width="200" />
+                    <GridViewColumn
+                        Header="Rewind">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox
+                                    IsChecked="{Binding  Rewind}"
+                                    Width="200">
+                                </CheckBox>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <Button x:Uid="btn_run" Margin="10,0,0,10" Content="Run" 
+                    IsEnabled="{Binding Path=RowSelected}" 
+                    HorizontalAlignment="Left"  VerticalAlignment="Top" Width="75" 
+                    Command="{Binding RunCommand}"/>
+            <Button x:Uid="btn_downloadRun" Margin="10,0,0,10" Content="DownLoad" 
+                    IsEnabled="{Binding Path=RowSelected}" 
+                    HorizontalAlignment="Left"  VerticalAlignment="Top" Width="100" 
+                    Command="{Binding DownLoadRunCommand}"/>
+            <Button x:Uid="btn_delete" Margin="10,0,0,10" Content="Delete" 
+                    IsEnabled="{Binding Path=RowSelected}" 
+                    HorizontalAlignment="Left"  VerticalAlignment="Top" Width="75" 
+                    Command="{Binding DeleteCommand}"/>
+            <Button x:Uid="btn_upload" Margin="10,0,0,10" Content="Upload" 
+                    HorizontalAlignment="Left"  VerticalAlignment="Top" Width="75" 
+                    Command="{Binding UploadCommand}"/>
+        </StackPanel>
+        
     </Grid>
 </UserControl>

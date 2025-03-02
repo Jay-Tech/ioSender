@@ -4,7 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:viewModels="clr-namespace:ioSenderTouch.ViewModels"
              mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance Type=viewModels:AppConfigViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="550" d:DesignWidth="875">
     <UserControl.Resources>
         <system:String x:Uid="msg_restart" x:Key="RestartMessage">A restart is required after changing settings!</system:String>
@@ -18,8 +20,8 @@
     </UserControl.Resources>
     <DockPanel>
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
-            <Button x:Uid="btn_saveSettings" x:Name="btnSave" Content="Save settings" Margin="5" Padding="5,0" Click="btnSave_Click" Height="45" Width="125"/>
-            <Button x:Uid="btn_saveKeyMap" x:Name="btnSaveKeyMap" Content="Save keymappings" Width="155" Margin="5" Height="45"  Click="btnSaveKeyMap_Click" />
+            <Button x:Uid="btn_saveSettings" x:Name="btnSave" Content="Save settings" Margin="5" Padding="5,0" Command="{Binding SaveCommand}" Height="45" Width="125"/>
+            <Button x:Uid="btn_saveKeyMap" x:Name="btnSaveKeyMap" Content="Save keymappings" Width="155" Margin="5" Height="45"  Command="{Binding SaveKeyMapCommand}" />
         </StackPanel>
         <ItemsControl x:Name="xx" DockPanel.Dock="Top">
             <ItemsControl.ItemsPanel>

@@ -459,6 +459,7 @@ namespace ioSenderTouch.ViewModels
 
         public void CycleStart()
         {
+            if(!Active)return;
             switch (grblState.State)
             {
                 case GrblStates.Hold:

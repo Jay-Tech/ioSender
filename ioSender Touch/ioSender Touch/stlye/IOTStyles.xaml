@@ -22,4 +22,9 @@
         <Setter Property="materialDesign:ButtonAssist.CornerRadius" Value="4"></Setter>
     </Style>
 
+    <Style x:Key="PaperRaisedButton" BasedOn="{StaticResource MaterialDesignPaperLightButton}" TargetType="Button">
+        <Setter Property="materialDesign:ElevationAssist.Elevation" Value="Dp6"/>
+        <Setter Property="materialDesign:ButtonAssist.CornerRadius" Value="8"></Setter>
+    </Style>
+
 </ResourceDictionary>

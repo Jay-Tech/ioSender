@@ -276,7 +276,7 @@ namespace ioSenderTouch.ViewModels
                 OnPropertyChanged();
             }
         }
-
+        public ICommand FloatToolCommand { get; set; }
         public GrblViewModel()
         {
             _a = _pn = _fs = _sc = _tool = string.Empty;
@@ -305,7 +305,7 @@ namespace ioSenderTouch.ViewModels
             //TODO new command linking  
 
             ShutDownCommand = new Command(SetShutDown);
-
+            FloatToolCommand = new Command(ToolFloat);
             ClearAlarmCommand = new Command(_ => { ClearAlarm(); });
             SpindleOverRide = new Command(SetSpindleOverRideSpeed);
             SpindleOverRideReset = new Command(_ => { SetDefaultSpindleSpeed(); });
@@ -319,6 +319,13 @@ namespace ioSenderTouch.ViewModels
             SetDefaults();
             Connected = false;
             SetToolCommand();
+        }
+
+        private void ToolFloat(object tool)
+        {
+            var t = tool.ToString();
+            var command = _isJobRunning ? $"T{t}M6" : $"M61Q{t}";
+            ExecuteCommand(command);
         }
 
         public HomeViewModel HomeViewModel
@@ -2087,8 +2094,8 @@ namespace ioSenderTouch.ViewModels
                                     //    HasRTC = true;
                                     //    break;
 
-                                    //case "ETH":
-                                    //    break;
+                                    case "ETH":
+                                        break;
 
                                     //case "HOME":
                                     //    HomingEnabled = true;
@@ -2198,7 +2205,7 @@ namespace ioSenderTouch.ViewModels
                                         _message = LibStrings.FindResource("ContResetUnlock");
                                         break;
                                 }
-                               // Message = (msg == "Reset to continue" ? string.Empty : msg + ", ") + _message;
+                                // Message = (msg == "Reset to continue" ? string.Empty : msg + ", ") + _message;
                             }
                             else
                                 Message = msg;
@@ -2371,6 +2378,7 @@ namespace ioSenderTouch.ViewModels
                 OnPropertyChanged();
             }
         }
+
 
         public void LoadComplete()
         {

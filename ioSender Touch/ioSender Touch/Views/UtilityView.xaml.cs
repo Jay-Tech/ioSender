@@ -10,11 +10,12 @@ namespace ioSenderTouch.Views
     public partial class UtilityView : UserControl
     {
         private UtilityViewModel _model;
-        public UtilityView(GrblViewModel grblViewModel)
+        public UtilityView(GrblViewModel grblViewModel, ContentManager contentManager)
         {
+
             _model = new UtilityViewModel(grblViewModel);
             DataContext = _model;
-            
+            contentManager.RegisterViewAndModel("utilityView", _model);
             InitializeComponent();
         }
     }

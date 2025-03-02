@@ -46,10 +46,16 @@ using ioSenderTouch.GrblCore;
 namespace ioSenderTouch.Controls
 {
 
-    public class WidgetViewModel : ViewModelBase
+    public class WidgetViewModel : ViewModelBase, IActiveViewModel
     {
+        
         string _tv;
         double _nv;
+
+        public WidgetViewModel()
+        {
+            Name = nameof(WidgetViewModel);
+        }
 
         public double NumericValue
         {
@@ -61,6 +67,18 @@ namespace ioSenderTouch.Controls
         {
             get { return _tv; }
             set { _tv = value; OnPropertyChanged(); }
+        }
+
+        public bool Active { get; set; }
+        public string Name { get; }
+        public void Activated()
+        {
+            
+        }
+
+        public void Deactivated()
+        {
+           
         }
     }
 

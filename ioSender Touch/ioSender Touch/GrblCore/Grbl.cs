@@ -830,6 +830,7 @@ namespace ioSenderTouch.GrblCore
 
         public int Id { get; private set; }
         public string Code { get { return _code; } set { _code = value; OnPropertyChanged(); } }
+
     }
 
     public class Tool : Position
@@ -2936,7 +2937,8 @@ namespace ioSenderTouch.GrblCore
     {
         public static byte ConvertRTCommand(byte cmd)
         {
-            if (GrblInfo.UseLegacyRTCommands) switch (cmd)
+            if (GrblInfo.UseLegacyRTCommands) 
+                switch (cmd)
                 {
                     case GrblConstants.CMD_STATUS_REPORT_ALL:
                         cmd = (byte)GrblConstants.CMD_STATUS_REPORT_LEGACY[0];

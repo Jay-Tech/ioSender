@@ -6,11 +6,18 @@
              xmlns:render="clr-namespace:ioSenderTouch.Controls.Render"
              xmlns:controls="clr-namespace:ioSenderTouch.Controls"
              xmlns:viewModels="clr-namespace:ioSenderTouch.ViewModels"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=viewModels:GrblViewModel, IsDesignTimeCreatable=True}"
              Loaded="RenderControl_Loaded"
              d:DesignHeight="800" d:DesignWidth="1080">
     <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PopupBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.SplitButton.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/stlye/IOTStyles.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
         <controls:PositionToStringConverter x:Key="PositionConverter" />
         <controls:FeedSpeedToStringConverter x:Key="FeedSpeedConverter" />
         <controls:HomedStateToBooleanConverter x:Key="IsHomed" />
@@ -76,6 +83,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        </ResourceDictionary>
     </UserControl.Resources>
     <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" HorizontalAlignment="Right">
@@ -127,19 +135,51 @@
                 <Label Content="MPG ACTIVE"  HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="Red" Opacity=".5"
                        Visibility="{Binding IsMPGActive,  Converter={StaticResource IsVisibleConverter}}" FontSize="100"/>
             </StackPanel>
-            <Grid  VerticalAlignment="Top"  Margin="0,5,5,5"  HorizontalAlignment="Right" >
+            <Grid  VerticalAlignment="Top"  Margin="0,5,5,5"   HorizontalAlignment="Right" >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50"></RowDefinition>
                     <RowDefinition Height="50"></RowDefinition>
                     <RowDefinition Height="50"></RowDefinition>
                     <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
                 </Grid.RowDefinitions>
                 <Button x:Name="StartButton" Grid.Row="0" FontSize="20" IsEnabled="{Binding RenderVM.EnableStart}" Command="{Binding RenderVM.StartJobCommand}" Height="40" MaxWidth="150"  Margin="5,0" Content="Start"></Button>
                 <Button x:Name="HoldButton" Grid.Row="1" FontSize="20" IsEnabled="{Binding RenderVM.EnableHold}" Command="{Binding RenderVM.HoldJobCommand}" Height="40" MaxWidth="150"    Margin="5,0" Content="Feed Hold" ></Button>
                 <Button x:Name="StopButton" Grid.Row="2" FontSize="20" IsEnabled="{Binding RenderVM.EnableStop}" Command="{Binding RenderVM.StopJobCommand}" Height="40"  MaxWidth="150" Margin="5,0"  Content="Stop" ></Button>
                 <Button x:Name="RewindButton" Grid.Row="3" FontSize="20" IsEnabled="{Binding RenderVM.EnableRewind}" Command="{Binding RenderVM.RewindJobCommand}" Height="40" MaxWidth="150"  Margin="5,0" Content="Rewind" ></Button>
+                <materialDesign:PopupBox Grid.Row="4"   VerticalAlignment="Center" 
+                                         HorizontalAlignment="Center" Margin="0,5"
+                    PlacementMode="LeftAndAlignTopEdges"  PopupUniformCornerRadius="8" Opacity=".7" StaysOpen="False"
+                    Style="{StaticResource  MaterialDesignMultiFloatingActionPopupBox}"
+                    ToolTip="Tool Selection" >
+                    <materialDesign:PopupBox.ToggleContent >
+                        <materialDesign:PackIcon
+                            Width="36"
+                            Height="36"
+                            Kind="Tools" />
+                    </materialDesign:PopupBox.ToggleContent>
+                    <StackPanel>
+                        <ItemsControl x:Name="MyItems" ItemsSource="{Binding Tools}">
+                           <ItemsControl.ItemsPanel>
+                               <ItemsPanelTemplate>
+                                   <StackPanel  Orientation="Vertical" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                               </ItemsPanelTemplate>
+                           </ItemsControl.ItemsPanel>
+                           <ItemsControl.ItemTemplate>
+                               <DataTemplate>
+                                    <Button  Style="{StaticResource PaperRaisedButton}" Margin="0,0,0,5" Width="90" Height="50"
+                                             Focusable="False" Command="{Binding ElementName=MyItems, Path=DataContext.FloatToolCommand}" 
+                                             CommandParameter="{Binding Content ,RelativeSource={RelativeSource Self}}" >
+                                       <Button.Content>
+                                           <Binding Path="Code"></Binding>
+                                       </Button.Content>
+                                   </Button>
+                               </DataTemplate>
+                           </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </materialDesign:PopupBox>
             </Grid>
-
         </Grid>
     </DockPanel>
 </UserControl>

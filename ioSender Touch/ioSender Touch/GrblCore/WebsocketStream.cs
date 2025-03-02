@@ -38,15 +38,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 using System;
-using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Threading;
+using WebSocketSharp;
 
 namespace ioSenderTouch.GrblCore;
 
 
-#if USEWEBSOCKET
+
     public class WebsocketStream : StreamComms
     {
         private WebSocket websocket = null;
@@ -233,66 +234,66 @@ namespace ioSenderTouch.GrblCore;
             }
         }
     }
-#endif
 
-public class WebSocketClient
-{
-    private ClientWebSocket _ws;
 
-    public WebSocketClient()
-    {
+//public class WebSocketClient
+//{
+//    private ClientWebSocket _ws;
+
+//    public WebSocketClient()
+//    {
         
-    }
+//    }
 
-    public async Task<bool> BuildClient()
-    {
-        _ws = new ClientWebSocket();
-        await _ws.ConnectAsync(new Uri("ws://192.168.5.1:80/ws"), CancellationToken.None);
-        switch (_ws.State)
-        {
-            case WebSocketState.Open:
-                await Connect();
-                return true;
-            case WebSocketState.Closed:
-                return false;
-            case WebSocketState.None:
-            case WebSocketState.Connecting:
-            case WebSocketState.CloseSent:
-            case WebSocketState.CloseReceived:
-            case WebSocketState.Aborted:
-            default:
-                return false;
-        }
-    }
+//    public async Task<bool> BuildClient()
+//    {
+//        _ws = new ClientWebSocket();
+//        await _ws.ConnectAsync(new Uri("ws://192.168.5.1:80/ws"), CancellationToken.None);
+//        switch (_ws.State)
+//        {
+//            case WebSocketState.Open:
+//                await Connect();
+//                return true;
+//            case WebSocketState.Closed:
+//                return false;
+//            case WebSocketState.None:
+//            case WebSocketState.Connecting:
+//            case WebSocketState.CloseSent:
+//            case WebSocketState.CloseReceived:
+//            case WebSocketState.Aborted:
+//            default:
+//                return false;
+//        }
+//    }
 
-    public async Task Connect()
-    {
-        var  receiveTask =  Task.Run(async () =>
-        {
-            var buffer = new byte[1024];
-            while (true)
-            {
-                var result = _ws.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-                if (result.Result.MessageType == WebSocketMessageType.Close)
-                {
-                    break;
-                }
-                var message = Encoding.UTF8.GetString(buffer, 0, result.Result.Count);
-                Console.WriteLine($"{message}\r\n");
-            }
+//    public async Task Connect()
+//    {
+//        var  receiveTask =  Task.Run(async () =>
+//        {
+//            var buffer = new byte[1024];
+//            while (true)
+//            {
+//                var result = _ws.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+//                if (result.Result.MessageType == WebSocketMessageType.Close)
+//                {
+//                    break;
+//                }
+//                var message = Encoding.UTF8.GetString(buffer, 0, result.Result.Count);
+//                Console.WriteLine($"{message}\r\n");
+//            }
             
-        });
-        await receiveTask;
-    }
+//        });
+//        await receiveTask;
+//    }
 
-    public void Send(byte [] message)
-    {
-        _ws.SendAsync(new ArraySegment<byte>(message), WebSocketMessageType.Text, true, CancellationToken.None);
-    }
-    public void Send(string message)
-    {
-        byte[] bytes = Encoding.Default.GetBytes(message);
-        _ws.SendAsync(new ArraySegment<byte>(bytes), WebSocketMessageType.Text,true, CancellationToken.None );
-    }
+//    public void Send(byte [] message)
+//    {
+//        _ws.SendAsync(new ArraySegment<byte>(message), WebSocketMessageType.Text, true, CancellationToken.None);
+//    }
+//    public void Send(string message)
+//    {
+//        byte[] bytes = Encoding.Default.GetBytes(message);
+//        _ws.SendAsync(new ArraySegment<byte>(bytes), WebSocketMessageType.Text,true, CancellationToken.None );
+//    }
     
-}
+//}

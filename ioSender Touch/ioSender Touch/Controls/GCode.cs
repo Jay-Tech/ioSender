@@ -192,13 +192,11 @@ namespace ioSenderTouch.Controls
 
         public void ClearStatus()
         {
-
             foreach (DataRow row in Program.Data.Rows)
                 if ((string)row["Sent"] != string.Empty)
                 {
                     row["Sent"] = string.Empty;
                 }
-
         }
 
         public void Drag(object sender, DragEventArgs e)

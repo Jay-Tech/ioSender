@@ -38,10 +38,9 @@ namespace ioSenderTouch.ViewModels
         private object _view;
         private string _consoleModeText;
         private bool _showGCodeConsole;
+
         public ICommand SwitchConsoleCommand { get; }
         public ICommand ChangeView { get; }
-
-      
         public object View
         {
             get => _view;
@@ -81,10 +80,10 @@ namespace ioSenderTouch.ViewModels
             _model = grblViewModel;
             _contentManager = _model.ContentManager;
             _renderView = new RenderView(_model, _contentManager);
-            _grblSettingView = new GrblConfigView(_model);
-            _grblAppSettings = new AppConfigView(_model);
-            _offsetView = new OffsetView(_model);
-            _utilityView = new UtilityView(_model);
+            _grblSettingView = new GrblConfigView(_model, _contentManager);
+            _grblAppSettings = new AppConfigView(_model, _contentManager);
+            _offsetView = new OffsetView(_model, _contentManager);
+            _utilityView = new UtilityView(_model, _contentManager);
             AppConfig.Settings.OnConfigFileLoaded += AppConfiguationLoaded;
             _controller = new Controller(_model, AppConfig.Settings);
             _controller.SetupAndOpen(Application.Current.Dispatcher);
@@ -121,7 +120,7 @@ namespace ioSenderTouch.ViewModels
             {
                 controls.Add(new RenderConfigControl());
             }
-            _grblAppSettings.Setup(controls, AppConfig.Settings);
+            _grblAppSettings.Setup(controls);
         }
         private void SwitchConsole(object obj)
         {

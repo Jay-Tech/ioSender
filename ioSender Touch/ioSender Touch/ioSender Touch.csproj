@@ -148,6 +148,9 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="websocket-sharp, Version=1.0.2.59611, Culture=neutral, PublicKeyToken=5660b08a1845a91e, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebSocketSharp.1.0.3-rc11\lib\websocket-sharp.dll</HintPath>
+    </Reference>
     <Reference Include="Windows.Gaming" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationFramework" />
@@ -163,6 +166,7 @@
     <Compile Include="Controls\AppConfigView.xaml.cs">
       <DependentUpon>AppConfigView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\AppConfigViewModel.cs" />
     <Compile Include="Controls\AppUiSettings.xaml.cs">
       <DependentUpon>AppUiSettings.xaml</DependentUpon>
     </Compile>
@@ -345,6 +349,7 @@
     <Compile Include="GrblCore\GCodeJob.cs" />
     <Compile Include="GrblCore\GCodeParser.cs" />
     <Compile Include="GrblCore\Grbl.cs" />
+    <Compile Include="Utility\RequestExtension.cs" />
     <Compile Include="ViewModels\GrblViewModel.cs" />
     <Compile Include="GrblCore\HelperClasses.cs" />
     <Compile Include="GrblCore\KeypressHandler.cs" />
@@ -355,6 +360,7 @@
     <Compile Include="GrblCore\TelnetStream.cs" />
     <Compile Include="GrblCore\WebsocketStream.cs" />
     <Compile Include="GrblCore\YModem.cs" />
+    <Compile Include="ViewModels\OffsetViewModel.cs" />
     <Compile Include="ViewModels\Probling\ProbingViewModel.cs" />
     <Compile Include="Controls\Probing\Program.cs" />
     <Compile Include="Controls\Probing\RotationControl.xaml.cs">

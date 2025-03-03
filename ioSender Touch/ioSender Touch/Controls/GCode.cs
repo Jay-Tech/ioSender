@@ -282,6 +282,11 @@ namespace ioSenderTouch.Controls
             Model.Blocks = Blocks;
         }
 
+        public void SdCardFileLoaded()
+        {
+            //FileLoaded?.Invoke(this, true);
+        }
+
         public void Save()
         {
             SaveFileDialog saveDialog = new SaveFileDialog()
@@ -317,4 +322,11 @@ namespace ioSenderTouch.Controls
             }
         }
     }
+}
+
+public class FileLoadArgs(bool isSdCard, string fileName, bool isOpen) : EventArgs
+{
+   public  bool IsSdCard { get; set; } = isSdCard;
+   public string FileName { get; set; } = fileName;
+   public bool IsOpen { get; set; } = isOpen;
 }

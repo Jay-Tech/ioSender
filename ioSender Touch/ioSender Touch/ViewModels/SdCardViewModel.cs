@@ -171,7 +171,7 @@ namespace ioSenderTouch.ViewModels
 
                 FileSelected?.Invoke($"SDCard:{SelectedFile.FileName}", SelectedFile.Rewind);
                 Comms.com.WriteCommand(GrblConstants.CMD_SDCARD_RUN + SelectedFile.FileName);
-
+                GCode.File.SdCardFileLoaded();
                 SelectedFile.Rewind = false;
             }
         }

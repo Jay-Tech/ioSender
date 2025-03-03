@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
@@ -31,6 +29,7 @@ namespace ioSenderTouch.ViewModels
         private bool _enableRewind;
         private bool _showOverlay;
         private SolidColorBrush _foregroundColor;
+        private bool _sdCardFileLoaded;
 
         public bool Active { get; set; }
         public string Name { get; }
@@ -90,6 +89,16 @@ namespace ioSenderTouch.ViewModels
                 OnPropertyChanged();
             }
         }
+        public bool SdCardFileLoaded
+        {
+            get => _sdCardFileLoaded;
+            set
+            {
+                if (value == _sdCardFileLoaded) return;
+                _sdCardFileLoaded = value;
+                OnPropertyChanged();
+            }
+        }
         public bool ShowOverlay
         {
             get => _showOverlay;
@@ -136,6 +145,7 @@ namespace ioSenderTouch.ViewModels
         private void Model_GrblInitialized(object sender, EventArgs e)
         {
             serialSize = Math.Min(AppConfig.Settings.Base.MaxBufferSize, GrblInfo.SerialBufferSize);
+            model.PropertyChanged += ViewModelPropertyChange;
         }
 
         private void SetInitialState()
@@ -164,6 +174,10 @@ namespace ioSenderTouch.ViewModels
             {
                 ActiveJobStop();
             }
+            else if(job.IsSDFile && model.GrblState.State == GrblStates.Run )
+            {
+                StopSdCardJob();
+            }
             else
             {
                 StreamingState = StreamingState.Stop;
@@ -187,21 +201,30 @@ namespace ioSenderTouch.ViewModels
                 //btnStop.Background = Brushes.DarkRed;
             }
             _useBuffering = AppConfig.Settings.Base.UseBuffering;
+            AppConfig.Settings.GCodeViewer.PropertyChanged += AppUISettings_PropertyChanged;
             ProcessKeyMappings();
         }
+
+        private void AppUISettings_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(GCodeViewerConfig.ShowTextOverlay))
+            {
+                ShowOverlay = AppConfig.Settings.GCodeViewer.ShowTextOverlay;
+            }
+        }
+
         public void Activated()
         {
-            model.PropertyChanged -= ViewModelPropertyChange;
+            
             model.OnRealtimeStatusProcessed -= RealtimeStatusProcessed;
             model.OnCommandResponseReceived -= ResponseReceived;
-            model.PropertyChanged += ViewModelPropertyChange;
+           
             model.OnRealtimeStatusProcessed += RealtimeStatusProcessed;
             model.OnCommandResponseReceived += ResponseReceived;
         }
 
         public void Deactivated()
         {
-            model.PropertyChanged -= ViewModelPropertyChange;
             model.OnRealtimeStatusProcessed -= RealtimeStatusProcessed;
             model.OnCommandResponseReceived -= ResponseReceived;
         }
@@ -297,18 +320,19 @@ namespace ioSenderTouch.ViewModels
                                             MessageBoxImage.Warning);
                                     StreamingState = GCode.File.IsLoaded ? StreamingState.Idle : StreamingState.NoFile;
                                 }
+                                else
+                                {
+                                    job.IsSDFile = true;
+                                    SdCardFileLoaded = true;
+                                    JobTimer.Start();
+                                }
                                 EnableStart = true;
                                 EnableStop = false;
                                 EnableHold = model.GrblState.State != GrblStates.Hold;
                             }
 
                             break;
-                        }
-                    //case nameof(GrblViewModel.RxBufferAvailable):
-                    //    {
-                    //        serialSize = Math.Min(AppConfig.Settings.Base.MaxBufferSize, (int)(model.RxBufferAvailable * 0.9f));
-                    //    }
-                    //    break;
+                        } ;
                     case nameof(GrblViewModel.GrblReset):
                         {
                             JobTimer.Stop();
@@ -317,6 +341,7 @@ namespace ioSenderTouch.ViewModels
                         break;
                 }
         }
+
         void GrblStateChanged(GrblState newstate)
         {
             if (grblState.State == GrblStates.Jog)
@@ -402,7 +427,12 @@ namespace ioSenderTouch.ViewModels
 
                 case GrblStates.Alarm:
                     StreamingState = StreamingState.Stop;
+                    if (job.IsSDFile)
+                    {
+                       StopSdCardJob();
+                    }
                     break;
+                
             }
             grblState.State = newstate.State;
             grblState.Substate = newstate.Substate;
@@ -437,6 +467,12 @@ namespace ioSenderTouch.ViewModels
 
         }
 
+        private void StopSdCardJob()
+        {
+            Comms.com.WriteByte(GrblConstants.CMD_STOP);
+            SdCardFileLoaded = job.IsSDFile = false;
+            JobTimer.Stop();
+        }
         private void FinalizeJobCleanup()
         {
             var runTime = JobTimer.RunTime;

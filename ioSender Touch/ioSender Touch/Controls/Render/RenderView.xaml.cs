@@ -65,6 +65,18 @@ namespace ioSenderTouch.Controls.Render
             InitializeComponent();
             manager.RegisterViewAndModel(nameof(RenderView), _model);
             grblViewModel.GrblInitialized += GrblViewModel_GrblInitialized;
+            _model.PropertyChanged += _model_PropertyChanged;
+        }
+
+        private void _model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(RenderViewModel.SdCardFileLoaded))
+            {
+                if (_model.SdCardFileLoaded)
+                {
+                    Open(GCode.File.Tokens);
+                }
+            }
         }
 
         private void GrblViewModel_GrblInitialized(object sender, System.EventArgs e)
@@ -84,13 +96,10 @@ namespace ioSenderTouch.Controls.Render
                 Close();
             }
         }
-
         public Machine MachineView
         {
             get { return gcodeView.Machine; }
         }
-
-       
 
         public void Close()
         {
@@ -100,7 +109,6 @@ namespace ioSenderTouch.Controls.Render
         public void Open(List<GCodeToken> tokens)
         {
             gcodeView.Render(tokens);
-            //gcodeView.ShowPosition();
         }
 
         private bool ToggleGrid(Key key)
@@ -162,7 +170,7 @@ namespace ioSenderTouch.Controls.Render
 
         private void Control_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if(_grblViewModel.GrblState.State == GrblStates.Tool)
+            if (_grblViewModel.GrblState.State == GrblStates.Tool)
                 Comms.com.WriteByte(GrblConstants.CMD_CYCLE_START);
         }
     }

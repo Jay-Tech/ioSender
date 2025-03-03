@@ -114,11 +114,11 @@ namespace ioSenderTouch.Utility
             {
                 if (!string.IsNullOrEmpty(port))
                     SetPort(port, baud);
-#if USEWEBSOCKET
+
                 if (_config.Base.PortParams.ToLower().StartsWith("ws://"))
                     new WebsocketStream(_config.Base.PortParams, dispatcher);
                 else
-#endif
+
                 if (char.IsDigit(_config.Base.PortParams[0])) // We have an IP address
                     new TelnetStream(_config.Base.PortParams, dispatcher);
                 else
@@ -141,11 +141,11 @@ namespace ioSenderTouch.Utility
                 else
                 {
                     SetPort(port, string.Empty);
-#if USEWEBSOCKET
+
                     if (port.ToLower().StartsWith("ws://"))
                         new WebsocketStream(_config.Base.PortParams, dispatcher);
                     else
-#endif
+
                     if (char.IsDigit(port[0])) // We have an IP address
                         new TelnetStream(_config.Base.PortParams, dispatcher);
                     else

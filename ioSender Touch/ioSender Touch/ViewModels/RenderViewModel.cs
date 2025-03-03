@@ -180,7 +180,7 @@ namespace ioSenderTouch.ViewModels
             }
             else
             {
-                StreamingState = StreamingState.Stop;
+                ActiveJobStop();
             }
         }
         private void RewindJob(object obj)

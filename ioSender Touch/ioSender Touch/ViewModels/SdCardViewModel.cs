@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -257,8 +258,15 @@ namespace ioSenderTouch.ViewModels
             if (MessageBox.Show($"Delete {SelectedFile.FileName}?", "IOT", MessageBoxButton.YesNo,
                     MessageBoxImage.Question, MessageBoxResult.Yes) == MessageBoxResult.Yes)
             {
-                GCodeFiles.Clear();
+                
                 Comms.com.WriteCommand(GrblConstants.CMD_SDCARD_UNLINK + SelectedFile.FileName);
+                foreach (var file in GCodeFiles.ToList())
+                {
+                    if (file.FileName == selectedFile)
+                    {
+                        GCodeFiles.Remove(file);
+                    }
+                }
                 var t = Load(_model, ViewAll);
             }
         }
@@ -292,6 +300,7 @@ namespace ioSenderTouch.ViewModels
             bool? res = null;
             CancellationToken cancellationToken = new CancellationToken();
             //SendSettings(model, GrblConstants.CMD_SDCARD_MOUNT, "ok");
+            GCodeFiles.Clear();
             if (!_mounted)
             {
                 Comms.com.PurgeQueue();
@@ -370,8 +379,11 @@ namespace ioSenderTouch.ViewModels
                     }
                 }
 
-                GCodeFiles.Add(new GCodeFile(_id++, filename, filesize, !invalid));
-
+                if (GCodeFiles.All(x => x.FileName != filename))
+                {
+                    GCodeFiles.Add(new GCodeFile(_id++, filename, filesize, !invalid));
+                }
+                
             }
         }
         public void Deactivated()

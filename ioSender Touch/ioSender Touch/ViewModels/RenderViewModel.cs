@@ -180,7 +180,8 @@ namespace ioSenderTouch.ViewModels
             }
             else
             {
-                ActiveJobStop();
+                Comms.com.WriteByte(GrblConstants.CMD_STOP);
+                //ActiveJobStop();
             }
         }
         private void RewindJob(object obj)

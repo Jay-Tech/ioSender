@@ -2382,6 +2382,7 @@ namespace ioSenderTouch.ViewModels
 
         public void LoadComplete()
         {
+            Message = string.Empty;
             GrblInitialized?.Invoke(this, null);
         }
     }

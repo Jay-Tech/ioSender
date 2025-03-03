@@ -293,6 +293,7 @@ namespace ioSenderTouch.ViewModels
                             {
                                 job.State = JobState.NoJob;
                                 job.NextRow = null;
+                                EnableStart = !EnableHold;
                             }
                             else
                             {
@@ -350,7 +351,6 @@ namespace ioSenderTouch.ViewModels
             {
                 case GrblStates.Idle:
                     StreamingState = StreamingState.Idle;
-
                     EnableHold = !(grblState.MPG || newstate.State == GrblStates.Alarm);
                     EnableStart = model.IsFileLoaded;
                     EnableStop = false;
@@ -459,12 +459,10 @@ namespace ioSenderTouch.ViewModels
         }
         private void ActiveJobStop()
         {
-            if (!model.IsSDCardJob || !GCode.File.IsLoaded) return;
+            if (!model.IsSDCardJob && !GCode.File.IsLoaded) return;
             Comms.com.WriteByte(GrblConstants.CMD_STOP);
-            model.FileName = string.Empty;
             StreamingState = StreamingState.Stop;
             FinalizeJobCleanup();
-
         }
 
         private void StopSdCardJob()
